@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&family=Barlow:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500;1,600;1,700&display=swap');
+@import "tailwindcss";
+
+@theme {
+  /* Primary Institutional Colors */
+  --color-mint-cream: #EEFAF6;
+  --color-honeydew: #DEF0E9;
+  --color-frosted-mint: #E6F6D8;
+  --color-charcoal-gray: #333333;
+  --color-deep-navy: #1F2A45;
+
+  /* Secondary Support Palette */
+  --color-soft-navy-blue: #365175;
+  --color-steel-blue: #587CA5;
+  --color-charcoal-blue: #344A51;
+  --color-blue-slate: #4C6B75;
+
+  /* Accent Palette */
+  --color-heritage-yellow: #FFD700;
+  --color-health-blue: #0B4BAA;
+  --color-alert-red: #AD0F0A;
+
+  /* Typography */
+  --font-sans: "Montserrat", ui-sans-serif, system-ui, sans-serif;
+  --font-barlow: "Barlow", sans-serif;
+  --font-serif: "Lora", serif;
+}
+
+[data-downloading="true"] *::-webkit-scrollbar {
+  display: none !important;
+}
+
+[data-downloading="true"] * {
+  scrollbar-width: none !important;
+  -ms-overflow-style: none !important;
+}
