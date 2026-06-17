@@ -57,44 +57,57 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           p_offset: offset
         });
 
-        if (!rpcError && rpcData && rpcData.length > 0) {
-          const totalCount = rpcData[0].total_count;
-          const pageIds = rpcData.map((p: any) => p.id);
-
-          const { data: finalData, error: fError } = await supabase
-            .from('patients')
-            .select(`
-              id, full_name, municipality, barangay, birthdate, sex,
-              patient_services(
-                date_of_service, health_promotion, fpe, philhealth, referral, wash, nutrition, cancer, immunization, hpn, dm, maternal_health, road_safety, mental_health, tb, hiv, large_scale_pk_activity
-              )
-            `)
-            .in('id', pageIds);
-
-          if (!fError) {
-            const formattedData = pageIds.map(id => {
-              const p = finalData?.find(d => d.id === id);
-              if (!p) return null;
-              const services = p.patient_services || [];
-              const compatService: any = {
-                date_of_service: null, health_promotion: false, fpe: false, philhealth: false, referral: false, wash: false, nutrition: false, cancer: false, immunization: false, hpn: false, dm: false, maternal_health: false, road_safety: false, mental_health: false, tb: false, hiv: false, large_scale_pk_activity: false
-              };
-              if (services.length > 0) {
-                const sortedServices = [...services].sort((a: any, b: any) => new Date(b.date_of_service).getTime() - new Date(a.date_of_service).getTime());
-                compatService.date_of_service = sortedServices[0].date_of_service;
-                services.forEach((s: any) => {
-                  Object.keys(compatService).forEach(key => {
-                    if (key !== 'date_of_service' && s[key]) compatService[key] = true;
-                  });
-                });
-              }
-              const { patient_services, ...rest } = p;
-              return { ...rest, ...compatService, history: patient_services };
-            }).filter(Boolean);
-
-            return res.json({ data: formattedData, total: totalCount, page: Number(page), limit: Number(limit) });
+        if (rpcError) {
+          console.error("RPC Error:", rpcError);
+          const errorMsg = rpcError.message || '';
+          if (errorMsg.includes('<html>') || errorMsg.includes('502 Bad Gateway')) {
+            return res.status(400).json({ error: "Upstream database error (502 Bad Gateway). Please try again later." });
           }
+          return res.status(500).json({ error: rpcError.message });
         }
+
+        if (!rpcData || rpcData.length === 0) {
+          return res.json({ data: [], total: 0, page: Number(page), limit: Number(limit) });
+        }
+
+        const totalCount = rpcData[0].total_count;
+        const pageIds = rpcData.map((p: any) => p.id);
+
+        const { data: finalData, error: fError } = await supabase
+          .from('patients')
+          .select(`
+            id, full_name, municipality, barangay, birthdate, sex,
+            patient_services(
+              date_of_service, health_promotion, fpe, philhealth, referral, wash, nutrition, cancer, immunization, hpn, dm, maternal_health, road_safety, mental_health, tb, hiv, large_scale_pk_activity
+            )
+          `)
+          .in('id', pageIds);
+
+        if (fError) {
+          return res.status(500).json({ error: fError.message });
+        }
+
+        const formattedData = pageIds.map((id: any) => {
+          const p = finalData?.find((d: any) => d.id === id);
+          if (!p) return null;
+          const services = p.patient_services || [];
+          const compatService: any = {
+            date_of_service: null, health_promotion: false, fpe: false, philhealth: false, referral: false, wash: false, nutrition: false, cancer: false, immunization: false, hpn: false, dm: false, maternal_health: false, road_safety: false, mental_health: false, tb: false, hiv: false, large_scale_pk_activity: false
+          };
+          if (services.length > 0) {
+            const sortedServices = [...services].sort((a: any, b: any) => new Date(b.date_of_service).getTime() - new Date(a.date_of_service).getTime());
+            compatService.date_of_service = sortedServices[0].date_of_service;
+            services.forEach((s: any) => {
+              Object.keys(compatService).forEach(key => {
+                if (key !== 'date_of_service' && s[key]) compatService[key] = true;
+              });
+            });
+          }
+          const { patient_services, ...rest } = p;
+          return { ...rest, ...compatService, history: patient_services };
+        }).filter(Boolean);
+
+        return res.json({ data: formattedData, total: totalCount, page: Number(page), limit: Number(limit) });
       }
 
       if (discrepancies_only === 'true') {
@@ -347,7 +360,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         if (search) {
           const safeSearch = (search as string).replace(/"/g, '""');
-          q = q.or(`full_name.ilike."%${safeSearch}%",municipality.ilike."%${safeSearch}%",barangay.ilike."%${safeSearch}%"`);
+          q = q.or(`full_name.ilike."%${safeSearch}%",barangay.ilike."%${safeSearch}%"`);
         }
         if (municipality) {
           q = q.eq('municipality', municipality as string);
@@ -396,9 +409,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const subfields: string[] = ['date_of_service'];
           if (program) subfields.push(program as string);
           if (large_scale) subfields.push('large_scale_pk_activity');
-          q = supabase.from('patients').select(`id, patient_services!inner(${subfields.join(',')})`, { count: 'exact', head: true });
+          q = supabase.from('patients').select(`id, patient_services!inner(${subfields.join(',')})`, { count: 'estimated', head: true });
         } else {
-          q = supabase.from('patients').select('id', { count: 'exact', head: true });
+          q = supabase.from('patients').select('id', { count: 'estimated', head: true });
         }
         return buildFilters(q);
       };
@@ -424,7 +437,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             mental_health, tb, hiv, large_scale_pk_activity
           `);
         }
-        return buildFilters(q).order('full_name', { ascending: true }).range(offset, offset + Number(limit) - 1);
+        return buildFilters(q).order('id', { ascending: false }).range(offset, offset + Number(limit) - 1);
       };
 
       let patientsList: any[] | null = null;
@@ -469,7 +482,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       if (patientsError) {
         console.error("Supabase error:", patientsError);
-        return res.status(500).json({ error: patientsError.message, details: patientsError });
+        return res.status(500).json({ error: patientsError.message || JSON.stringify(patientsError), details: patientsError });
       }
 
       // Fetch the full service histories ONLY for this current page's active patient IDs (usually 20 IDs)
