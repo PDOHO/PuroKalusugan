@@ -1,0 +1,154 @@
+birthdate,person1_id,person1_name,person1_barangay,person2_id,person2_name,person2_barangay,jaccard_score,levenshtein_distance
+"1958-03-22",65373,"Alviento, Lizviminda","Paypayad",101153,"Alviento, Luzviminda V.","Paypayad",0.25,4
+"1947-05-09",100280,"Torres, Bonifacio B","Salvador Primero",145237,"Torres, Bonifacio B.","Salvador Primero",1.00,1
+"1976-01-30",448,"Hurboda, Elna U.","Allangigan Segundo",175438,"Hurboda, Elna H.","Allangigan Segundo",0.50,1
+"2024-08-20",478,"Valdez, Kiara Charreen P.","Allangigan Segundo",175426,"Valdez, Kiara Chaireen P.","Allangigan Segundo",0.60,1
+"1975-05-20",492,"Opeña, Zeny M.","San Andres",129812,"Opena, Zeny M.","San Andres",0.50,1
+"1967-08-24",524,"Choy-awen, Maribeth G.","Bagani Camposanto",207418,"Choy-awen, Maribeth R.","Bagani Camposanto",0.50,1
+"1961-09-13",536,"Raboc, Amelia G.","Bagani Gabor",34282,"Raboc, Emelia G.","Bagani Gabor",0.50,1
+"1970-02-08",15688,"Manzano, Venus Marivic B.","Salvador Primero",41216,"Manzano, Venus Marivic","Salvador Primero",0.75,3
+"1976-02-18",33316,"Batin, Saturnino T.","Salvador Primero",145314,"Batin, Saturnino Jr. T.","Salvador Primero",0.75,4
+"1962-12-26",33382,"Holt, Maria Agnes R.","Salvador Primero",145380,"Holt, Agnes R.","Salvador Primero",0.75,6
+"1968-09-05",33389,"Inigo, Leilany A.","Salvador Primero",40928,"Inigo, Lailanie A.","Salvador Primero",0.50,3
+"1968-09-05",40928,"Inigo, Lailanie A.","Salvador Primero",100339,"Inigo, Lailanie A","Salvador Primero",1.00,1
+"1960-12-07",37359,"Bandilla, Virginia D.","Cubcubbuot",104609,"Bandilla, Virgie D.","Cubcubbuot",0.50,3
+"1975-04-07",33407,"Batin, Juliet D.","Salvador Primero",145315,"Batin, Julieta D.","Salvador Primero",0.50,1
+"1967-12-05",34328,"Calindas, Teresa V.","Bagani Camposanto",207477,"Calindas, Teresita V.","Bagani Camposanto",0.50,2
+"1978-10-04",34410,"Ramos, Mary Rose Q.","Bagani Camposanto",86224,"Ramos, Maryrose Q.","Bagani Camposanto",0.40,1
+"1952-05-23",35773,"Valdez, Noli Sr., L.","Cubcubbuot",146269,"Valdez, Noli l.","Cubcubbuot",0.75,5
+"1976-12-31",36165,"Versoza, Jennifer M.","Cubcubbuot",103789,"Verzosa, Jennifer M.","Cubcubbuot",0.50,2
+"1950-07-11",36192,"Andres, Marcelo A.","Allangigan Segundo",117043,"Adres, Marcelo A.","Allangigan Segundo",0.50,1
+"1959-01-12",37304,"Galinato, Artacia Tessie G.","Bagani Ubbog",171686,"Galinato, Astacia Tessie G.","Bagani Ubbog",0.60,1
+"1936-05-28",37321,"Cardona, Jose B.","Allangigan Segundo",120871,"Cardona, Jose Sr. B.","Allangigan Segundo",0.75,4
+"1961-03-25",37337,"Iñigo, Irenio C.","Allangigan Segundo",116994,"Inigo, Ireneo C.","Allangigan Segundo",0.20,2
+"1980-08-05",37647,"Valdez, Alma Cristina B.","Salvador Primero",100765,"Valdez, Alma Cristina Batin","Salvador Primero",0.60,4
+"1961-05-07",37649,"Gagarin, Eufrosina Corazon B.","Salvador Primero",145319,"Gagarin, Corazon B.","Salvador Primero",0.75,10
+"1965-09-10",37656,"Alcantarra, Mely M.","Allangigan Primero",46143,"Alcantara, Mely M.","Allangigan Primero",0.50,1
+"1962-04-10",37679,"Arnaldo, Celso L.","Allangigan Primero",149818,"Arnaldo, Celso Sr L.","Allangigan Primero",0.75,3
+"2001-07-16",37711,"Tangaag, Liezel","San Andres",129854,"Tangaag, Liezel M.","San Andres",0.67,3
+"1966-01-31",37714,"Bacolong, Marcelino C.","San Andres",129830,"Baculong, Mercilino C.","San Andres",0.20,3
+"2025-09-02",37716,"Gomintong, Hallel Haniel S.","San Andres",206836,"Gomintong, Haliel Haniel S.","San Andres",0.60,1
+"2023-12-29",37881,"Wagayen, Kyzyll Kenzo B.","San Andres",156871,"Wagayen, Rizyll Kenzo B.","San Andres",0.60,2
+"1997-05-26",37889,"Ingen, Jayson D.","San Andres",129760,"Ingen, Jatson D.","San Andres",0.50,1
+"1960-08-08",37895,"Rumbaoa, Naida S.","San Andres",150006,"Rumboa, Naida S.","Allangigan Primero",0.50,1
+"1941-12-15",38444,"Tayaben,Rosita C.","San Andres",129794,"Tayaben, Rosita C.","San Andres",0.25,1
+"1946-10-26",38447,"Paulino, Aida V.","San Andres",39830,"Panlilio, Aida V.","San Andres",0.50,3
+"1964-10-12",38456,"Malamion, Eugemie A.","San Andres",129708,"Malamion, Eugine A.","San Andres",0.50,3
+"2022-10-09",38565,"Mones, Gwendydd C.","Salvador Primero",140125,"Mones, Gwendyad C.","Salvador Primero",0.50,1
+"1955-05-24",38769,"Lomiteng, Henry Sr. A.","San Andres",156733,"Lomiteng, Henry A.","San Andres",0.75,4
+"1963-10-10",38869,"Cartilla, Zenaida L.","San Andres",206782,"Cartilla. Zenaida L.","San Andres",1.00,1
+"1960-05-08",40114,"Batin, Menandro Sr. M.","Salvador Primero",100079,"Batin, Menandro Sr  M","Salvador Primero",1.00,2
+"1960-12-18",40148,"Pascua,Rodolfo D.","Salvador Primero",100263,"Pascua, Rodolfo D.","Salvador Primero",0.25,1
+"1963-12-15",40923,"Tican,David T.","Salvador Primero",100272,"Tican, David T","Salvador Primero",0.25,2
+"1963-12-15",40923,"Tican,David T.","Salvador Primero",140106,"Tican, David T.","Salvador Primero",0.25,1
+"1963-12-15",100272,"Tican, David T","Salvador Primero",140106,"Tican, David T.","Salvador Primero",1.00,1
+"1953-02-07",41215,"Batin,Alberto B.","Salvador Primero",100053,"Batin, Alberto B.","Salvador Primero",0.25,1
+"1954-11-17",41218,"Garnace, Josephine LLanes","Salvador Primero",82009,"Garnace, Josephine L.","Salvador Primero",0.50,5
+"1981-10-11",41230,"Vazquez, Mirasol M.","Salvador Primero",95876,"Vasquez, Mirasol M.","Salvador Primero",0.50,1
+"1981-10-11",41230,"Vazquez, Mirasol M.","Salvador Primero",100776,"Vasquez, Mirasol M ","Salvador Primero",0.50,2
+"1981-10-11",95876,"Vasquez, Mirasol M.","Salvador Primero",100776,"Vasquez, Mirasol M ","Salvador Primero",1.00,1
+"2023-07-13",42319,"Hufana, Shane V.","Paypayad",79706,"Hufana, Shayne V.","Paypayad",0.50,1
+"1985-03-19",42328,"Gasatan, Josel B.","Paypayad",145674,"Gasatan, Joselle R.","Paypayad",0.20,3
+"2015-09-24",42342,"Pascua, Joehanna A.","Paypayad",79770,"Pascua, Joe Hannah A.","Paypayad",0.40,2
+"2021-05-15",42357,"Gasatan, Yvette V.","Paypayad",75701,"Gasatan, Yvette Aria V.","Paypayad",0.75,5
+"1952-09-26",42782,"Cosales, Juanita M.","Bagani Ubbog",117274,"Costales, Juanita M.","Bagani Ubbog",0.50,1
+"1960-08-16",42853,"Julio, Eliza R.","Paypayad",65398,"Julio, Eliza Ruiz","Paypayad",0.50,3
+"1953-01-08",43887,"Gagto, Cecilia I.","Bagani Tocgo",168237,"Gagto, Cecilia G.","Bagani Tocgo",0.50,1
+"2019-07-07",43888,"Gasatan, Arabella A.","Paypayad",66329,"Gasata, Arabela A.","Paypayad",0.20,2
+"2023-04-07",43904,"Espada, Jeann Gabriel G.","Paypayad",145724,"Espada, Sean Gabriel G.","Paypayad",0.60,2
+"1950-11-28",47042,"Astrero, Eufrosina W.","Bagani Tocgo",208044,"Astrero Eufrosina W.","Bagani Tocgo",1.00,1
+"1957-12-28",46180,"Gacay, Susisma A.","Allangigan Primero",149942,"Gacay, Sosima A.","Allangigan Primero",0.50,2
+"1966-12-27",46319,"Delos Santos, Danilo Cortez","Allangigan Primero",104336,"Delos Santos, Danilo C.","Allangigan Primero",0.60,5
+"1957-06-17",46352,"Diza, Alfredo Jr. D.","Palacapac",122772,"Diza, Alfredo D.","Palacapac",0.75,4
+"1941-11-14",46410,"Canael, Nieves L.","Palacapac",106701,"Cabael, Nieves L.","Palacapac",0.50,1
+"1981-07-25",46440,"Malamion, Jason J.","Palacapac",106747,"Malamion, Jayson J.","Palacapac",0.50,1
+"1962-12-16",47003,"Dizon, Adelia R.","Palacapac",120548,"Dizon, Adelina S.","Palacapac",0.20,2
+"2010-10-20",47025,"Opeña, Bryan M.","San Andres",129814,"Opena, Bryan M.","San Andres",0.50,1
+"2005-09-21",47028,"Tudayan, Manel Federico D","San Andres",206857,"Tudayan, Manuel federico D.","San Andres",0.60,2
+"1999-09-03",47038,"Dagusen, Ritz Carlo B.","San Andres",129704,"Dagusen, Rits Carlo B.","San Andres",0.60,1
+"1992-03-13",47171,"Astrero, Ronette G.","Bagani Tocgo",208046,"Astrero, Ronette L.","Bagani Tocgo",0.50,1
+"1952-11-19",48637,"Esternon, Amelia V.","Bagani Camposanto",66276,"Esternon, Amalia V.","Bagani Camposanto",0.50,1
+"1954-06-10",62011,"Fernandez, Violeta B.","San Andres",156821,"Fernandez, Viloet B.","San Andres",0.50,3
+"1951-12-31",62488,"Valdez, Demetria  S.","San Andres",129808,"Valdez, Demetria S,","San Andres",1.00,2
+"1980-05-07",62555,"Gabayan, Robert ","San Andres",129697,"Gabayan, Robert R.","San Andres",0.67,2
+"1976-09-27",62557,"Manzano, Elmer Sy. D.","San Andres",156720,"Manzano, Elmer Sr D.","San Andres",0.60,2
+"1998-09-18",104472,"Galima, Cristine Joy G.","Bagani Camposanto",171569,"Galima, Christine Joy G.","Bagani Ubbog",0.60,1
+"1947-08-10",65307,"Galima, Arsenia S.","Paypayad",84754,"Galima, Arsenio S.","Paypayad",0.50,1
+"1972-01-01",65330,"Guerero,  Nemia A.","Paypayad",85490,"Guerero, Nemia A.","Paypayad",1.00,1
+"1994-08-24",65369,"Del Rosario, Rodel A.","Paypayad",101125,"Del Rosario, Ronel A.","Paypayad",0.60,1
+"1988-06-19",65371,"Alviento, Rizal","Paypayad",101149,"Alviento, Rizal V.","Paypayad",0.67,3
+"1983-05-17",65376,"Alviento, Jeric V.","Paypayad",101154,"Alviento, Jerick V.","Paypayad",0.50,1
+"1969-08-08",65377,"Gasatan, Alfred R.","Paypayad",101162,"Gasatan, Alfred Sr. R.","Paypayad",0.75,4
+"1961-05-06",65443,"Pascua, Celso V.","Paypayad",106092,"Pascua, Celia C.","Paypayad",0.20,3
+"1964-10-26",66505,"Palacielo, Reynato A.","Bagani Camposanto",85087,"Palacielo, Renato A.","Bagani Camposanto",0.50,1
+"2018-02-03",66565,"Gadiano, Krista Angela B.","Bagani Camposanto",66569,"Gadiano, Kris Angelo B.","Bagani Camposanto",0.33,3
+"1992-02-07",66570,"Layao, Ronalyn C.","Cubcubbuot",66575,"Layao, Rinalyn C.","Cubcubbuot",0.50,1
+"2018-03-13",66754,"Julio, James Tyron S.","Bagani Camposanto",102289,"Julio, James Tyron","Paypayad",0.75,3
+"2008-02-22",67032,"Calindas, Jenna Rose Ramos","Bagani Ubbog",104396,"Calindas, Jenna Rose R.","Bagani Camposanto",0.60,4
+"1954-10-09",67092,"Apilado, Delia Cabe","Bagani Ubbog",117393,"Apilado, Delia C.","Bagani Ubbog",0.50,3
+"2018-07-18",67108,"Galima, Conrad Gavin Valdez","Bagani Ubbog",117259,"Galima, Conrad Gavin V.","Bagani Ubbog",0.60,5
+"1954-10-25",67174,"Garabiles, Marciana Ocampo","Bagani Ubbog",117240,"Garabiles, Marciana O.","Bagani Ubbog",0.50,5
+"1966-02-28",69656,"Balbin,  Carolina L.","Allangigan Segundo",175486,"Balbin, Carolina L.","Allangigan Segundo",1.00,1
+"1971-04-13",71700,"Castro, Marilou M.","Allangigan Segundo",161859,"Castro, Marlou M.","Allangigan Segundo",0.50,1
+"1958-03-30",71741,"Balbin, Leticia H.","Allangigan Segundo",175482,"Balbin, Letecia H.","Allangigan Segundo",0.50,1
+"1983-03-14",71797,"Cudiamat, Leonardo V.","Allangigan Segundo",150095,"Cudiamat, Leonard V.","Allangigan Segundo",0.50,1
+"1964-06-09",78642,"Valdez, Lilia  C.","San Pedro",149721,"Valdez, Lilia C.","San Pedro",1.00,1
+"1959-04-03",78651,"Tovera, Glenda G.","San Pedro",149743,"Tovera, Gloria G.","San Pedro",0.50,3
+"2012-08-29",78666,"Gadia, Queenie M.","Ayudante",113358,"Gadia, Quennie M.","Ayudante",0.50,1
+"1941-02-24",78676,"Cortado, Filomena G.","Ayudante",81703,"Cortado, Felomina G.","Ayudante",0.50,2
+"1988-12-21",79692,"Salvacion, Bernard G.","Paypayad",102254,"Salvacion, Bernardo G.","Paypayad",0.50,1
+"1973-12-29",80941,"Sipin, Ronald Sr. D.","Bagani Camposanto",103621,"Sipin, Ronald Jr. G.","Bagani Camposanto",0.33,2
+"2006-10-01",84720,"Galima, Jefferson G.","Paypayad",84722,"Galima, Iverson G.","Paypayad",0.50,4
+"2007-03-03",86156,"Concepcion, Jay-R C.","Bagani Camposanto",86158,"Concepcion, R-jay C.","Bagani Camposanto",0.50,4
+"2025-01-17",86250,"Daguman, Aiven R.","Bagani Camposanto",191390,"Dagunan, Aiven R.","Bagani Camposanto",0.50,1
+"1993-11-04",93175,"Cabacungan, Sharmaine M.","Salvador Primero",140123,"Cabacungan, Sharmaine","Salvador Primero",0.67,3
+"1952-02-26",100072,"Pascua, Prescila T.","Bagani Tocgo",140062,"Pascua, Precilla T.","Bagani Tocgo",0.50,2
+"2009-02-06",144127,"Bayle, Kristal Ciara D.","Paypayad",206020,"Baily, Kristal Ciara D.","Paypayad",0.60,2
+"1979-05-18",100121,"Tnglib, Maribel M.","Bagani Tocgo",168188,"Tanglib, Maribel M.","Bagani Tocgo",0.50,1
+"1967-05-13",100733,"Tajeda, Anita C.","Salvador Primero",100738,"Tadeja, Anita C.","Salvador Primero",0.50,2
+"1969-12-27",100832,"Espanto,Jessie D.","Bagani Ubbog",123931,"Espanto, Jessie D.","Bagani Ubbog",0.25,1
+"1973-08-29",100844,"Gajor, Diosdado T.","Bagani Ubbog",100940,"Sajor, Diosdado T.","Bagani Ubbog",0.50,1
+"2022-10-25",103631,"Brioso, Ghianna Marie B.","Bagani Camposanto",103632,"Brioso, Gheonna Marie B.","Bagani Camposanto",0.60,2
+"2007-08-23",103692,"Galla, Hilary Mishe A.","Bagani Camposanto",146284,"Galla, Hillary Miche A.","Cubcubbuot",0.33,2
+"2004-08-04",103873,"Reboltan, John Renj Renier V.","Cubcubbuot",103874,"Reboltan, John Renj Jenier V.","Cubcubbuot",0.67,1
+"1996-10-21",104323,"Cortez, Lester V.","Allangigan Primero",104325,"Cortez, Dexter V.","Allangigan Primero",0.50,2
+"2008-05-05",104395,"Martinez, Justine Kliene B.","Bagani Camposanto",123929,"Martinez, Justine Klien B.","Bagani Ubbog",0.60,1
+"2022-11-07",104475,"Galima, Liam Sire G.","Bagani Camposanto",171570,"Galima, Liam Sue G.","Bagani Ubbog",0.60,2
+"2001-04-19",107878,"Teofilo, Krishelle Ann U.","Santo Tomas",107879,"Teofilo, Kristelle Ann U.","Santo Tomas",0.60,1
+"1961-07-19",113039,"Redongga, Teresita B.","San Pedro",162235,"Redongga Teresita B.","San Pedro",1.00,1
+"1983-11-13",113041,"Del Rosario, Jennifer S.","San Pedro",172480,"Del Rosario, Jeniffer S.","San Pedro",0.60,2
+"1982-11-01",113243,"Soliman, Joel M.","Bagani Camposanto",161165,"Soliman, Jowie M.","Bagani Gabor",0.50,3
+"2025-05-24",114467,"Bonzon, Kaireen L.","San Pedro",190628,"Bonzon, Daeneryz Kaireen L.","San Pedro",0.75,9
+"2019-12-26",114477,"Ventura, Christina Abby Jane J.","San Pedro",129802,"Ventura, Cris Abby Jane J.","San Andres",0.67,5
+"2011-02-21",114615,"Quilondrino, Saviour M.","Ayudante",156716,"Quilondrino, Savior M.","San Andres",0.50,1
+"2013-08-17",114749,"Martinez, Patrick L.","Bagani Ubbog",117311,"Martinez, John Patrick L.","Bagani Ubbog",0.75,5
+"2009-03-11",114750,"Martinez, John Glen L.","Bagani Ubbog",117310,"Martinez, Jhon Glenn L.","Bagani Ubbog",0.33,3
+"2009-08-30",172477,"Nisperos, Kristine D.","San Pedro",172478,"Nisperos, Katrine D.","San Pedro",0.50,4
+"2004-01-10",115047,"Soliven, Jamina D.","Paypayad",115048,"Soliven, Jamine D.","Paypayad",0.50,1
+"2009-01-24",116087,"Gallero, Matt Donnie M.","Santo Tomas",116088,"Gallero, Matt Dionnie M.","Santo Tomas",0.60,1
+"2019-08-26",206089,"Manzano, Isabella RhAine V.","Paypayad",206090,"Manzano, Isabelle Rhiene v.","Paypayad",0.33,3
+"1956-01-07",116844,"Ganado, Emilia M.","Salvador Segundo",116900,"Ganado, Emelia M.","Salvador Segundo",0.50,1
+"1949-06-08",116912,"Orpilla, Ernesto R.","Salvador Segundo",144876,"Orpilla, Ernesto Sr R.","Salvador Segundo",0.75,3
+"1989-12-01",117008,"Inigo, Gilmar V.","Allangigan Segundo",162152,"Inigo Gilmar V.","San Pedro",1.00,1
+"2008-03-06",144694,"Abuter, Carlos Jose B.","Bagani Ubbog",207612,"Abliter, Carlo Jose B.","Bagani Camposanto",0.33,3
+"2016-12-22",117627,"Rahon, Myreck Izy M.","Santo Tomas",117628,"Rahon, Myreck Ely M.","Santo Tomas",0.60,2
+"2004-11-11",129712,"Refuerzo, Lemfritz T.","San Andres",156866,"Refuerzo, Lim Pritz T.","San Andres",0.40,3
+"1991-09-06",146264,"Foronda, Ric G.","Cubcubbuot",164115,"Foronda, Rick G.","Palacapac",0.50,1
+"2015-04-04",120623,"Ragudo, Jhaz C.","Palacapac",120624,"Ragudo, Jhay C.","Palacapac",0.50,1
+"2024-12-10",120634,"Gonzales, Jhay Nylan S.","Palacapac",120635,"Gonzales, Karl Nylan S.","Palacapac",0.60,4
+"2011-10-15",140945,"Ganat, Patrick C.","Paypayad",140946,"Ganat, Patricia C.","Paypayad",0.50,2
+"1990-09-24",145735,"Manzano, Sheera Maine V.","Paypayad",145736,"Manzano, Sheera Laine V.","Paypayad",0.60,1
+"1992-05-07",123283,"Molina, Princess Cleofe B.","Bagani Camposanto",149998,"Molina, Princes Cleofe B.","Allangigan Primero",0.60,1
+"1962-03-25",203123,"Mateo, Mercedita J.","Bagani Camposanto",207720,"Mateo, Merlita J.","Bagani Camposanto",0.50,3
+"2009-11-21",140005,"Camiyeng, Francis Jay M.","Bagani Tocgo",141055,"Camiyeng, Francis Jay","Paypayad",0.75,3
+"2025-03-24",140177,"Aduca, Reina Josefa Brynn O.","Salvador Primero",191405,"Aduca, Reina Josea Brynn ","Salvador Segundo",0.50,3
+"1990-11-03",141056,"Camagay, Rocky James","Paypayad",168271,"Camagay, Rocky James V.","Bagani Tocgo",0.75,3
+"2003-05-17",144575,"Domingo, John Rhay B.","Bagani Gabor",144577,"Domingo, John Rhay Jr. B.","Bagani Gabor",0.80,4
+"2022-05-19",145063,"Audencial, Rhustie D.","Ayudante",145064,"Audencial, Rhence D.","Ayudante",0.50,4
+"2017-09-28",150184,"Cudiamat, B-jay O.","Allangigan Segundo",150185,"Cudiamat, C-jay O.","Allangigan Segundo",0.50,1
+"2015-03-04",156842,"Aquino, Amir M.","San Andres",206872,"Aquino, Amir B.","San Andres",0.50,1
+"2016-07-03",156845,"Alquero, Alexandra P.","San Andres",164111,"Alquero, Mariya Alexandra P.","Palacapac",0.75,7
+"2003-04-03",159960,"Dela Cruz, John Derick R.","Santo Tomas",159961,"Dela Cruz, John Angelo R.","Santo Tomas",0.67,6
+"2013-01-05",162174,"Gacusan, John Aoi G.","San Pedro",162175,"Gacusan, John Aki G.","San Pedro",0.60,1
+"2025-04-12",191428,"Calaycay, Kyle","Bagani Camposanto",207550,"Calaycay, Kyle G.","Bagani Camposanto",0.67,3
+"2025-05-14",191434,"Abliter,  Joanna Mae","Bagani Camposanto",207613,"Abliter, Joanna Mae B.","Bagani Camposanto",0.75,4

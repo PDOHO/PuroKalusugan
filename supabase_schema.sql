@@ -158,8 +158,9 @@ CREATE POLICY "Allow public read access to audit_logs" ON audit_logs FOR SELECT 
 CREATE POLICY "Allow public insert access to audit_logs" ON audit_logs FOR INSERT WITH CHECK (true);
 
 -- Indexes for patient_services performance
-CREATE INDEX IF NOT EXISTS idx_patient_services_patient_id ON patient_services(patient_id);
-CREATE INDEX IF NOT EXISTS idx_patient_services_date_of_service ON patient_services(date_of_service);
+-- Redundant, removed to save space
+-- CREATE INDEX IF NOT EXISTS idx_patient_services_patient_id ON patient_services(patient_id);
+-- CREATE INDEX IF NOT EXISTS idx_patient_services_date_of_service ON patient_services(date_of_service);
 
 -- High-performance composite indexes for joins and aggregation
 CREATE INDEX IF NOT EXISTS idx_patients_location_id_optimized ON patients (LOWER(municipality), LOWER(barangay), id);

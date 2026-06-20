@@ -96,6 +96,38 @@ async function startServer() {
 
   // API routes
   app.get("/api/health", (req, res) => res.json({ status: "ok" }));
+  app.get("/api/download-fuzzy-bantay", (req, res) => {
+    const file = path.join(process.cwd(), 'public', 'fuzzy_bantay_duplicates.csv');
+    res.download(file, 'fuzzy_bantay_duplicates.csv');
+  });
+  app.get("/api/download-fuzzy-narvacan", (req, res) => {
+    const file = path.join(process.cwd(), 'public', 'fuzzy_narvacan_duplicates.csv');
+    res.download(file, 'fuzzy_narvacan_duplicates.csv');
+  });
+  app.get("/api/download-fuzzy-sanjuan", (req, res) => {
+    const file = path.join(process.cwd(), 'public', 'fuzzy_sanjuan_duplicates.csv');
+    res.download(file, 'fuzzy_sanjuan_duplicates.csv');
+  });
+  app.get("/api/download-fuzzy-candon", (req, res) => {
+    const file = path.join(process.cwd(), 'public', 'fuzzy_candon_duplicates.csv');
+    res.download(file, 'fuzzy_candon_duplicates.csv');
+  });
+  app.get("/api/download-fuzzy-santacruz", (req, res) => {
+    const file = path.join(process.cwd(), 'public', 'fuzzy_santacruz_duplicates.csv');
+    res.download(file, 'fuzzy_santacruz_duplicates.csv');
+  });
+  app.get("/api/download-fuzzy-santalucia", (req, res) => {
+    const file = path.join(process.cwd(), 'public', 'fuzzy_santalucia_duplicates.csv');
+    res.download(file, 'fuzzy_santalucia_duplicates.csv');
+  });
+  app.get("/api/download-fuzzy-sanildefonso", (req, res) => {
+    const file = path.join(process.cwd(), 'public', 'fuzzy_sanildefonso_duplicates.csv');
+    res.download(file, 'fuzzy_sanildefonso_duplicates.csv');
+  });
+  app.get("/api/download-no-services", (req, res) => {
+    const file = path.join(process.cwd(), 'public', 'patients_without_services.csv');
+    res.download(file, 'patients_without_services.csv');
+  });
   app.all("/api/stats", wrap(statsHandler));
   app.all("/api/export-coverage", wrap(exportCoverageHandler));
   app.all("/api/barangays", wrap(barangaysHandler));

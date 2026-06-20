@@ -1,0 +1,79 @@
+birthdate,person1_id,person1_name,person1_barangay,person2_id,person2_name,person2_barangay,jaccard_score,levenshtein_distance
+"2001-07-15",33700,"Arvee M. Anunciacion","Iboy",170190,"Franz Arvee M. Anunciacion ","Iboy",0.75,7
+"1986-04-21",33705,"John Paul M. Asuncion","Iboy",83817,"John Paul U. asuncion","Iboy",0.60,1
+"2023-12-28",33721,"John Mathew A. Dayap","Iboy",65301,"John Matthew A. Dayap","Iboy",0.60,1
+"2023-12-28",33721,"John Mathew A. Dayap","Iboy",83672,"John Matthew Dayap","Iboy",0.40,4
+"2023-12-28",65301,"John Matthew A. Dayap","Iboy",83672,"John Matthew Dayap","Iboy",0.75,3
+"1982-01-06",33739,"Ceasar C.Dizon","Iboy",83915,"Ceasar C. Dizon","Iboy",0.25,1
+"1975-11-08",33772,"Sally C. Padua","Iboy",83379,"Sally C.Padua","Iboy",0.25,1
+"1974-10-14",33822,"Elpina P. Pichay","Iboy",111575,"Elfina P. Pichay","Iboy",0.50,1
+"1985-02-19",33829,"Meyvelyn P. Pichay","Iboy",68363,"Meivelyn P. Pichay","Iboy",0.50,1
+"1969-06-01",33840,"Joven P. Pisco","Iboy",183877,"Joven P. Pisco Sr.","Iboy",0.75,4
+"1956-04-27",33843,"Petra D.Pisco","Iboy",83520,"Petra D. Pisco","Iboy",0.25,1
+"2023-10-21",33883,"Zyron James P. Tagay","Iboy",170093,"Zyron Jay P. Tagay","Iboy",0.60,3
+"1973-11-15",39086,"Evelyn T. Abugania","Sagsagat",75746,"Evelyn T. Abigania","Sagsagat",0.50,1
+"2000-09-17",39088,"Diether P. Agarpao","Sagsagat",75751,"Diether Agarpao","Sagsagat",0.67,3
+"1973-02-23",39097,"Rosegene P. Cortez","Sagsagat",83924,"Rosegene P. Cortes","Sagsagat",0.50,1
+"1968-03-18",39100,"Evangeline T. Fagel","Sagsagat",75759,"Evangeline Fagel","Sagsagat",0.67,3
+"1961-03-06",39101,"Edwin Q. Fenol","Sagsagat",75775,"Edwin Fenol","Sagsagat",0.67,3
+"1972-04-14",39104,"Lilia D. Fernandez","Sagsagat",75747,"Lilia D, Fernandez","Sagsagat",1.00,1
+"1954-09-05",39108,"Erlinda T. Gampayon","Sagsagat",75773,"Erlinda Gampayon","Sagsagat",0.67,3
+"2016-02-04",39110,"Emmanuel P Lampote","Sagsagat",83378,"Emmanuel Jose P. Lampote","Sagsagat",0.75,6
+"2021-09-28",39111,"Nathalia B Langaman","Sagsagat",83362,"Nathalia B. Langaman","Sagsagat",1.00,1
+"1988-07-19",39115,"Kathleen A. Lumbes","Sagsagat",83369,"Kathleen Kay A. Lumbes","Sagsagat",0.75,4
+"2026-02-03",39131,"Zyra Rose Peralta","Sagsagat",103916,"Zyra Rose R. Peralta","Sagsagat",0.75,3
+"1977-09-14",39132,"Edna P Piga","Sagsagat",75744,"Edna P. Piga","Sagsagat",1.00,1
+"1982-03-25",39152,"Ermelinda E. Tabilang","Sagsagat",75786,"Ernelinda Tabilang","Sagsagat",0.25,4
+"1972-02-28",39153,"Hele G. Tabilang","Sagsagat",75784,"Hele Tabilang","Sagsagat",0.67,3
+"2021-04-06",39157,"Amarie Alijen P. Tabin","Sagsagat",115451,"Amari Aljen P. Tabin","Sagsagat",0.33,2
+"1966-09-13",39158,"Jonathan Fernando T. Tabin","Sagsagat",75785,"Jonathan Fernando Tabin","Sagsagat",0.75,3
+"1961-10-05",39159,"Pablo T. Tabin Jr.","Sagsagat",75787,"Pablo Tabin Jr","Sagsagat",0.75,4
+"1967-08-30",39170,"Perlita T. Tolentino","Sagsagat",75753,"Perlita  T. Tolentino","Sagsagat",1.00,1
+"2026-01-22",39171,"Zian Dior T. Tolentino","Sagsagat",103885,"Zion Dior T. Tolentino","Sagsagat",0.60,1
+"1959-05-31",39178,"Roland Villalobos","Sagsagat",83926,"Roland L. Villalobos","Sagsagat",0.67,3
+"1957-05-10",39179,"Celia A. Villegas","Sagsagat",75742,"Celia  A. Villegas","Sagsagat",1.00,1
+"1961-02-03",39180,"Corazon S. Villegas","Sagsagat",75774,"Corazon Villegas","Sagsagat",0.67,3
+"1975-06-11",39186,"Jeanny A. Villegas","Sagsagat",75763,"Jeanny Villegas","Sagsagat",0.67,3
+"1995-10-07",41419,"TADENA, MA. LUISA P.","Bahet",83040,"TADENA, MA. LUISA PADUA","Bahet",0.60,4
+"2019-05-18",41561,"GETIAYON, PRINCESS ATASHA MAE E.","Bahet",115299,"GETIAYON, PRINCESS ATASHA MAE ESPEJO","Bahet",0.67,5
+"2025-03-15",42128,"PEDRES, MATHEW GAVIN S.","Bungro",78086,"PEDRES, MATEO GAVIN S.","Bungro",0.60,2
+"1999-06-08",64885,"PETIS, JULIUS FRANCIS P.","Bungro",108562,"PETIS, JULIUS FRANCIS PEDRES","Bungro",0.60,5
+"1976-04-21",68914,"PAGADOR, NORMITA RAPIN","Busiing Norte",79277,"PAGADOR,NORMITA RAPIN","Busiing Norte",0.25,1
+"2002-11-09",69736,"Princess Elizabeth T. Cusit","Sagsagat",103854,"Princess T. Cusit","Sagsagat",0.75,10
+"2025-04-06",71549,"Marcille V. Villegas","Sagsagat",83905,"Marcielle V. Villegas","Sagsagat",0.50,1
+"2023-08-22",104751,"Sydney Amira P. Florentino","Iboy",117902,"Sidney Amira P. Florentino","Sagsagat",0.60,1
+"2022-01-23",72230,"Genesis R.Icban","Sagsagat",117901,"Genesis Icban","Sagsagat",0.33,2
+"1938-10-23",75750,"Teodora Villegas","Sagsagat",115414,"Teodora T. Villegas","Sagsagat",0.67,3
+"1986-08-10",75765,"Russel  C. Tacod","Sagsagat",156071,"Russelle C.Tacod","Sagsagat",0.00,3
+"1967-07-30",78080,"PEDRES, MILAGROS PALOS","Bungro",165956,"Pedres, Milagros, Palos","Bungro",1.00,1
+"1955-06-30",79258,"PALAPALA, ARNOLFO PAPAGAYO","Bahet",188553,"PALAPALA, ARNULFO PAPAGAYO","Bahet",0.50,1
+"1956-01-25",79285,"RAMOS, ROSE MARIE TABIL","Busiing Norte",166886,"RAMOS, ROSEMARIE TABIL","Busiing Norte",0.40,1
+"2026-02-07",83586,"Isabelle G. Peralta","Iboy",103914,"Ysabelle C. Peralta","Iboy",0.20,2
+"2006-06-03",83612,"MV Joy L. Anunciacion","Iboy",183919,"Mv Jhoy L. Anunciacion","Iboy",0.60,1
+"1991-09-23",83669,"Denver D. Gallardo","Sagsagat",157748,"Denver R. Gallardo","Sagsagat",0.50,1
+"1998-09-26",83923,"Katelyn N. Bautista","Sagsagat",162583,"Katelyn Rose N. Bautista","Sagsagat",0.75,5
+"1998-07-18",87188,"PIO, ANGELICA BEVERLY CLAIRE DELA CRUZ","Bahet",167105,"PIO, DELA CRUZ ANGELICA BEVERLY CLAIRE","Bahet",1.00,20
+"2000-03-11",105680,"Marinel Del Castillo","Iboy",157692,"Marienel P. Del Castillo","Iboy",0.40,4
+"1988-09-23",105705,"PASUA, AILEEN VISARRA","Bungro",151124,"PASCUA, ARLENE VISARRA","Bungro",0.20,4
+"1978-05-13",167442,"Dela Cruz, Joel Espejo","Sagsagat",168162,"DELA CRUZ, JOEL, ESPEJO","Bahet",1.00,1
+"1974-10-02",115411,"Abraham V. Pagela","Sagsagat",157960,"Abrahan A. Pajela","Sagsagat",0.00,3
+"1961-04-10",115412,"Rogel V. Ridoloso","Sagsagat",170296,"Roger V. Ridoloso","Sagsagat",0.50,1
+"2024-12-08",121830,"MARIÑAS, ELAIJAH MIKKO RAPIN","Bahet",146331,"MARIÑAZ, ELAIJAH MIKKO RAPIN","Bahet",0.60,1
+"2023-01-21",126545,"ESPERIDION, LEAH LANE RAPIN","Bahet",146421,"ESPIRIDION, LEA LAINE RAPIN","Bahet",0.14,3
+"1956-01-23",144194,"PASTOR, AQUILANA TACATA","Busiing Norte",148158,"PASTOR, AQUILINA TACATA","Busiing Norte",0.50,1
+"2002-03-12",157885,"VASQUEZ, JAY BENZON","Busiing Norte",157886,"VASQUEZ, JAKE BENZON","Busiing Norte",0.50,2
+"2000-06-11",148637,"RAGIL, QUEEN JANE CURPOZ","Busiing Norte",209528,"RAGIL, QUENN JHANE CORPUZ","Busiing Norte",0.14,4
+"1964-06-20",152583,"DELA CRUZ, RUBEN,PULIDO","Bahet",171004,"DELA CRUZ, RUBEN PULIDO","Bahet",0.40,1
+"1997-07-25",152680,"PACULAN, DIANE, PERALTA","Bahet",171048,"PACULAN, DIANE PACULAN","Bahet",0.67,6
+"1995-08-03",152706,"QUEMADO, JAI DARWIN, RASCO","Bahet",177513,"QUEMADO, JAI DARWIN RASCO","Bahet",1.00,1
+"1989-02-13",166193,"PAZ, RODEL PULA","Bungro",171531,"PAZ, RONALD PULA","Bungro",0.50,3
+"1996-11-23",166862,"UCLARAY RACHEL MAE RAPIN","Busiing Norte",166863,"UCLARAY, RACHEL MAE RAPIN","Busiing Norte",1.00,1
+"1988-06-26",166957,"RAPIN, MA. EXELSIS JUSAH DELA CRUZ","Bahet",179000,"RAPIN, MA. EXELCIS JUSAH DELA CRUZ","Bahet",0.71,1
+"1974-04-13",167769,"PALCONG, JONALYN, DELA CRUZ","Bahet",168158,"PALCONG, JONALYN DELA CRUZ","Bahet",1.00,1
+"1974-04-13",167769,"PALCONG, JONALYN, DELA CRUZ","Bahet",177534,"PALCONG JHUNALYN DELA CRUZ","Bahet",0.60,4
+"1974-04-13",168158,"PALCONG, JONALYN DELA CRUZ","Bahet",177534,"PALCONG JHUNALYN DELA CRUZ","Bahet",0.60,3
+"2004-09-23",167913,"TESORO, JOHN CARLO, ABLOG","Bahet",167926,"TESORO, JOHN CARLO ABLOG","Bahet",1.00,1
+"2003-09-25",168157,"ESPEJO, MARILYN","Bahet",168186,"ESPEJO, MARILYN PADUA","Bahet",0.67,6
+"1997-12-16",168311,"RAPIN, CHRISTINE JOY, PALAPALA","Bahet",177503,"RAPIN, CRISITINE JOY PALAPALA","Bahet",0.60,3
+"1988-01-17",168681,"ESPEJO, PATRICIO JR. PADUA","Bahet",186824,"ESPEJO, PATRICIO PADUA JR","Bahet",1.00,7
+"2010-03-11",208979,"PALOS, ANGEL RAQUEPO","Busiing Sur",208981,"PALOS, ANGELINE RAQUEPO","Busiing Sur",0.50,3

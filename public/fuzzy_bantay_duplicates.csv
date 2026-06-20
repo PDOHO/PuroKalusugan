@@ -1,0 +1,604 @@
+birthdate,person1_id,person1_name,person1_barangay,person2_id,person2_name,person2_barangay,jaccard_score,levenshtein_distance
+"2008-06-18",80875,"Dela Rosa, Lyka Pico","Paing",182660,"Dela Rosa, Lyra Pico","Paing",0.60,1
+"1997-10-06",2093,"Alcaide, Mike Christian Lopez","Cabusligan",2139,"Alcaide, Mike Kristian Lopez","Cabusligan",0.60,2
+"1962-05-17",31141,"Pablico, James Paz","Barangay 3",154664,"Pablico James Paz","Barangay 3",1.00,1
+"1973-10-12",4308,"Cariño, Marcela Pugal","Ora",124251,"Cari?o, Marcela Pugal","Ora",1.00,1
+"2016-10-30",108006,"Albano, Paul Gian Senica","Taleb",181682,"ALBANO PAUL GIAN SENICA","Taleb",1.00,1
+"2025-08-31",42558,"Pilar, King Asher Pacpaco","Sagpat",130492,"PILAR, ASHER KING PACPACO","Sagpat",1.00,10
+"1999-04-26",4366,"Casta�eda, Abigail Diaz","Ora",124760,"Casta?eda, Abigail Diaz","Ora",1.00,1
+"1973-11-03",180805,"VELASCO, AMANTE MENDOZA","Lingsat",180912,"Velasco Amante Jr. Mendoza","Lingsat",0.75,5
+"1958-11-11",4495,"Palacpac, Martina Cari�o","Ora",124071,"Palacpac, Martina Cari?o","Ora",1.00,1
+"1954-09-10",35926,"Lazo, Victoria Sulit","Buquig",183048,"LAZO VICTORIA SULIT","Buquig",1.00,1
+"1961-04-10",44652,"Pugal, Macario Lopez","Lingsat",181192,"Pugal Macario Lopez","Lingsat",1.00,1
+"1964-11-29",44569,"Tacad, Iluminada Poli","Lingsat",181004,"Tacad Iluminada Poli","Lingsat",1.00,1
+"2007-07-14",4583,"Nu�ez, Jhulia Piano","Ora",124972,"Nu?ez, Jhulia Piano","Ora",1.00,1
+"2020-08-26",4600,"De La Cruz, Dale Justin Cari�o","Ora",123547,"De La Cruz, Dale Justin Cari?o","Ora",1.00,1
+"2001-12-22",154437,"Ortega, Camile Kate Ramos","Lingsat",181074,"Ortega Camile Kate Ramos","Lingsat",1.00,1
+"2023-09-07",5732,"Canonigo, John Renier Barbosa","Naguiddayan",5809,"Canonigo, John Gebrile Barbosa","Naguiddayan",0.60,5
+"1969-10-15",65091,"Ravilas, Evelyn Gandeza","Ora",124194,"Ravilas, Evelyn Gandesa","Ora",0.50,1
+"1996-09-22",62033,"LUBBUI, JENNYLOU TOCETES","Paing",80880,"Lubbui, Jenny Lou Rocetes","Paing",0.17,2
+"2017-08-16",42714,"Ramos, Precious Kiara Calayeg","Sagpat",130368,"RAMOS, PRECIOUS KAIRA CALAYEG","Sagpat",0.60,2
+"1941-05-08",5869,"Gazmen, Dominga Pescador","Capangdanan",5880,"Gasmen, Dominga Pescador","Capangdanan",0.50,1
+"1956-08-07",5956,"Colina, Eleuterio Martil","Paing",6218,"Colina, Eleuterio Marfil","Paing",0.50,1
+"1949-06-12",154341,"Padron, Juana Amistad","Lingsat",181251,"Padron Juana Amistad","Lingsat",1.00,1
+"2023-12-21",107953,"Florentino, Lucas Jay Padre","Taleb",181677,"FLORENTINO LUCAS JAY PADRE","Taleb",1.00,1
+"1982-01-21",154407,"Tenorio, Angelo Rapin","Lingsat",181103,"Tenorio Angelo Rafin","Lingsat",0.50,2
+"2006-08-15",159384,"Rojo, Kissell Arcaina","Naguiddayan",182652,"Rojo, Rissel Arcaina","Paing",0.50,2
+"1981-01-26",108043,"CERNA, JOHN PIANO","Taleb",181761,"CERNA JOHN PIANO","Taleb",1.00,1
+"2009-03-15",180833,"ALONES, ANGEL ROSE TIPON","Lingsat",181200,"Alones Angel Rose Tipon","Lingsat",1.00,1
+"2003-11-08",125993,"PABO EMMANUEL DELAMIREZ","Barangay 1",154045,"PABO, EMMANUEL DELAMINNEZ","Guimod",0.50,3
+"1956-03-23",54854,"Darauay, Dolores Palecpec","Taleb",208416,"DARAUAY DOLORES PALECPEC","Taleb",1.00,1
+"2004-09-10",11665,"Peruna, Madonna Raboy","Cabalanggan",151445,"Peruna Madona Raboy","Cabalanggan",0.50,2
+"1984-03-10",11666,"Dapunan, Meray Dayap","Cabalanggan",11784,"Dapunan, Mercy Dayap","Cabalanggan",0.50,1
+"1984-03-10",11666,"Dapunan, Meray Dayap","Cabalanggan",151433,"Dapunan Mercy Dayap","Cabalanggan",0.50,2
+"1984-03-10",11784,"Dapunan, Mercy Dayap","Cabalanggan",151433,"Dapunan Mercy Dayap","Cabalanggan",1.00,1
+"1956-03-10",11675,"Bisquera, Nestor Boreta","Cabalanggan",151623,"Bisquera Nestor Boreta","Cabalanggan",1.00,1
+"1939-04-10",11677,"Petate, Maria Peria","Cabalanggan",151585,"Petate Maria Peria","Cabalanggan",1.00,1
+"2007-05-22",11678,"Buenavista, Charity Dionne Peruna","Cabalanggan",151414,"Buenavista Charity Dion Peruna","Cabalanggan",0.60,3
+"1972-02-27",11680,"Abuy, Lorna Piano","Cabalanggan",151571,"Abuy Lorna Piano","Cabalanggan",1.00,1
+"1987-02-11",11690,"Carino, Philip Cariaga","Cabalanggan",151482,"Carino Philip Cariaga","Cabalanggan",1.00,1
+"1995-11-01",11714,"Nuñez, Melvin Anicas","Cabalanggan",151557,"Nunez Melvin Anicas","Cabalanggan",0.50,2
+"1970-06-08",11722,"Pescador, Rosita Cariño","Cabalanggan",151448,"Pescador Rosita Carino","Cabalanggan",0.50,2
+"1976-12-12",11728,"Bautista, Irene Tomaneng","Cabalanggan",151499,"Bautista Irene Tomaneng","Cabalanggan",1.00,1
+"1978-10-25",11731,"Buenavista, Rolando Salazar","Cabalanggan",151412,"Buenavista Rolando Salazar","Cabalanggan",1.00,1
+"1978-10-25",11731,"Buenavista, Rolando Salazar","Cabalanggan",151624,"Buenavista Rolanda Salazar","Cabalanggan",0.50,2
+"1978-10-25",151412,"Buenavista Rolando Salazar","Cabalanggan",151624,"Buenavista Rolanda Salazar","Cabalanggan",0.50,1
+"1969-02-24",11737,"Bautista, Victorico Buatista","Cabalanggan",151498,"Bautista Victorico Bautista","Cabalanggan",0.67,3
+"1967-09-20",11738,"Pinto, Feliza Peruna","Cabalanggan",151461,"Pinto  Felisa Peruna","Cabalanggan",0.50,2
+"1962-09-14",11739,"Cariño, Cornelio NuÑez","Cabalanggan",151487,"Carino Cornelio Nunez","Cabalanggan",0.20,3
+"1986-01-31",54838,"Reveche, Redelita Bides","Taleb",181662,"REVECHE REDELITA BIDES","Taleb",1.00,1
+"1986-01-31",154319,"Senica, Nelson Vizarra","Taleb",208447,"SENICA NELSON JR. VIZARRA","Taleb",0.75,5
+"1996-01-01",44643,"Velasco, Maria Teresa Tacazon","Lingsat",181303,"Velasco Maria Teresa Tacazon","Lingsat",1.00,1
+"1979-04-04",180852,"TIPON, RODERICK DOMENDEN","Lingsat",181123,"Tipon Roderick Domenden","Lingsat",1.00,1
+"1961-07-24",11806,"Anicas, Leon Petate","Cabalanggan",151618,"Anicas Leon Petate","Cabalanggan",1.00,1
+"1992-12-04",11816,"Pelayo, Christian Piano","Cabalanggan",151550,"Pelayo Christian Piano","Cabalanggan",1.00,1
+"1993-06-20",11820,"Pisquel, Florence Laurente","Cabalanggan",151473,"Pisquel Florencia Laurente","Cabalanggan",0.50,3
+"2006-11-04",11877,"Peruna, Aileen Sarmiento","Cabalanggan",151459,"Peruna Aileen Sarmiento","Cabalanggan",1.00,1
+"2009-04-15",11828,"Quelnan, Charity Pelayo","Cabalanggan",151545,"Quelnan Charity Pelayo","Cabalanggan",1.00,1
+"1978-05-22",11833,"Peruna, Jayson Busto","Cabalanggan",151441,"Peruna Jayson Busto","Cabalanggan",1.00,1
+"1998-03-14",11838,"Nuñez, Jenny Cuenta","Cabalanggan",151567,"Nunez Jenny Cuenta","Cabalanggan",0.50,2
+"2012-10-23",11839,"Pescador, Angelo Cariño","Cabalanggan",151450,"Pescador Angelo Carino","Cabalanggan",0.50,2
+"1957-12-02",11850,"Cariño, Madeline Cariaga","Cabalanggan",151481,"Carino Madeline Cariaga","Cabalanggan",0.50,2
+"1954-11-25",11853,"Carino, Catalina Nunez","Cabalanggan",151483,"Carino Catalina Nunez","Cabalanggan",1.00,1
+"1960-01-24",11856,"Anicas, Erlinda Tumalip","Cabalanggan",151615,"Anicas Erlinda Tumalip","Cabalanggan",1.00,1
+"1962-09-17",11857,"Petate, Evangelina Pinzon","Cabalanggan",151428,"Petate Evangeline Pinzon","Cabalanggan",0.50,2
+"1965-02-04",11858,"Carino, Leonila Nunez","Cabalanggan",151484,"Carino Leonida Nunez","Cabalanggan",0.50,2
+"1960-04-18",11861,"Divina, Reynaldo Dayto","Cabalanggan",151465,"Divina  Reynaldo Dayto","Cabalanggan",1.00,1
+"2015-05-19",11869,"Tierra, Enrique Carino","Cabalanggan",151793,"Tierra, Enrique","San Mariano",0.67,7
+"2012-04-24",11870,"Quelnan, Charmaine Pelayo","Cabalanggan",151546,"Quelnan Charmain Pelayo","Cabalanggan",0.50,2
+"2018-05-28",11871,"Quelnan, Merry Charise Pelayo","Cabalanggan",151547,"Quelnan Merry Charise Pelayo","Cabalanggan",1.00,1
+"2016-03-04",11878,"Peruna, Rocky James Dapunan","Cabalanggan",151434,"Peruna Rocky James Dapunan","Cabalanggan",1.00,1
+"2019-10-27",11882,"Pardo, John Michael Pescador","Cabalanggan",151453,"Pardo Jhon Michael Pescador","Cabalanggan",0.60,3
+"2013-03-13",11885,"Nunez, Jhon Brenant Padre","Cabalanggan",151560,"Nunez Jhon Brenant Padre","Cabalanggan",1.00,1
+"1977-12-17",11886,"Delag, Delia Tabao","Cabalanggan",151488,"Delag Delia","Cabalanggan",0.67,7
+"1965-04-12",11892,"Arce, Ashley Borgonio","Cabalanggan",151527,"Arce Ashley Burgonid","Cabalanggan",0.50,3
+"1965-04-12",11892,"Arce, Ashley Borgonio","Cabalanggan",151620,"Arce Ashley Burgonio","Cabalanggan",0.50,2
+"1965-04-12",151527,"Arce Ashley Burgonid","Cabalanggan",151620,"Arce Ashley Burgonio","Cabalanggan",0.50,1
+"1956-03-11",11894,"Peruna, Constantino Azada","Cabalanggan",151439,"Peruna Constantino Azado","Cabalanggan",0.50,2
+"1977-05-21",11904,"Nunez, Emely Ponsoy","Cabalanggan",151563,"Nunez Emely Ponsoy","Cabalanggan",1.00,1
+"1977-05-21",11961,"Petate, Edgar Peria","Cabalanggan",151586,"Petate Edgar Peria","Cabalanggan",1.00,1
+"1983-03-16",44636,"Ortega, Ruby Baclig","Lingsat",181275,"Ortega Ruby Baclig","Lingsat",1.00,1
+"2002-10-06",44525,"Paet, Bryan James Alvaro","Lingsat",180945,"Paet Bryan James Alvaro","Lingsat",1.00,1
+"2025-09-13",82215,"Esmeralda, Cedrick Dwayne Arciento","Buquig",183090,"ESMERALDA ADRIAN  DWAYNE ARCIENTO","Buquig",0.60,6
+"1958-08-01",11998,"Anicas, Alfonso Petate","Cabalanggan",151613,"Anicas Alfonso Petate","Cabalanggan",1.00,1
+"1998-04-20",31020,"Pascua, Princess Villanueva","Barangay 3",154700,"Pascua Princess Villanueva","Barangay 3",1.00,1
+"1995-05-10",31023,"Paat, Redan Ablog","Barangay 3",154649,"Paat Redan Ablog","Barangay 3",1.00,1
+"1988-08-25",31027,"Arellano, Haide Noval","Barangay 3",125739,"ARELLANO HAIDE  NOVAL","Barangay 1",1.00,2
+"1977-12-14",31030,"Pablico, Charmine Pacpaco","Barangay 3",154661,"Pablico Charmine Pacpaco","Barangay 3",1.00,1
+"1969-02-01",31038,"Feliciano, Edward Paz","Barangay 3",31121,"Feliciano, Eduard Paz","Barangay 3",0.50,1
+"1949-03-11",31044,"Pilar, Constantino Sofronio Paz","Barangay 3",154743,"Pilar Sofronio Paz","Barangay 3",0.75,13
+"1986-08-14",31075,"Amer, Mariam Dimala","Barangay 3",108516,"AMER MARIAM DIMALA","Barangay 3",1.00,1
+"2019-08-22",80709,"Basallo, Michael Ismael Nillusguin","Paing",152969,"Basallo, Michael Ismael Nilusguin","Paing",0.60,1
+"1953-01-16",44521,"Padron, Renato Paet","Lingsat",181113,"Padron Renato Paet","Lingsat",1.00,1
+"1998-10-07",31134,"Abdulcader, Jasmin Datukunog","Barangay 3",108513,"ABDULCADER JASMIN DATUKUNUG","Barangay 3",0.50,2
+"1993-05-03",36056,"Mercurio, Mylene Boccat","Buquig",183250,"MERCURIO MYLENE BOCCAT","Buquig",1.00,1
+"1946-12-18",31138,"Palma, Esperanza Gorospe","Barangay 3",154683,"Palma Esperanza Gorospe","Barangay 3",1.00,1
+"1963-09-11",31143,"Fama, Mary Lou Divina Almazan","Barangay 3",154553,"Fama Marylou Divina Almazan","Barangay 3",0.50,2
+"1959-02-27",31147,"Almazan, Maria Victoria Obrero","Barangay 3",130817,"Almazan Victoria Obrero","Barangay 3",0.75,7
+"1959-02-27",44564,"Petallo, Juana Domenden","Lingsat",181097,"Petallo Juana Domenden","Lingsat",1.00,1
+"1956-08-02",31150,"Pilaspilas, Eumelia Mata","Barangay 3",154745,"Pilasilas Eumelia Mata","Barangay 3",0.50,2
+"1968-03-17",31153,"Paz, Marilou Peredo","Barangay 3",154710,"Paz Marilou Peredo","Barangay 3",1.00,1
+"1972-02-26",31157,"Suboc, Dante Sapla","Barangay 3",154768,"Suboc Dante Sapla","Barangay 3",1.00,1
+"1957-07-26",31159,"Paz, Elmer Mangaliman","Barangay 3",154712,"Paz Elmer Mangaliman","Barangay 3",1.00,1
+"2006-07-15",108983,"Nu?z, Julia Piano","Ora",124946,"Nunez, Julia Piano","Ora",0.50,2
+"1972-01-06",31184,"Albano, Shirley Herrera","Barangay 3",130806,"Albano Shirley Herrera","Barangay 3",1.00,1
+"2004-02-20",31191,"Dahang, Jennifer Perez","Barangay 3",154505,"Dahang Jennifer  Perez","Barangay 3",1.00,2
+"1991-04-18",31192,"Dimala, Hakim Monterola","Barangay 3",108541,"DIMALA HAKIM MONTEROLA","Barangay 3",1.00,1
+"1959-04-20",31231,"Pascua, Gloria Almazan","Barangay 3",154699,"Pascua Gloria Almazan","Barangay 3",1.00,1
+"2006-04-14",31235,"Pascua, Jomari Pilotin","Barangay 3",154697,"Pascua Jomari Pilotin","Barangay 3",1.00,1
+"1977-05-18",31240,"Pascua, Kenneth Parra","Barangay 3",154691,"Pascua Kenneth Parra","Barangay 3",1.00,1
+"1960-03-21",35864,"Espejo, Filomena Castañeda","Buquig",107740,"Espejo, Filomena Castaneda","Buquig",0.50,1
+"1956-12-31",35873,"Pardo, Ernesto Regunton","Buquig",122318,"PARDO, ERNESTO SR. REGUNTON","Capangdanan",0.75,4
+"1968-04-01",35874,"Del Castillo, Jacyryn Garcia","Buquig",183265,"DEL CASTILLO JACYRYN GARCIA","Buquig",1.00,1
+"2014-06-23",35875,"Del Castillo, Eugenia Joy Garcia","Buquig",183267,"DEL CASTILLO EUGENIA JOY GARCIA","Buquig",1.00,1
+"1959-03-15",35887,"Palpal, Lucresia Caridad Mercurio","Buquig",107703,"Palpal, Lucresia Mercurio","Buquig",0.75,8
+"1959-03-15",35887,"Palpal, Lucresia Caridad Mercurio","Buquig",183246,"PALPAL LUCRESIA MERCURIO","Buquig",0.75,9
+"1959-03-15",107703,"Palpal, Lucresia Mercurio","Buquig",183246,"PALPAL LUCRESIA MERCURIO","Buquig",1.00,1
+"2016-03-27",35890,"Vidad, Jexel Matthew Mercurio","Buquig",183251,"VIDAD JEXEL  MATHEW MERCURIO","Buquig",0.60,3
+"1967-06-13",35891,"Mercurio, Antonio June Ragon","Buquig",183253,"MERCURIO ANTONIO JUNE","Buquig",0.75,7
+"1984-12-24",35894,"Lazo, Andri Magdaleno Sulit","Buquig",183049,"LAZO ANDRI MAGDALENO SULIT","Buquig",1.00,1
+"2020-08-12",35902,"Battad, Elliana Brienne Labata","Buquig",183070,"BATTAD ELLIANA BRIENNE LABATA","Buquig",1.00,1
+"1989-09-29",35905,"Rabaca, Jayzen Atendido","Buquig",183156,"RABACA JAYZEN ATENDIDO","Buquig",1.00,1
+"2008-11-02",35907,"De Vera, Christopher Relos","Buquig",182980,"DE VERA CHRISTOPHER RELOS","Buquig",1.00,1
+"1981-01-23",35909,"Baay, Evangeline Piano","Buquig",183120,"BAAY EVANGELINE PIANO","Buquig",1.00,1
+"1958-11-28",35910,"Pilon, Fernando Fulgucino","Buquig",183198,"PILON FERNANDO FULGUCINO","Buquig",1.00,1
+"1995-10-17",35912,"Corpuz, An Rochelle Villarin","Buquig",183097,"CORPUZ AN ROCHELLE VILLARIN","Buquig",1.00,1
+"1963-07-29",107732,"Campo, Edgar Ramirez","Buquig",183079,"CAMPO EDGAR RAMIREZ","Buquig",1.00,1
+"2019-09-16",35917,"Poca, Jonika Jenice Artates","Buquig",132885,"Poca, Jonika Janice Artates","Buquig",0.60,1
+"1975-08-25",35920,"Grantoza, Modesto Casabar","Buquig",183177,"GRANTOZA MODESTO CASABAR","Buquig",1.00,1
+"1999-05-02",35923,"Corpuz, Regine Palpal","Buquig",183099,"CORPUZ REGINE PALPAL","Buquig",1.00,1
+"1951-07-30",35931,"Lazo, Salvador Parel","Buquig",183047,"LAZO SALVADOR PAREL","Buquig",1.00,1
+"2021-05-01",35942,"Corpuz, Reine Beatrix Palpal","Buquig",183100,"CORPUZ REINE BEATRIX PALPAL","Buquig",1.00,1
+"1973-04-28",35943,"Labata, Flordeliza De Peralta","Buquig",183066,"LABATA FLORDELIZA DE PERALTA","Buquig",1.00,1
+"2021-07-24",35944,"Pacleb, Nicola James Castaneda","Buquig",183306,"PACLEB NICOLA JAMES CASTAÑEDA","Buquig",0.60,2
+"1971-10-05",35946,"Grantoza, Susan Drio","Buquig",183169,"GRANTOZA SUSAN DRIO","Buquig",1.00,1
+"2016-09-18",35947,"Pablico, Adriana Krisha Comilang","Buquig",132843,"Pablico, Adrianna Krisha Comilang","Buquig",0.60,1
+"2001-04-10",35948,"Perilla, Miguel Angelo Sagipel","Buquig",183180,"PERILLA MIGUEL ANGELO SAGIPEL","Buquig",1.00,1
+"2003-03-11",35949,"Baay, Erice Justine Piano","Buquig",183121,"BAAY ERICK JUSTINE PIANO","Buquig",0.60,2
+"1988-12-29",35955,"Paculan, Joan De Vera","Buquig",107738,"De Vera, Joan Paculan","Buquig",1.00,14
+"2016-04-23",35956,"Raguini, Richard Julian Ilustre","Buquig",132832,"Raguini, Richard Julian","Buquig",0.75,8
+"1966-08-03",35959,"Lumibao, Milagros Bueno","Buquig",183230,"LUMIBAO MILAGROS BUENO","Buquig",1.00,1
+"2021-06-26",35960,"Lopez, Mark Justine Arconado","Capangdanan",183342,"LOPEZ MARK JUSTINE ARCONADO","Buquig",1.00,1
+"2005-09-12",35962,"Ragon, Rhain Heart Villastiqui","Buquig",183311,"RAGON RHAIN HEART VILLASTIQUI","Buquig",1.00,1
+"1964-06-13",35966,"Lopez, Mary Ann Segismundo","Buquig",183337,"LOPEZ MARY ANN SEGISMUNDO","Buquig",1.00,1
+"1996-12-01",35974,"Mercurio, Bryan John Boccat","Buquig",183255,"MERCURIO BRYAN JOHN BOCCAT","Buquig",1.00,1
+"2002-06-14",35976,"De Peralta, Jimmy Boy Prades","Buquig",183286,"DE PERALTA JIMMY BOY PRADES","Buquig",1.00,1
+"1965-10-03",35977,"Mercurio, Rosarita Regpala","Buquig",107696,"Mercurio, Rosita Regpala","Buquig",0.50,2
+"1965-10-03",35977,"Mercurio, Rosarita Regpala","Buquig",183239,"MERCURIO ROSITA REGPALA","Buquig",0.50,3
+"1965-10-03",107696,"Mercurio, Rosita Regpala","Buquig",183239,"MERCURIO ROSITA REGPALA","Buquig",1.00,1
+"2004-09-30",35980,"Ragon, Angel Vanice Bulda","Buquig",183319,"RAGON ANGEL VENICE BULDA","Buquig",0.60,2
+"2016-09-01",35983,"De Peralta, Lovely Cacaninding","Buquig",183281,"DE PERALTA LOVELY CACANINDING","Buquig",1.00,1
+"1962-01-16",35984,"Pardo, Josephine Vista","Buquig",122319,"PARDO, JOSEPHINE VISTE","Capangdanan",0.50,1
+"1992-11-21",35988,"Pablico, John Villamar","Buquig",182806,"Pablico, John Viillamar","Paing",0.50,1
+"2021-03-14",35999,"Mercurio, John Cedrick N/a","Buquig",107702,"Mercurio John Cedrick N/A","Buquig",1.00,1
+"2021-03-14",35999,"Mercurio, John Cedrick N/a","Buquig",183245,"MERCURIO JOHN CEDRICK NONE","Buquig",0.60,4
+"2021-03-14",107702,"Mercurio John Cedrick N/A","Buquig",183245,"MERCURIO JOHN CEDRICK NONE","Buquig",0.60,3
+"2015-11-22",36000,"Drio, Michael John Miraballes","Buquig",183176,"DRIO MICHAEL JOHN JR. MIRABALLES","Buquig",0.80,5
+"2008-07-13",36001,"De Peralta, Rain Heart Jandoc","Buquig",107704,"De Peralta, Rain Heart Jadoc","Buquig",0.67,1
+"2008-07-13",36001,"De Peralta, Rain Heart Jandoc","Buquig",183247,"DE PERALTA RAIN HEART JADOC","Buquig",0.67,2
+"2008-07-13",107704,"De Peralta, Rain Heart Jadoc","Buquig",183247,"DE PERALTA RAIN HEART JADOC","Buquig",1.00,1
+"1997-06-19",36003,"Miraballes, Marilyn N/a","Buquig",183175,"MIRABALLES MARILYN","Buquig",0.67,5
+"1976-12-24",36004,"Ragon, Norma Licuben","Buquig",183308,"RAGON NORMA LICUBEN","Buquig",1.00,1
+"2018-12-11",36005,"Battad, Ethan Blake Labata","Buquig",183069,"BATTAD ETHAN BLAKE LABATA","Buquig",1.00,1
+"2019-10-24",36012,"Sabado, Jamaica Faith Ragon","Buquig",183206,"SABADO JAMAICA FAITH RAGON","Buquig",1.00,1
+"1960-12-23",36018,"Ragon, Radito Pardo","Buquig",183207,"RAGON RADITO PARDO","Buquig",1.00,1
+"1954-09-04",36019,"Bautista, Hilario Riotoc","Buquig",107727,"Bautista, Hilario Ragon","Buquig",0.50,4
+"1972-11-18",36020,"Casuga, Gemma Mendez","Buquig",183092,"CASUGA GEMMA  MENDEZ","Buquig",1.00,2
+"2011-11-14",36024,"Pajarillo, Phrygie Xyian N/a","Buquig",107688,"Pajarillo, PHRYGIE XYIAN","Buquig",0.75,4
+"2012-10-27",36031,"De Peralta, Wally Jay Prades","Buquig",183288,"DE PERALTA WALLY JAY PRADES","Buquig",1.00,1
+"2000-12-13",36032,"Ragon, Benedict Harry Mamaril","Buquig",183215,"RAGON BENEDICT HARRY MAMARIL","Buquig",1.00,1
+"2015-10-26",36034,"Casabar, John Rae Marinas","Buquig",132862,"Casabar, John Rei Marinas","Buquig",0.60,2
+"1988-05-22",36035,"Rabaca, Jay Lord Atendido","Buquig",183150,"RABACA JAY LORD ATENDIDO","Buquig",1.00,1
+"1987-11-25",36036,"Rabaca, Jean Rose Rondero","Buquig",183151,"RABACA JEAN ROSE RONDERO","Buquig",1.00,1
+"1990-12-29",36038,"Poca, Mary Jane Adame","Buquig",182986,"POCA MARY  JANE ADAME","Buquig",1.00,2
+"2014-08-16",36040,"Poca, Jonna Mae Quimlao","Buquig",132864,"Poca, Joanna Mae Quimlao","Buquig",0.60,1
+"2010-01-08",36045,"Poca, Jinky Mae Quimlao","Buquig",132863,"Poca, Jinky Quimlao","Buquig",0.75,4
+"1961-08-24",36050,"Del Castillo, Jaime Alabaso","Buquig",107736,"Del Castiilo, Jaime Alabaso","Buquig",0.60,1
+"1961-08-24",36050,"Del Castillo, Jaime Alabaso","Buquig",183264,"DEL CASTILLO JAIME ALABASO","Buquig",1.00,1
+"1961-08-24",107736,"Del Castiilo, Jaime Alabaso","Buquig",183264,"DEL CASTILLO JAIME ALABASO","Buquig",0.60,2
+"2019-02-17",36054,"Vidad, Jexene Mylee Mercurio","Buquig",183252,"VIDAD JEXENE MYLEE MERCURIO","Buquig",1.00,1
+"1990-07-31",107701,"Mercurio, juliet Regpala","Buquig",183244,"MERCURIO JULIET REGPALA","Buquig",1.00,1
+"1965-09-28",36062,"Rabaca, Jaime Redoloso","Buquig",183154,"RABACA JAIME REDOLOSO","Buquig",1.00,1
+"2022-03-27",42548,"Tabangcura, Elmira Anne Quitero","Sagpat",178749,"TABANGCURA, ELMIRA ANNE QUINTERO","Sagpat",0.60,1
+"2000-10-02",42554,"Villegas, Judy Anne Asuncion","Sagpat",130554,"VILLEGAS, JUDY ANN ASUNCION","Sagpat",0.60,1
+"2014-09-04",208363,"ZENICA PRINCESS DHAILE PALECPEC","Taleb",208364,"ZENICA PRINCE DARREN PALECPEC","Taleb",0.33,6
+"2014-09-04",208363,"ZENICA PRINCESS DHAILE PALECPEC","Taleb",208365,"ZENICA PRINCE DAVE PALECPEC","Taleb",0.33,5
+"2014-09-04",208364,"ZENICA PRINCE DARREN PALECPEC","Taleb",208365,"ZENICA PRINCE DAVE PALECPEC","Taleb",0.60,3
+"1961-02-11",42595,"Periñon, Lourdes Pescador","Sagpat",75351,"Peri�on, Lourdes Pescador","Sagpat",1.00,1
+"1983-10-15",42605,"Pablico, Marilou Pacpaco","Sagpat",154880,"PACPACO, MARILOU PABLICO","Sagpat",1.00,6
+"1994-08-05",42614,"Pico, Ernesto Roque","Sagpat",130506,"PICO, ERNESTO JR. ROQUE","Sagpat",0.75,4
+"1957-11-30",42616,"Pablico, Carlina Errocling","Sagpat",130517,"PABLICO, CARLINA EMOCLING","Sagpat",0.50,2
+"1995-08-12",178510,"Villareal Carlos John Robles","Barangay 3",178511,"Villareal Carlos Joseph Robles","Barangay 3",0.60,4
+"2015-10-13",42622,"Villegas, Prince Nathaniel N/a","Sagpat",130574,"VILLEGAS, PRINCE NATHANIEL","Sagpat",0.75,4
+"2015-10-13",44705,"Paino, Samantha Parto","Lingsat",181061,"Paino Samantha Parto","Lingsat",1.00,1
+"1966-07-25",42633,"Pilot, Claribeth Barga","Sagpat",178977,"PILOT, CLARIBETH BARGAS","Sagpat",0.50,1
+"1956-01-05",42634,"Quintero, Telesforo Simon","Sagpat",178714,"QUINTERO, TELESPORO SIMON","Sagpat",0.50,1
+"2008-10-11",44516,"Talania, Emerald Domenden","Lingsat",181002,"Talania Emerald Domenden","Lingsat",1.00,1
+"1988-12-08",42684,"Ocmer, Lito Quinto","Sagpat",154979,"OCMER, LITO JR. QUINTO","Sagpat",0.75,4
+"2024-06-14",42688,"Villegas, Malearhyne Ostiano","Sagpat",130533,"VILLEGAS, MALEARHYNE OSTIABO","Sagpat",0.50,1
+"1960-09-29",42690,"Angala, Juan Pacpaco","Sagpat",154888,"ANGALA, JUAN JR. PACPACO","Sagpat",0.75,4
+"2016-01-06",180797,"TENORIO, MARK VINCENT CARIAGA","Lingsat",181107,"Tenorio Mark Vincent Cariaga","Lingsat",1.00,1
+"1963-01-01",42724,"Pescador, Eugenio Ruiz","Sagpat",130382,"PESCADOR, EUGENIO II RUIZ","Sagpat",0.75,3
+"1977-03-14",44747,"Ablog, Alma Mendoza","Lingsat",181084,"Ablog Alma Mendoza","Lingsat",1.00,1
+"2006-01-24",43360,"Concepcion, Neo Dj Pido","Guimod",129077,"CONCEPTION, NEO D-JAY PIDO","Guimod",0.33,4
+"1963-03-03",43385,"Pajarillo, Dominga Perilla","Guimod",43505,"Pajarillo, Elvira Perilla","Guimod",0.50,5
+"2014-10-30",178527,"Villegas Daniel Audrey Palacay","Barangay 3",178528,"Villegas Gabriel Aubrey Palacay","Barangay 3",0.33,4
+"1969-01-26",43438,"Palapala, Dennis Robin","Guimod",178657,"PALAPALA, DENNIS SR. ROBIN","Guimod",0.75,4
+"1993-10-17",43452,"Perilla, Gerald Consolta","Guimod",178591,"PERILLA, GERALD CONSULTA","Guimod",0.50,1
+"2003-12-10",43467,"Garcia, Althea N/a","Guimod",178278,"GARCIA, ALTHEA","Guimod",0.67,4
+"1978-12-05",44670,"Tapiceria, Lilia Magsanay","Lingsat",181109,"Tapiceria Lilia Magsanay","Lingsat",1.00,1
+"1963-12-28",44644,"Pugal, Josefina Yago","Lingsat",181193,"Pugal Josefina Yago","Lingsat",1.00,1
+"1968-03-23",43546,"Palapala, Victoria R","Guimod",153340,"Palapala, Victoria Rapin","Guimod",0.50,4
+"2016-10-16",43551,"Perilla, Dimple Joyce Consulta","Guimod",178593,"PERILLA, SIMPLE JOICE CONSULTA","Guimod",0.33,2
+"1964-04-10",44722,"Tacad, Edwin Padron","Lingsat",181003,"Tacad Edwin Padron","Lingsat",1.00,1
+"1985-10-20",43581,"Palapala, Jona Darmigan","Guimod",153348,"Palapala, Jona Darmisan","Guimod",0.50,1
+"1997-01-20",43591,"Lopez, Edna Tumalip","Guimod",75309,"Lopez, Edna Tomalip","Guimod",0.50,1
+"1983-01-19",43598,"Pacpaco, Marlon Rapin","Guimod",128957,"PACPACO, MARLON RAFIN","Guimod",0.50,1
+"1976-07-26",43933,"Patubo, Ma Lourdes Prades","Naguiddayan",159255,"Patubo, Ma. Lourdes Prades","Naguiddayan",1.00,1
+"1993-02-09",44073,"Garcia, Robert Aguinsod","Capangdanan",158977,"GARCIA, ROBERT JR. AGUINSOD","Capangdanan",0.75,4
+"1979-06-19",44510,"Padron, Romualdo Amistad","Lingsat",181245,"Padron Romualdo Amistad","Lingsat",1.00,1
+"1956-08-29",44511,"Puerto, Rogelio Paet","Lingsat",180975,"Puerto Rogelio Paet","Lingsat",1.00,1
+"1958-04-10",44512,"Rafin, Apolonio Jose Padron","Lingsat",181162,"Rapin Apolonio Jose Padron","Lingsat",0.60,2
+"1979-12-11",44514,"Herrera, Ronald Domenden","Lingsat",180926,"Herrera Ronald Domenden","Lingsat",1.00,1
+"1965-03-01",44515,"Baclig, Marcelina Padron","Lingsat",180931,"Baclig Marcelina Padron","Lingsat",1.00,1
+"2009-09-10",44519,"Tadique, Angela Yvanne Tabula","Lingsat",44770,"Tadique, Angela Yuonne Tabula","Lingsat",0.60,2
+"2007-12-17",44522,"Domenden, Rochelle Argallon","Lingsat",181183,"Domenden Rochelle Argallon","Lingsat",1.00,1
+"1981-04-23",44528,"Velasco, Rizalyn Mendoza","Lingsat",180913,"Velasco Rizalyn Mendoza","Lingsat",1.00,1
+"1969-06-27",44530,"Ramolete, Cresente Ramirez","Lingsat",180890,"Ramolete Cresente Ramirez","Lingsat",1.00,1
+"1961-12-07",44532,"Domenden, Teresita Decano","Lingsat",181024,"Domenden Teresita Decano","Lingsat",1.00,1
+"1954-01-09",44533,"Domenden, Jesus Tipon","Lingsat",181023,"Domenden Jesus Tipon","Lingsat",1.00,1
+"1956-11-01",44534,"Ballera, Santos Aicaide","Lingsat",181092,"Ballera Santos Alcaide","Lingsat",0.50,2
+"1964-05-21",44539,"Rapin, Angeline Tayaba","Lingsat",180783,"RAFIN, ANGELINE TAYABA","Lingsat",0.50,1
+"1964-05-21",44539,"Rapin, Angeline Tayaba","Lingsat",181163,"Rapin Angeline Tayaba","Lingsat",1.00,1
+"1964-05-21",180783,"RAFIN, ANGELINE TAYABA","Lingsat",181163,"Rapin Angeline Tayaba","Lingsat",0.50,2
+"1954-03-18",44540,"Pugal, Remedios Cuizon","Lingsat",181186,"Pugal Remedios Cuizon","Lingsat",1.00,1
+"1955-04-01",44543,"Domenden, Felicidad Pugal","Lingsat",180950,"Domenden Felicidad Pugal","Lingsat",1.00,1
+"1946-06-07",44544,"Lopez, Rufina Domenden","Lingsat",180986,"Lopez Rufina Domenden","Lingsat",1.00,1
+"2008-09-12",44545,"Padron, Reynalyn Anipot","Lingsat",180888,"Padron Reynalyn Anipot","Lingsat",1.00,1
+"1988-05-27",44547,"Alones, Marivic Tipon","Lingsat",181199,"Alones Marivic Tipon","Lingsat",1.00,1
+"2008-11-22",44548,"Pugal, Jenny Cabradilla","Lingsat",181210,"Pugal Jenny Cabradilla","Lingsat",1.00,1
+"2007-11-10",44550,"Padron, Rhanie Pio","Lingsat",181248,"Padron Rhanie Pio","Lingsat",1.00,1
+"2006-09-08",44552,"Mariano, Lizel Joy Padron","Lingsat",181155,"Mariano Lizel Joy Padron","Lingsat",1.00,1
+"1989-05-14",61269,"BARCELLANO, GIZZLE PALO","Paing",182879,"Barcellano, Gizzle Paco","Paing",0.50,1
+"1979-10-01",44554,"Rafin, Rogin Marzan","Lingsat",180991,"Rafin Rogin Marzan","Lingsat",1.00,1
+"1958-12-10",44555,"Paa, Eulalia Velasco","Lingsat",180958,"Paa Eulalia Velasco","Lingsat",1.00,1
+"2022-10-17",44562,"Bilag, Tristan Deo Ramolete","Lingsat",180896,"Bilag Tristan Deo Ramolete","Lingsat",1.00,1
+"1973-09-17",44567,"Ramolete, Editha Padron","Lingsat",180891,"Ramolete Editha Padron","Lingsat",1.00,1
+"1986-10-06",44571,"Velasco, Rodel Saniatan","Lingsat",181298,"Velasco Rodel Saniatan","Lingsat",1.00,1
+"1955-11-15",44572,"Paet, Erlinda Domenden","Lingsat",180982,"Paet Erlinda Domenden","Lingsat",1.00,1
+"1955-01-02",44574,"Ramos, Marcela Tipon","Lingsat",181064,"Ramos Marcela Tipon","Lingsat",1.00,1
+"1994-10-23",44575,"Bilag, Jonard Asuncion","Lingsat",180893,"Bilag Jonard Asuncion","Lingsat",1.00,1
+"1971-07-30",44582,"Velasco, Edwin Mendoza","Lingsat",180920,"Velasco Edwin Mendoza","Lingsat",1.00,1
+"1967-08-20",44585,"Velasco, Vilma Dela Cruz","Lingsat",180921,"Velasco Vilma Dela Cruz","Lingsat",1.00,1
+"1981-09-26",44589,"Paa, Maricel Nunez","Lingsat",180960,"Paa Maricel Nunez","Lingsat",1.00,1
+"1961-05-03",44593,"Rapin, Maura Tique","Lingsat",154320,"Rapin, Maura Tiqui","Lingsat",0.50,1
+"1961-05-03",44593,"Rapin, Maura Tique","Lingsat",154424,"Rafin, Maura Tique","Lingsat",0.50,1
+"1961-05-03",44593,"Rapin, Maura Tique","Lingsat",180993,"Rafin Maura Tique","Lingsat",0.50,2
+"1961-05-03",154320,"Rapin, Maura Tiqui","Lingsat",154424,"Rafin, Maura Tique","Lingsat",0.20,2
+"1961-05-03",154320,"Rapin, Maura Tiqui","Lingsat",180993,"Rafin Maura Tique","Lingsat",0.20,3
+"1961-05-03",154424,"Rafin, Maura Tique","Lingsat",180993,"Rafin Maura Tique","Lingsat",1.00,1
+"1960-04-07",44596,"Faypon, Ligaya Puerto","Lingsat",180977,"Faypon Ligaya Puerto","Lingsat",1.00,1
+"2002-06-10",44598,"Acelador, Norleah Padron","Lingsat",181135,"Acelador Norleah Padron","Lingsat",1.00,1
+"1980-12-11",44599,"Mariano, Edeliza Padron","Lingsat",181154,"Mariano Edeliza Padron","Lingsat",1.00,1
+"1982-08-17",44605,"Rapin, Richard Marzan","Lingsat",180990,"Rapin Richard Marzan","Lingsat",1.00,1
+"1959-12-21",44606,"Faypon, Moses Tadena","Lingsat",180976,"Faypon Moses Tadena","Lingsat",1.00,1
+"1979-10-21",44607,"Que, Mary Ann Velasco","Lingsat",180918,"Que Mary Ann Velasco","Lingsat",1.00,1
+"2017-02-25",44609,"Padron, Alexander Carpio","Lingsat",44610,"Padron, Alexander I Carpio","Lingsat",0.75,2
+"1977-10-12",44625,"Velasco, Jonathan Tipon","Lingsat",181312,"Velasco Jonathan Tipon","Lingsat",1.00,1
+"1962-05-10",44627,"Velasco, Adelma Saniata","Lingsat",181310,"Velasco Adelma Saniatan","Lingsat",0.50,2
+"1968-08-02",44634,"Lopez, Wilma Sulla","Lingsat",181010,"Lopez Wilma Sulla","Lingsat",1.00,1
+"2009-02-22",44635,"Villarin, John Dave Padron","Lingsat",181214,"Villarin John Dave Padron","Lingsat",1.00,1
+"1980-07-13",44637,"Ortega, Redento Macatuggal","Lingsat",181274,"Ortega Redento Macatuggal","Lingsat",1.00,1
+"2009-07-21",44640,"Dumenden, Luke Cedric Madriaga","Lingsat",181228,"Dumenden Luke Cedric Madriaga","Lingsat",1.00,1
+"2015-07-12",44659,"Domenden, Reynan Argallon","Lingsat",181185,"Domenden Reynan Argallon","Lingsat",1.00,1
+"1960-06-10",44661,"Tenorio, Martina Rapin","Lingsat",181101,"Tenorio Martina Rafin","Lingsat",0.50,2
+"2020-07-20",44662,"Ortega, Radliegh Baclig","Lingsat",181278,"Ortega Radliegh Baclig","Lingsat",1.00,1
+"1948-06-09",44664,"Pugal, Mercedes Tacad","Lingsat",180968,"Pugal Mercedes Tacad","Lingsat",1.00,1
+"1984-12-04",44665,"Tenorio, Rona Cariaga","Lingsat",181104,"Tenorio Rona Cariaga","Lingsat",1.00,1
+"2001-07-15",44667,"Petallo, Tricia Domenden","Capangdanan",181098,"Petallo Tricia Domenden","Lingsat",1.00,1
+"2021-09-29",44668,"Agsalog, Keisha Xyrille Tacad","Lingsat",181008,"Agsalog Keisha Xyrille Tacad","Lingsat",1.00,1
+"1966-12-13",44669,"Tipon, Victor Domenden","Lingsat",181202,"Tipon Victor Domenden","Lingsat",1.00,1
+"1965-09-27",44673,"Tipon, Susie Pugal","Lingsat",181203,"Tipon Susie Pugal","Lingsat",1.00,1
+"2007-05-01",44675,"Padron, Mark Jayniel Gamit","Lingsat",181219,"Padron Mark Jayniel Gamit","Lingsat",1.00,1
+"2017-12-01",44682,"Villarin, Arianne Padron","Lingsat",181215,"Villarin Arianne Padron","Lingsat",1.00,1
+"1980-01-30",44692,"Tapiceria, Albert Tenorio","Lingsat",181108,"Tapiceria Albert Tenorio","Lingsat",1.00,1
+"1987-05-18",44694,"Padron, Jessie Mariano","Lingsat",180875,"Padron Jessie Mariano","Lingsat",1.00,1
+"1993-05-25",44701,"Luangco, Janice Rapin","Lingsat",181166,"Luangco Janice Rafin","Lingsat",0.50,2
+"1991-03-15",44702,"Paino, Rachelle Parto","Lingsat",181060,"Paino Rachelle Parto","Lingsat",1.00,1
+"2013-12-22",44706,"Herrera, Geraldine Respicio","Lingsat",180928,"Herrera Geraldine Respicio","Lingsat",1.00,1
+"1991-05-29",44708,"Paet, Peter Macaraeg","Lingsat",180940,"Paet Peter Macaraig","Lingsat",0.50,2
+"1968-03-02",80844,"Bolaños, Jerry Mariñas","Paing",182895,"Bolanos Jerry Marinas","Paing",0.20,3
+"1968-03-02",80844,"Bolaños, Jerry Mariñas","Paing",182897,"Bolaños Jerry Mariñas","Paing",1.00,1
+"1968-03-02",182895,"Bolanos Jerry Marinas","Paing",182897,"Bolaños Jerry Mariñas","Paing",0.20,2
+"2005-09-11",44719,"Tapiceria, Laarny Padron","Lingsat",181244,"Tapiceria Laarnie Padron","Lingsat",0.50,3
+"1980-08-17",44720,"Tapiceria, Larry Saucelo","Lingsat",181241,"Tapiceria Larry Saucelo","Lingsat",1.00,1
+"1966-06-08",44726,"Rafin, Eduardo Tenorio","Lingsat",181088,"Rafin Eduardo Tenorio","Lingsat",1.00,1
+"1981-05-03",44731,"Villarin, Baby Ela Padron","Lingsat",181212,"Villarin Baby Ela Padron","Lingsat",1.00,1
+"2012-11-07",44742,"Velasco, Jesalyn Mendoza","Lingsat",180916,"Velasco Jesalyn Mendoza","Lingsat",1.00,1
+"1957-03-12",44749,"Palad, Josephine Pigao","Lingsat",154380,"Palad, Josefino Pigao","Lingsat",0.50,3
+"1994-05-03",44765,"Sanidad, Flory May Jacob","Lingsat",180910,"Sanidad Flory May Jacob","Lingsat",1.00,1
+"2001-05-17",180810,"VELASCO, EUGENE CRUZ","Lingsat",180924,"Velasco Eugene Dela Cruz","Lingsat",0.75,6
+"2002-11-12",44774,"Padron, Kathleen Degracia","Lingsat",181159,"Padron Kathleen Degracia","Lingsat",1.00,1
+"2015-10-10",44775,"Rafin, Mary Angel Faith Mariano","Lingsat",125575,"RAFIN ANGEL FAITH MARIANO","Barangay 1",0.80,6
+"1975-05-09",44776,"Marzan, Milagros Padron","Lingsat",181265,"Marzan Milagros Padron","Lingsat",1.00,1
+"2013-08-23",44778,"Padron, Erika Apostol","Lingsat",154416,"Padron, Ericca Apostol","Lingsat",0.50,2
+"2013-08-23",44778,"Padron, Erika Apostol","Lingsat",181140,"Padron Erikka Apostol","Lingsat",0.50,2
+"2013-08-23",154416,"Padron, Ericca Apostol","Lingsat",181140,"Padron Erikka Apostol","Lingsat",0.50,3
+"1952-02-08",44780,"Padron, Emetrio Donato","Lingsat",154384,"Padron, Emeterio Donato","Lingsat",0.50,1
+"1998-03-26",109006,"Nu?z, Venancio Regaspi","Ora",123675,"Nunez, Venancio Regaspi","Ora",0.50,2
+"1995-02-03",52198,"Bantuas, Al-hosnie Caber","Barangay 3",108523,"BANTUAS ALHOSNIE CABER","Barangay 3",1.00,2
+"2015-10-05",54750,"Feliciano, Rush Yeshua Paranada","Taleb",108014,"FELICIANIO, RUSH YESHUA PARANADA","Taleb",0.60,1
+"1948-11-26",54791,"Ocena, Alejandra Jimenez","Taleb",181650,"OCEÑA ALEJANDRA JIMENEZ","Taleb",0.50,2
+"1962-09-02",54793,"Cortez, Maximo Azada","Taleb",181798,"CORTEZ MAXIMO AZADA","Taleb",1.00,1
+"1997-09-23",54796,"Paet, Sherielyn Osalvo","Taleb",181775,"PAET SHERIELYN OSALVO","Taleb",1.00,1
+"1977-01-03",54815,"Abinion, Joseph Cortez","Taleb",181803,"ABINION JOSEPH CORTEZ","Taleb",1.00,1
+"1996-08-02",54823,"Vizarra, Michelle Ablog","Taleb",208391,"VIZARRA MICHELLE ABLOG","Taleb",1.00,1
+"1967-09-29",54830,"Marinas, David Madriaga","Taleb",181738,"MARIÑAS DAVID MADRIAGA","Taleb",0.50,2
+"1988-04-13",54839,"Reveche, Querubin Cortez","Taleb",181665,"REVECHE QUERUBIN CORTEZ","Taleb",1.00,1
+"1976-01-14",54840,"Realin, Francilita Mariñas","Taleb",181789,"REALIN FRANCILITA MARIÑAS","Taleb",1.00,1
+"1977-03-25",54846,"Abella, Jennifer Realin","Taleb",181793,"ABELLA JENNIFER REALIN","Taleb",1.00,1
+"1991-10-24",54852,"Parilla, Leonard Janry Osalvo","Taleb",181779,"PARILLA LEONARD JANRY OSALVO","Taleb",1.00,1
+"1947-09-16",54855,"Velasco, Eufemia Paet","Taleb",208427,"VELASCO EUFEMIA PAET","Taleb",1.00,1
+"1973-09-02",54872,"Barbosa, Nelson Vizarra","Taleb",208399,"BARBOSA NELSON VIZARRA","Taleb",1.00,1
+"1963-04-08",54933,"Vizarra, Nieves Barbosa","Taleb",108056,"VIZARRA,NIEVES BARBOSA","Taleb",0.25,1
+"1961-08-30",54934,"Tablada, Rosalinda Tabut","Taleb",181812,"TABLADA ROSALINDA TABUT","Taleb",1.00,1
+"1999-12-22",54957,"Zenica, Gina Vizarra","Taleb",108033,"SENICA GINA VIZARRA","Taleb",0.50,2
+"1977-12-18",54975,"Alasaas, Judylyn Pilien","Taleb",181744,"ALASAAS JUDYLYN PILIEN","Taleb",1.00,1
+"1971-05-16",107995,"Alvior, Shirley Cortez","Taleb",181718,"ALVIOR SHIRLEY CORTEZ","Taleb",1.00,1
+"1962-01-04",54988,"Parilla, Cristeta Osalvo","Taleb",181778,"PARILLA CRISTETA OSALVO","Taleb",1.00,1
+"2012-02-02",55010,"Peru, John Jervin Camello","Taleb",159390,"Peru, John Jervin Carmelo","Naguiddayan",0.60,2
+"1973-12-24",55021,"Cortez, Herbert Padre","Taleb",181807,"CORTEZ HERBERT PADRE","Taleb",1.00,1
+"1993-09-18",55024,"Ponce, Helen Grace Abaco","Taleb",82985,"Ponce, Helen Grace Abalo","Taleb",0.60,1
+"1947-10-10",55028,"Cortez, Francisca Padre","Taleb",181806,"CORTEZ FRANCISA PADRE","Taleb",0.50,2
+"1972-05-28",55038,"Paet, Sherwin Paet","Taleb",181752,"PAET SHERWIN PAET","Taleb",1.00,1
+"2014-03-08",55041,"Paet, Sherlyn Guerra","Taleb",181756,"PAET SHERLYN GUERRA","Taleb",1.00,1
+"2021-10-18",80856,"Basallo, Isabelle Nillusguin","Paing",152970,"Basallo, Isabelle Nilusguin","Paing",0.50,1
+"1973-09-15",55048,"Villafranca, Jay Villegas","Taleb",181668,"VILLAFRANCA JAY VILLEGAS","Taleb",1.00,1
+"2001-12-17",55053,"Alasaas, Jharel Dave Pico","Taleb",181699,"ALASAAS JHAREL DAVE PICO","Taleb",1.00,1
+"2023-01-12",55059,"Padre, Luke Jaiden Barboza","Taleb",208405,"PADRE LUKE JAIDEN BARBOSA","Taleb",0.60,2
+"2023-01-12",129193,"ORIO, ZAYRA JULCE TAGURA","Guimod",129194,"ORIO, ZAYRA JANE TAGURA","Guimod",0.60,3
+"1985-12-21",55062,"Pilar, Jaypee Ducot","Taleb",208382,"PILAR JAYPEE DUCOT","Taleb",1.00,1
+"1982-04-27",55070,"Penullar, Edwin Garcia","Taleb",181764,"PENULLAR EDWIN GARCIA","Taleb",1.00,1
+"1971-01-06",55082,"Alvior, Melchor Osalvo","Taleb",181717,"ALVIOR MELCHOR OSALVO","Taleb",1.00,1
+"1990-08-21",55083,"Reveche, Christ Tony Cortez","Taleb",181658,"REVECHE CHRISTONY CORTEZ","Taleb",0.40,3
+"1990-08-21",55083,"Reveche, Christ Tony Cortez","Taleb",208354,"Reveche Christ Tony Cortez","Taleb",1.00,1
+"1990-08-21",181658,"REVECHE CHRISTONY CORTEZ","Taleb",208354,"Reveche Christ Tony Cortez","Taleb",0.40,2
+"1992-02-18",55084,"ALVIOR, JANINE MAE N/A","Paing",105509,"Alvior, Janine Mae","Paing",0.75,4
+"2012-01-17",55085,"Realin, Jhesylyn N/a","Taleb",181790,"REALIN JHESYLYN -","Taleb",0.67,4
+"1993-04-16",107967,"Barbosa, Lambert Paa","Taleb",108040,"BARBOZA, LAMBERT PAA","Taleb",0.50,1
+"1982-04-10",107705,"De Peralta, Gregorio Mercurio","Buquig",183248,"DE PERALTA GREGORIO MERCURIO","Buquig",1.00,1
+"1991-11-27",62485,"RAGUNJAN, LIEZEL BUENAVISTA","San Mariano",132401,"Ragunjaw, Liezel Buenavista","San Mariano",0.50,1
+"2006-02-22",65036,"Padron, Nathaniel Glenn N/a","Ora",123711,"Padron, Nathaniel Glen","Ora",0.40,5
+"2011-09-01",65040,"Padron, Samantha Coleen Marquez","Ora",125065,"Padron, Samantha Coolen Marquez","Ora",0.60,2
+"1991-10-16",65046,"Calamasa, Ma. Patricia Berbano","Ora",124555,"Calamasa, Patricia Berbano","Ora",0.75,4
+"2022-12-31",65053,"Presto, Kyle Kenneth De Guzman","Ora",125256,"Presto, Kylle Kenneth De Guzman","Ora",0.67,1
+"2006-04-01",65059,"Ragat, Cathrina Mae Meniano","Ora",124936,"Ragat, Cathrina Mae Me?no","Ora",0.60,3
+"1957-12-17",65076,"Piano, Mario Pugal","Ora",124066,"Piano, Mario Piano","Ora",0.67,4
+"2008-06-23",65097,"Somera, Jhon Kenneth Patao","Ora",124991,"Somera, John Kenneth Patao","Ora",0.60,2
+"1957-12-30",65107,"Piedad, Lilia Madriaga","Ora",124068,"Madriaga, Lilia Piedad","Ora",1.00,14
+"1966-11-29",65121,"Palacpac, Emely Arista","Ora",124147,"Palacpac, Emily Arista","Ora",0.50,1
+"1997-12-18",65128,"Arellano, Elaine Ortis","Ora",124726,"Arellano, Elaine Ortiz","Ora",0.50,1
+"1959-01-28",65131,"Estimada, Herminilio Estacio","Ora",123593,"Estemada, Herminigilio Estacio","Ora",0.20,3
+"1998-06-15",65132,"Piano, Ren Brendon Madriaga","Ora",109089,"Piano, Ren Brendan Madriaga","Ora",0.60,1
+"2025-04-16",72215,"YADAO, CAMREN","Ora",125280,"Yadao, Carmen","Ora",0.33,2
+"2025-04-16",72215,"YADAO, CAMREN","Ora",178273,"YADAO, CAMREN PUGAL","Ora",0.67,6
+"1967-08-24",74760,"Madriaga, Bartolome","Cabusligan",155417,"MADRIAGA, BARTOLOME PILIEN","Cabusligan",0.67,7
+"1964-09-30",74782,"Vasquez, Miguel Sr.","Cabusligan",128537,"VASQUEZ, MIGUEL SR. PILIEN","Cabusligan",0.75,7
+"2000-02-02",74788,"Vasquez, Jenilyn Reyes","Cabusligan",128534,"VASQUEZ, JERILYN REYES","Cabusligan",0.50,1
+"1989-02-22",74853,"Sanchez, Frederic Pastor","Cabusligan",178413,"SANCHEZ, FREDERICK PASTOR","Cabusligan",0.50,1
+"1997-08-06",74865,"Vasquez, Diana Pescador","Cabusligan",178418,"VASQUEZ, DIANAH PESCADOR","Cabusligan",0.50,1
+"1995-11-11",74867,"Adaya, Arnold Ragamat","Cabusligan",178419,"ADAYAN, ARNOLD RAGAMAT","Cabusligan",0.50,1
+"1957-05-02",74981,"Pisquel, Merina Piedad","Ora",124064,"Pisquel, Marina Piedad","Ora",0.50,1
+"1993-07-06",74984,"Palacpac, Gerald Arista","Ora",123734,"Palacpac, Jerald Arista","Ora",0.50,1
+"1947-12-18",75013,"Patao, Leonida Rabago","Ora",124014,"Patao, Leonida Rabagp","Ora",0.50,1
+"1956-07-31",75017,"Nu�ez, Mila Padron","Ora",124058,"Nu?z, Mila Padron","Ora",0.50,2
+"1997-04-22",75021,"Nu�ez, Salvacion Piano","Ora",124704,"Nu?ez, Salvacion Piano","Ora",1.00,1
+"2015-12-25",75031,"Pacpaco, Gabriel Ni�o Bautista","Ora",123694,"Pacpaco, Gabriel Ni?o Bautista","Ora",1.00,1
+"1976-12-26",75138,"Carmelo, Leila Rebanal","Capangdanan",159050,"CARMELO, LEILA RABANAL","Capangdanan",0.50,1
+"1983-05-16",75169,"Abalos, Jeneffer Paz","Capangdanan",122191,"ABALOS, JENNIFER PAZ","Capangdanan",0.50,2
+"1987-01-16",75206,"Rocili, Mari Cris Peru","Capangdanan",122290,"ROCILI, MARICRIS PERU","Capangdanan",0.40,1
+"2020-11-16",75211,"Sajonia, Janssen Andaya","Capangdanan",159115,"SAJONIA, JANSEN ANDAYA","Capangdanan",0.50,1
+"1973-07-20",75217,"Tabigni, Joedy Paitta","Capangdanan",158872,"TABIGNI, JOEDY PAITA","Capangdanan",0.50,1
+"1977-04-28",75219,"Paz, Monaliza Arcano","Capangdanan",159019,"PAZ, MONA LIZA ARCANO","Capangdanan",0.40,1
+"1978-07-12",75232,"Tenorio, Nelson Alcarion","Capangdanan",158894,"TENORIO, NELSON ARCARION","Capangdanan",0.50,1
+"1977-11-05",75237,"Nava, Michael Silva","Capangdanan",159018,"NAVA, MICHAEL SALVA","Capangdanan",0.50,1
+"1973-08-29",75238,"Tabigne, Luisa Meneses","Capangdanan",158876,"TABIGNI, LUISA MENESES","Capangdanan",0.50,1
+"1985-02-08",75241,"Suero, Reynalyn Tabigni","Capangdanan",158869,"SUERO, REYNALYN TABIGNE","Capangdanan",0.50,1
+"1993-01-14",75244,"Pe Benito, Elyzer Alibin","Capangdanan",158994,"PE BENITO, ELYZER ALIVIN","Capangdanan",0.60,1
+"2011-10-01",75257,"Paita, John Louie Ziganay","Capangdanan",158899,"PAITA, JOHN LOWIE ZIGANAY","Capangdanan",0.60,1
+"2009-01-23",75270,"Gaoat, Rhiana Lea Ann Paz","Capangdanan",122414,"GAOAT, RHIANA LEANN PAZ","Capangdanan",0.50,2
+"2021-03-28",75275,"Del Castillo, Kailer Adiel De Los Santos","Capangdanan",122425,"DEL CASTILLO, KAILER ADIEL DELOS SANTOS","Capangdanan",0.63,1
+"1938-08-07",75277,"Del Castillo, Cayetano Paz","Capangdanan",159176,"DEL CASTILLO,  CAYETANO PAZ","Capangdanan",1.00,1
+"2016-05-19",75287,"Pugal, Jhonn Harry Peruna","Capangdanan",122208,"PUGAL, JHON HARRY PERUNA","Capangdanan",0.60,1
+"1972-11-13",75343,"Pacpaco, Estanislao Pilot","Sagpat",154931,"PACPACO, ISTANISLAO PILOT","Sagpat",0.50,1
+"1965-10-05",75365,"Peru, Ferdinand Vizarra","Naguiddayan",121942,"PERU, FERDINAND SR. VISARRA","Naguiddayan",0.40,5
+"1999-09-27",75373,"Diaz, Rohan Aaron Pacaique","Naguiddayan",159223,"Diaz, Rohan Aaron Pacaigi","Naguiddayan",0.60,3
+"2019-10-03",75377,"Gazmen, Jan Jerome Dacer","Naguiddayan",159188,"Gazmen, John Jerome Dacer","Naguiddayan",0.60,2
+"1965-11-06",75384,"Pido, Mario Culacito","Naguiddayan",121888,"PIDO, MARIO COLASITO","Naguiddayan",0.50,2
+"2019-03-25",80370,"Concepcion, Wayne Cm Gabriel Tongson","Barangay 1",126125,"CONCEPCION WAYNE CM GABRIEL TONGSON","Barangay 1",1.00,1
+"2023-09-28",80372,"Concepcion, Maria Giana Grey Tongson","Barangay 1",126126,"CONCEPCION MARIA GIANA GREY TONGSON","Barangay 1",1.00,1
+"1995-03-07",80373,"Concepcion, Weena Ethel Tongson","Barangay 1",126123,"CONCEPCION WEENA ETHEL TONGSON","Barangay 1",1.00,1
+"1952-10-09",80390,"Punio, Hannah Dayaoen","Barangay 1",125937,"PUNIO HANNAH DAYAOAEN","Barangay 1",0.50,2
+"1979-09-14",80392,"Perez, Carolyn Parada","Barangay 1",125745,"PEREZ CAROLYN PARADA","Barangay 1",1.00,1
+"1960-08-19",80645,"Padre, Florencia Doque","Paing",105441,"Padre, Florenia Duque","Paing",0.20,2
+"1974-09-29",80648,"Pinol, Anthony Padre","Paing",182665,"Padre, Anthony Padre","Paing",0.67,4
+"1952-11-10",80652,"Advincula, Teresita Ayunon","Paing",182884,"Advincula Teresita Ayunon","Paing",1.00,1
+"1986-12-12",80653,"Agcarao, Joe An Cerna","Paing",182885,"Agcarao Joane Cerna","Paing",0.40,4
+"1951-10-08",80657,"Ballesteros, Brigida Barbosa","Paing",182890,"Ballesteros Brigida Barbosa","Paing",1.00,1
+"1998-07-14",80675,"Panela, Red Brandon Ularte","Paing",153080,"Panela, Red Brando Ularte","Paing",0.60,1
+"1947-12-25",154339,"Velasco, Amante Domenden","Lingsat",180807,"VELASCO. AMANTE VELASCO","Lingsat",0.67,9
+"1955-05-14",80697,"Piano, Yolanda Jimenez","Paing",182721,"Piano, Yolanda Jimnez","Paing",0.50,1
+"1980-11-24",80707,"Tabuno, Nory Jane Esteban","Paing",153073,"Tabuno, Nari Jane Esteban","Paing",0.60,2
+"2023-02-28",80712,"Sayo, Aizen Vladimyr Pisalvo","Paing",105474,"Sayo, Aizen Vladimyr Pisalno","Paing",0.60,1
+"2019-02-22",80713,"Domingo, Cris Paul Anicoche","Paing",182860,"Domingo, Crispaul Anicoche","Paing",0.40,1
+"1953-09-27",80714,"Ridulfa, Jose Retuta","Paing",153135,"Ridulfa, Jose Retota","Paing",0.50,1
+"1955-06-19",80733,"Piano, Rogelio Marinas","Paing",182795,"Piano, Rogelio Mariñas","Paing",0.50,1
+"1972-03-25",80735,"Piano, Elmer Romerosa","Paing",152984,"Piano, Elmer Remorosa","Paing",0.50,2
+"1975-04-13",80736,"Piano, Lilia Casem","Paing",152985,"Piano, Lilia Caole","Paing",0.50,3
+"1988-08-23",80740,"Velasco, Wilson Rocetes","Paing",182870,"Velasco, Wilson Rosetes","Paing",0.50,1
+"1983-01-28",80746,"Pico, Roland Zamora","Paing",182731,"Pico, Rolando Zamora","Paing",0.50,1
+"2007-06-19",80752,"Javier, Quincy Wayne Elijah Garcia","Paing",105488,"Javier, Quiney Wayne Elijan Garcia","Paing",0.43,2
+"1976-03-22",80758,"Tauro, Gerry Pico","Paing",153046,"Tauro, Jerry Pico","Paing",0.50,1
+"2000-09-19",80768,"Piano, Godfrey Casem","Paing",152987,"Piano, Godfrey Caole","Paing",0.50,3
+"1961-04-21",80780,"Cortez, Andrea Marzan","Paing",153210,"Cortez, Andrea Manzana","Paing",0.50,2
+"2009-12-23",80795,"Pico, Danica Rose Ramitez","Paing",182692,"Pico, Danica Rose Ramirez","Paing",0.60,1
+"1999-06-18",80804,"Perona, Jonie Beronia","Paing",182694,"Perona, Jonie Beroña","Paing",0.50,2
+"1956-08-26",80819,"Piano, Cererina Plete","Paing",182796,"Piano, Ceferina Plete","Paing",0.50,1
+"2018-05-15",80846,"Pato, Abby Grace Calip","Paing",152957,"Pato, Abby Grace Capiz","Paing",0.60,2
+"1971-06-24",80847,"Cortez, Anibel Acedera","Paing",153190,"Cortez, Anibel Aledera","Paing",0.50,1
+"2005-09-16",80874,"Cortez, Shanel Hannah Aceda","Paing",153192,"Cortez, Shanel Hannah Aledera","Paing",0.60,3
+"1992-04-22",80882,"Mariñas, Geannou Waykee Peneyra","Paing",105508,"Mariñas, Gennou Waykee Reneyra","Paing",0.33,2
+"1979-03-23",80900,"Cortez, Mary An Cortez","San Mariano",151765,"Cortez, Mary Ann Cortez","San Mariano",0.50,1
+"1993-11-09",82210,"Pilon, Marron Jay Antido","Buquig",183199,"PILON MAROON JAY ANTIDO","Buquig",0.60,2
+"2011-06-17",82212,"Infanta, Richelle Junice Ong","Buquig",183125,"INFANTA RICHELLE  JUNICE ONG","Buquig",1.00,2
+"2010-01-30",82213,"Jandoc, Ruth Jane N/a","Buquig",183256,"JANDOC RUTH JANE","Buquig",0.75,5
+"2001-01-11",82222,"De Peralta, Jhona Fe Prades","Buquig",183291,"DE PERALTA JHONA FE PRADES","Buquig",1.00,1
+"1967-02-17",82224,"Ragon, Romulo Librado","Buquig",183317,"RAGON ROMULO LIBRADO","Buquig",1.00,1
+"1972-10-29",82225,"Corpuz, Marylin Villarin","Buquig",183096,"CORPUZ  MARILYN VILLARIN","Buquig",0.50,3
+"1977-07-07",82226,"Corpuz, Perlita Urayani","Buquig",182995,"CORPUZ PERLITA URAYANI","Buquig",1.00,1
+"1979-09-06",82352,"Lacuesta, Nora Piano","Cabalanggan",151578,"Lacuesta Nora Piano","Cabalanggan",1.00,1
+"1974-07-15",82354,"Petate, Leonardo Peria","Cabalanggan",151598,"Petate Leonardo Peria","Cabalanggan",1.00,1
+"1980-04-01",82944,"Padre, Jay Morales","Taleb",181673,"PADRE JAY MORALES","Taleb",1.00,1
+"1999-07-14",82952,"Pascual, Christine Osalvo","Taleb",181707,"PASCUAL CHRISTINE OSALVO","Taleb",1.00,1
+"1978-08-30",83011,"Padron, Elmer Pardo","Lingsat",181150,"Padron Elmer Pardo","Lingsat",1.00,1
+"1976-11-15",83012,"Dumenden, Candido Pascua","Lingsat",181223,"Dumenden Candido Pascua","Lingsat",1.00,1
+"1970-02-17",105436,"Panela, Romulo Cortez","Paing",153077,"Panela, Romulo","Paing",0.67,7
+"1959-04-21",105448,"Rocetes, Marieta Torda","Paing",182825,"Rosetes, Marieta Torda","Paing",0.50,1
+"1988-04-22",107697,"Mercurio, Robert Regpala","Buquig",183240,"MERCURIO ROBERT REGPALA","Buquig",1.00,1
+"1989-12-12",107698,"Mercurio, Julius Regpala","Buquig",183241,"MERCURIO JULIUS REGPALA","Buquig",1.00,1
+"2003-07-02",107699,"Mercurio, William Regpala","Buquig",183242,"MERCURIO WILLIAM REGPALA","Buquig",1.00,1
+"1986-09-16",107700,"Laurente, Joseph Piano","Buquig",183243,"LAURENTE JOSEPH PIANO","Buquig",1.00,1
+"1968-07-07",107735,"Daileg, Priscila Ragon","Buquig",183314,"DAILEG PRESCILA RAGON","Buquig",0.50,2
+"1980-02-28",107743,"Gomintong, Vidaline Agabao","Buquig",183074,"GOMINTONG VIDALINE AGABAO","Buquig",1.00,1
+"1969-12-17",107745,"GrantoZa, Dante Casabar","Buquig",183168,"GRANTOZA DANTE CASABAR","Buquig",1.00,1
+"1996-04-28",107959,"Senica, Daniel Vizarra","Taleb",208396,"SENICA DANIEL VIZARRA","Taleb",1.00,1
+"2023-07-28",107960,"Senica, Mark Angelo Piano","Taleb",208398,"SENICA MARK ANGELO PIANO","Taleb",1.00,1
+"2021-02-22",107974,"Penullar, Jayden Pico","Taleb",181768,"PENULLAR JAYDEN PICO","Taleb",1.00,1
+"1959-06-04",107975,"Mariñas, Elma Ayon-ayon","Taleb",108018,"MARIÑAS, ELMA AYON - AYON","Taleb",0.50,2
+"1959-06-04",107975,"Mariñas, Elma Ayon-ayon","Taleb",181692,"MARIÑAS,  ELMA AYON - AYON","Taleb",0.50,3
+"1959-06-04",108018,"MARIÑAS, ELMA AYON - AYON","Taleb",181692,"MARIÑAS,  ELMA AYON - AYON","Taleb",1.00,1
+"1963-05-16",107978,"Marinas, Juanito Madriaga","Taleb",108019,"MARIÑAS, JUANITO MADRIAGA","Taleb",0.50,1
+"1963-05-16",107978,"Marinas, Juanito Madriaga","Taleb",181691,"MARIÑAS,  JUANITO MADRIAGA","Taleb",0.50,2
+"1963-05-16",108019,"MARIÑAS, JUANITO MADRIAGA","Taleb",181691,"MARIÑAS,  JUANITO MADRIAGA","Taleb",1.00,1
+"1977-03-21",107997,"Peru, Mario Torrado","Taleb",108130,"PERU, MARIO TORRADO SR.","Taleb",0.75,4
+"1976-10-08",107999,"Alasaas, Efren Piano","Taleb",181696,"ALASAAS EFREN PIANO","Taleb",1.00,1
+"1958-11-25",108001,"Paet, Rodolfo Ben","Taleb",181787,"PAET RODOLFO BEN","Taleb",1.00,1
+"1951-03-17",108004,"Pico, Alvina Paet","Taleb",181758,"PICO ALVINA PAET","Taleb",1.00,1
+"1952-08-11",108008,"Realin, Lolita Marinas","Taleb",108041,"REALIN, LOLITA MARIÑAS","Taleb",0.50,1
+"1972-04-26",108009,"Sabalburo, Norma Marinas","Taleb",181741,"SABALBURO NORMA MARIÑAS","Taleb",0.50,2
+"2017-12-30",108013,"CANTORNA, JOHN VINCENT PASCUAL","Taleb",181713,"CANTORNA JOHN VINCENT PASCUAL","Taleb",1.00,1
+"1961-01-26",108021,"PAET, ANTONIO PAET","Taleb",181750,"PAET ANTONIO PAET","Taleb",1.00,1
+"2018-07-30",108023,"PARILLA. REXELLE LIAM N/A","Taleb",154286,"Parilla, Rexelle Liam","Taleb",0.75,5
+"2018-07-30",108023,"PARILLA. REXELLE LIAM N/A","Taleb",181729,"PARILLA REXELLE LIAM -","Taleb",0.75,4
+"2018-07-30",154286,"Parilla, Rexelle Liam","Taleb",181729,"PARILLA REXELLE LIAM -","Taleb",1.00,3
+"2023-03-20",108024,"NAPOLES, PRINCE ROBERT HIDALGO","Taleb",181689,"NAPOLES PRINCE ROBERT HIDALGO","Taleb",1.00,1
+"2015-01-15",108025,"PENULLAR, FRANCIS DRAKE PICO","Taleb",181766,"PENULLAR FRANCIS DRAKE PICO","Taleb",1.00,1
+"2010-11-14",108028,"PILAR, GERALDINE ZENICA","Taleb",208385,"PILAR GERALDINE ZENICA","Taleb",1.00,1
+"2007-03-15",108029,"PONCE, TERENCE JANN N/A","Taleb",154283,"Ponce, Terence Jann","Taleb",0.75,4
+"1965-04-17",108030,"REVECHE, EMALYN CORTEZ","Taleb",181657,"REVECHE EMALYN CORTEZ","Taleb",1.00,1
+"1958-12-24",108034,"SENICA, JOSIE VIZARRA","Taleb",181685,"ZENICA JOSIE VIZARRA","Taleb",0.50,2
+"1954-04-21",108037,"VIZARRA, ROGELIO PAET","Taleb",208373,"VIZARRA ROGELIO PAET","Taleb",1.00,1
+"2015-04-21",108042,"TUGADE, FRANCES LOI RELAIN","Taleb",181791,"TUGADE FRANCES LOI REALIN","Taleb",0.60,3
+"2024-07-21",108045,"DE CASTRO, SOPHIA REYN PILAR","Taleb",208388,"DE CASTRO SOPHIA REYN PILAR","Taleb",1.00,1
+"1957-06-14",108049,"PAET, MARCELINO PAET, JR.","Taleb",181770,"PAET MARCELINO JR, PAET","Taleb",1.00,9
+"1957-06-14",182747,"Corpuz, Digna Piano","Paing",182906,"Corpuz Digna Piano","Paing",1.00,1
+"1963-03-14",108050,"PAET, RESURRECCION PAET","Taleb",181751,"PAET RESURRECION PAET","Taleb",0.33,2
+"2007-11-21",108052,"PASCUAL, PRECIOUS KHRYZA CORPUZ","Taleb",181703,"PASCUAL PRECIOUS KHRYZA CORPUZ","Taleb",1.00,1
+"2009-05-13",108054,"SENICA, JEFFERSON ROSARIO","Taleb",208449,"SENICA JEFFERSON ROSARIO","Taleb",1.00,1
+"1980-08-24",108095,"MADRIAGA, CRISTINA, VALDERAMA","Taleb",154311,"Madriaga, Cristina Valderama","Taleb",1.00,1
+"2023-07-31",108134,"PERU, TYRONE JAMES TADEO","Taleb",154301,"Peru, Tyron James Tadeo","Taleb",0.60,1
+"1988-03-19",108162,"Velasco, Joy Daisy Hidalgo","Lingsat",181299,"Velasco Joy Daisy Hidalgo","Lingsat",1.00,1
+"1965-03-10",108507,"Pablico, Josie Pescador","Barangay 3",154659,"Pablico Josie Pescador","Barangay 3",1.00,1
+"2003-01-17",108512,"Arizabal, Joshua Torralba","Barangay 3",130837,"Arizabal Joshua","Barangay 3",0.67,10
+"2016-12-04",180828,"AFROILAN, JOAQUIN SANIDAD","Lingsat",180911,"Afroilan Juaquin Sanidad","Lingsat",0.50,2
+"1962-07-28",108968,"Piano , Alex Piano","Ora",124096,"Piano, Alex Piano","Ora",1.00,1
+"1955-01-10",108969,"Nu?z, Estefania Piano","Ora",124047,"Nunez, Estefania Piano","Ora",0.50,2
+"2009-08-30",108970,"Nu?z, Jun-Jun Piano","Ora",123673,"Nunez, Jun-Jun Piano","Ora",0.50,2
+"1967-07-06",108979,"Nu?z, Delia Piano","Ora",124161,"Nunez, Delia Piano","Ora",0.50,2
+"2001-10-28",108981,"Nu?z, Mosella Piano","Ora",124827,"Nunez, Mosella Piano","Ora",0.50,2
+"2008-07-02",108984,"Nu?z, Princess Joy Piano","Ora",124992,"Nunez, Princess Joy Piano","Ora",0.60,2
+"1993-08-26",108986,"Nu?z, Jona Mae Piano","Ora",124620,"Nunez, Jona Mae Piano","Ora",0.60,2
+"1972-12-25",108989,"Nu?z, Rey Piano","Ora",123674,"Nunez, Rey Piano","Ora",0.50,2
+"1968-12-04",109004,"Nu?z, Teresita Regaspi","Ora",124184,"Nunez, Teresita Regaspi","Ora",0.50,2
+"1993-03-10",109005,"Nu?z, Jaycel Regaspi","Ora",124608,"Nunez, Jaycel Regaspi","Ora",0.50,2
+"1959-04-17",109011,"Pantaleon , Rodolfo Pugal","Ora",123786,"Pantaleon, Rodolfo Pugal","Ora",1.00,1
+"2015-09-13",109161,"Piano , Angeline","Ora",125141,"Piano, Angeline","Ora",1.00,1
+"1957-03-30",121853,"VELASCO, ELMER ALTARES","Naguiddayan",159232,"Velasco, Edwin Altares","Naguiddayan",0.50,4
+"1988-07-27",121883,"ARCE, LORD DWIGHT OANDASAN","Naguiddayan",159309,"Arce, Lord Dwight  Oandasan","Naguiddayan",1.00,1
+"1999-09-25",122016,"PADRON, EDWIN PARON","Naguiddayan",159275,"Padron, Edwin Padron","Naguiddayan",0.67,1
+"2021-07-05",180799,"PADRON, JAMES RAGUNJAN","Lingsat",180884,"Padron James Ragunjan","Lingsat",1.00,1
+"2007-08-30",122226,"RABBON, ANGELICA AZADA","Capangdanan",122227,"RABBON, ANGELO AZADA","Capangdanan",0.50,3
+"1998-12-22",122433,"ARCONADO, RIZZA MAE ARREOLA","Capangdanan",183341,"ARCONADO RIZZA MAE ARCONADO","Buquig",0.75,6
+"1999-12-08",125802,"PADUA JAN EMMANUEL BORAL","Barangay 1",125805,"PADUA JANN EMMANUEL BORAL","Barangay 1",0.60,1
+"1989-02-16",123641,"Lopez, Richard Ragat","Ora",151548,"Lopez Richard Ragat","Cabalanggan",1.00,1
+"2009-07-15",123683,"Obrero, Julius Michael Palacpac","Ora",123684,"Obrero, Julius Vincent Palacpac","Ora",0.60,6
+"1987-07-05",180769,"TIPON, ERICSON PAETA","Lingsat",181294,"Tipon Ericson Paeta","Lingsat",1.00,1
+"1950-08-20",154399,"Padron, Bernardo Samuel Paet","Lingsat",181250,"Padron Bernardo Samuel Paet","Lingsat",1.00,1
+"1969-12-26",154347,"Lopez, Dionisio Domenden","Lingsat",180782,"LOPEZ, DIONISO DOMENDEN","Lingsat",0.50,1
+"1969-12-26",154347,"Lopez, Dionisio Domenden","Lingsat",181009,"Lopez Dionicio Domenden","Lingsat",0.50,2
+"1969-12-26",180782,"LOPEZ, DIONISO DOMENDEN","Lingsat",181009,"Lopez Dionicio Domenden","Lingsat",0.50,3
+"1989-01-10",124495,"Lopez, Cecille Pelayo","Ora",151549,"Lopez Cecilia Pelayo","Cabalanggan",0.50,3
+"1991-07-23",124549,"Viernes, Reymart Cabognoson","Ora",180956,"Viernes Raymart Cabugnosan","Lingsat",0.20,4
+"1992-05-06",124574,"Pacursa, Mary Rose Ann Toje","Ora",124575,"Pacurza, Mary Rose Ann Toje","Ora",0.67,1
+"1992-10-01",124591,"Palpal, Jenalyn Ardiosa","Ora",124592,"Palpal, Jenifer Ardiosa","Ora",0.50,4
+"2001-01-08",154427,"Padron, Christian Tadios","Lingsat",181259,"Padron Christian Tadeos","Lingsat",0.50,2
+"2004-06-29",124891,"Piano, Bony Jason Battad","Ora",124892,"Piano, Bony Jefferson Battad","Ora",0.60,5
+"2006-06-12",154390,"Padron, Trisha Mae Pio","Lingsat",181247,"Padron Tricia Mae Pio","Lingsat",0.60,3
+"2012-06-27",125075,"Domenden, Janella Tarinay","Ora",125076,"Domenden, Janine Tarinay","Ora",0.50,4
+"2022-10-07",125246,"Piedad, Aleah Aica Samanta Rapin","Ora",125247,"Piedad, Aleah Rica Savannah Rapin","Ora",0.43,4
+"2003-07-11",154345,"Tapiceria, Lilibeth Magsanay","Lingsat",181110,"Tapiceria Lilibeth Magsanay","Lingsat",1.00,1
+"2011-04-09",125762,"PILIEN BRETT ANGELUS AMOR","Barangay 1",125763,"PILIEN BRETT AMICUS AMOR","Barangay 1",0.60,4
+"2000-09-05",158998,"PE BENITO, LLOYD ALIBIN","Capangdanan",181127,"PeBenito Lloyd Alibin","Lingsat",0.40,2
+"2016-03-22",154411,"Padron, Erich Jadine Apostol","Lingsat",181142,"Padron Erich Jadine Apostol","Lingsat",1.00,1
+"2008-06-19",128525,"SEMIRA, KYLE JHAY GALACIO","Cabusligan",128526,"SEMIRA, KYLIE SHAY GALACIO","Cabusligan",0.33,2
+"1967-01-10",129195,"LOPEZ, JOSE ASADA","Guimod",154338,"Lopez, Jose Azada","Lingsat",0.50,1
+"2013-01-04",130423,"PERILLA, ELJAY BAWIGA","Sagpat",130424,"PERILLA, ELJOHN BAWIGA","Sagpat",0.50,3
+"1935-05-01",130804,"Alamazan Catalina Pablico","Barangay 3",178559,"Almazan, Catalina Pablico","Barangay 3",0.50,2
+"1959-06-20",180801,"TIPON, EDILBERTO PULA","Lingsat",181284,"Tipon Edilberto Pula","Lingsat",1.00,1
+"1965-03-20",130821,"Almazan Dennis Obrero","Barangay 3",178560,"Almazan, Dennis Obrero","Barangay 3",1.00,1
+"1949-02-07",130858,"Pipo, Claribel Vizcarra","Barangay 3",154753,"Pipo Claribel Vizcarra","Barangay 3",1.00,1
+"2000-05-13",130860,"Pastor, Rica Mae Suniega","Barangay 3",154707,"Pastor  Rica Mae Suniega","Barangay 3",1.00,1
+"1998-11-04",132929,"Pardo, John Paul Acena","Buquig",182957,"PARDO JOHN PAUL ACENA","Buquig",1.00,1
+"1999-12-20",132930,"Pardo, ernalyn Fernando","Buquig",182958,"PARDO ERNALYN FERNANDO","Buquig",1.00,1
+"2025-08-21",132931,"Pardo, Chiandria Gia Paulyn fernando","Buquig",182959,"PARDO CHANDRIA GIA PAULYN FERNANDO","Buquig",0.67,2
+"1986-01-10",154435,"Padron, Vernalyn Anipot","Lingsat",180887,"Padron Vernalyn Anipot","Lingsat",1.00,1
+"2023-04-25",180817,"VIVIT, MATHEO EURICH PERALTA","Lingsat",181031,"Vivit Mattheo Eurich Peralta","Lingsat",0.60,2
+"1975-12-30",154315,"Pascual, Christopher Osalvo","Taleb",181701,"PASCUAL CHRISTOPHER OSALVO","Taleb",1.00,1
+"1998-07-18",152986,"Piano, Mark Emerson Caole","Paing",183027,"PIANO  MARK EMERSON VALDEZ","Buquig",0.60,5
+"1975-06-17",153095,"Bolanos, Elysing Regaspi","Paing",182894,"Bolanos Elysing Regaspi","Paing",1.00,1
+"1975-06-17",153095,"Bolanos, Elysing Regaspi","Paing",182896,"Bolaños Elysing Regaspi","Paing",0.50,2
+"1975-06-17",182894,"Bolanos Elysing Regaspi","Paing",182896,"Bolaños Elysing Regaspi","Paing",0.50,1
+"1945-07-22",153343,"Rapin, Dominga Rapin","Guimod",154177,"RAPIN, DOMINGA PABLICO","Guimod",0.67,5
+"1963-12-19",154317,"Palecpec, Merlito Padre","Taleb",208409,"PALECPEC MERLITO PADRE","Taleb",1.00,1
+"1978-03-10",154324,"Rafin, Myra Mendoza","Lingsat",181089,"Rafin Mayra Mendoza","Lingsat",0.50,2
+"1965-02-01",154332,"Baclig, Rosalinda Padron","Lingsat",180932,"Baclig Rosalinda Padron","Lingsat",1.00,1
+"2005-11-03",154333,"Tapiceria, Angelbert Magsanay","Lingsat",181111,"Tapiceria Angelbert Magsanay","Lingsat",1.00,1
+"1972-08-02",154336,"Rafin, Eddie Padron","Lingsat",180964,"Rafin Eddie Padron","Lingsat",1.00,1
+"1957-04-03",154344,"Ballera, Florida Rapin","Lingsat",181093,"Ballera Florida Rafin","Lingsat",0.50,2
+"1954-07-08",154348,"Rivad, Isabel Rafin","Lingsat",180903,"Rivad Isabel Rafin","Lingsat",1.00,1
+"1940-04-08",154353,"Domenden, Irene Pugal","Lingsat",181180,"Domenden Irene Pugal","Lingsat",1.00,1
+"1944-09-25",154356,"Domenden, Milagros Pascua","Lingsat",181280,"Domenden Milagros Pascua","Lingsat",1.00,1
+"2009-05-14",154360,"Padron, Anna Mae Gamit","Lingsat",180829,"PADRON, ANNA MAY GAMIT","Lingsat",0.60,1
+"1955-02-20",154363,"Paiste, Arturu Tacas","Lingsat",180842,"PAISTE, ARTURO TACAS","Lingsat",0.50,1
+"1962-03-05",154369,"Peralta, Andres Padron","Lingsat",180815,"PERILLA, ANDRES PADRON","Lingsat",0.50,2
+"2010-11-26",154370,"Pula, Catherine Alibuyog","Lingsat",180766,"PULA, CATHARINE ALIBUYOG","Lingsat",0.50,1
+"1969-04-10",154383,"Rafin, Felipe Tenorio","Lingsat",180898,"Rafin Felipe Tenorio","Lingsat",1.00,1
+"2010-02-01",154388,"Padron, Justine Pio","Lingsat",181249,"Padron Justine Pio","Lingsat",1.00,1
+"2023-10-13",154389,"Unabia, Princess Zyza Padron","Lingsat",180853,"UNABIA, PRINCESS ZYRA PADRON","Lingsat",0.60,1
+"1941-02-24",154391,"Paet, Emma Corpuz","Lingsat",180985,"Paet Emma Corpuz","Lingsat",1.00,1
+"2004-12-10",154393,"Ortega, Rhuden Baclig","Lingsat",181276,"Ortega Rhuden Baclig","Lingsat",1.00,1
+"1955-12-25",154398,"Velasco, Jesus Domenden","Lingsat",180897,"Velasco Jesus Domenden","Lingsat",1.00,1
+"1973-01-07",154404,"Tuzon, Marilyn Tacad","Lingsat",180803,"TUZPN, MARILYN TACAD","Lingsat",0.50,1
+"1973-01-07",154404,"Tuzon, Marilyn Tacad","Lingsat",181020,"Tuzon Marilyn Tacad","Lingsat",1.00,1
+"1973-01-07",180803,"TUZPN, MARILYN TACAD","Lingsat",181020,"Tuzon Marilyn Tacad","Lingsat",0.50,2
+"1956-01-17",154405,"Mendoza, Leona Domenden","Lingsat",181082,"Mendoza Leona Domenden","Lingsat",1.00,1
+"1995-06-04",154410,"Acosta, June Mark Tacad","Lingsat",181042,"Acosta June Mark Tacad","Lingsat",1.00,1
+"2003-12-05",154418,"Ortega, Althea Jane Ramos","Lingsat",181071,"Ortega Althea Ramos","Lingsat",0.75,6
+"1984-02-14",154423,"Mariano, Sheralyn Pe Benito","Lingsat",181115,"Mariano Sheralyn Pe Benito","Lingsat",1.00,1
+"1991-07-08",154428,"De Vera, Cristela Padron","Lingsat",181144,"DeVera Cristela Padron","Lingsat",0.40,2
+"1970-10-13",154431,"Tapiceria, Eduardo Saucelo","Lingsat",180792,"TAPICERIA, EDUARDO SAOCELO","Lingsat",0.50,1
+"1992-11-25",154510,"Del Castillo Carol Biscarra","Barangay 3",154511,"Del Castillo Caryl Biscarra","Barangay 3",0.60,1
+"2025-01-09",154984,"PACPACO, XYRIEL ROSE QUINTERO","Sagpat",178280,"PACPACO, XYRIEL ROSE","Sagpat",0.75,9
+"2023-06-12",159000,"PE BENITO, RENZ LOUIE RAFUL","Capangdanan",181128,"PeBenito Renz Louie Raful","Lingsat",0.50,2
+"2000-08-22",159059,"PATUBO, DENMARK DELA CRUZ","Capangdanan",181099,"Patubo Den Mark Dela Cruz","Lingsat",0.50,2
+"2021-02-07",159060,"PATUBO, CIAN ARDEN PETALLO","Capangdanan",181100,"Patubo Cian Arden Petallo","Lingsat",1.00,1
+"1988-04-25",178508,"Villareal Christian Robles","Barangay 3",178509,"Villareal Christine Robles","Barangay 3",0.50,2
+"2018-01-03",180773,"VELASCO, RIENEL HIDALGO","Lingsat",181301,"Velasco Reinel Hidalgo","Lingsat",0.50,3
+"1948-02-05",180778,"DOMENDEN, VALENTIN VIERNES","Lingsat",181013,"Domenden Valentin Viernes","Lingsat",1.00,1
+"1995-08-27",180779,"HERRERA, GEMMA RESPICIO","Lingsat",180927,"Herrera Gemma Respicio","Lingsat",1.00,1
+"1962-09-16",180785,"RAFUL, RITA PADRON","Lingsat",181125,"Raful Rita Padron","Lingsat",1.00,1
+"1945-06-30",180786,"RAFIN, EMILIANA MARZAN","Lingsat",180989,"Rafin Emiliana Marzan","Lingsat",1.00,1
+"2009-04-21",180791,"TACAD, JOHN RICK PINGEN","Lingsat",181016,"Tacad John Rick Pingen","Lingsat",1.00,1
+"1981-08-12",180795,"PADRON, JAIME MARIANO","Lingsat",180881,"Padron Jaime Mariano","Lingsat",1.00,1
+"2000-12-02",180802,"PADRON, KATHRINA DEGRACIA","Lingsat",181158,"Padron Kathrina Degracia","Lingsat",1.00,1
+"2023-10-02",180806,"PADRON, MILES RAGUNJAN","Lingsat",180885,"Padron Miles Ragunjan","Lingsat",1.00,1
+"2019-06-03",180812,"PEREDO, QUENNY ROSE TUZON","Lingsat",181047,"Peredo Queeny Rose Tuzon","Lingsat",0.60,2
+"1981-11-14",180816,"VIVIT, FRANCIS VEJIGA","Lingsat",181027,"Vivit Francis Vejiga","Lingsat",1.00,1
+"2019-02-18",180818,"VIVIT, MARK EUGENE PERALTA","Lingsat",181030,"Vivit Mark Eugene Peralta","Lingsat",1.00,1
+"2011-03-27",180822,"TACAD, ROBERT JR. PINGEN","Lingsat",181017,"Tacad Robert Jr. Pingen","Lingsat",1.00,1
+"2024-04-12",180823,"VALLE, GREASON EMMANUEL PERALTA","Lingsat",181033,"Valle Greason Emmanuel Peralta","Lingsat",1.00,1
+"2022-07-25",180824,"HERRERA, GERALYN RESPICIO","Lingsat",180929,"Herrera Geralyn Respicio","Lingsat",1.00,1
+"2014-09-18",180831,"MARIANO, ALEAH SHANE PE BENITO","Lingsat",181117,"Mariano Aleah Shane Pe Benito","Lingsat",1.00,1
+"2019-12-21",180832,"DE VERA, MAREA ESTELA PADRON","Lingsat",181146,"DeVera Marea Estela Padron","Lingsat",0.50,2
+"1958-03-06",180851,"TIPON, MARCELO DOMENDEN","Lingsat",181236,"Tipon Marcelo Domenden","Lingsat",1.00,1
+"1972-12-28",182886,"Anicoche Edwin Tadeo","Paing",182913,"Anicoche, Edwin Tadeo","Paing",1.00,1

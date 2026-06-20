@@ -29,7 +29,7 @@ export const supabaseLong = createClient(supabaseUrl, supabaseKey, {
     }
   }
 });
-export const cache = new NodeCache({ stdTTL: 600 }); // Cache for 10 minutes (flushed automatically on mutations)
+export const cache = new NodeCache({ stdTTL: 86400 }); // Cache for 24h, we use SWR in stats API
 
 export const flushCache = () => {
   cache.flushAll();

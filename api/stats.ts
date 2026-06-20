@@ -58,16 +58,45 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     };
     const cacheKey = `stats-${JSON.stringify(normalizedQueryObj)}`;
 
-    if (refresh === "true") {
+    const isBackground = req.query.background === "true";
+
+    if (refresh === "true" && !isBackground) {
       cache.del(cacheKey);
       console.log(
         `[Stats API] Cache key deleted for: ${cacheKey} (forced refresh)`,
       );
-    } else {
-      const cachedData = cache.get(cacheKey);
-      if (cachedData) {
+    } else if (!isBackground) {
+      const cached = cache.get(cacheKey) as any;
+      if (cached) {
         console.log(`[Stats API] Cache hit for key: ${cacheKey}`);
-        return res.json(cachedData);
+        
+        // Handle migration from old raw data cache to new structured cache
+        const dataToReturn = cached.timestamp ? cached.data : cached;
+        const timestamp = cached.timestamp || Date.now();
+        const isStale = Date.now() - timestamp > 5 * 60 * 1000; // 5 minutes stale threshold
+
+        if (isStale && !cached.fetching) {
+          console.log(`[Stats API] Cache is stale, triggering background revalidate for ${cacheKey}`);
+          
+          if (cached.timestamp) {
+            cache.set(cacheKey, { ...cached, fetching: true });
+          }
+
+          // Trigger background fetch (loopback call with background=true)
+          const protocol = req.headers['x-forwarded-proto'] || 'http';
+          const host = req.headers.host || 'localhost:3000';
+          const urlStr = `${protocol}://${host}${req.url}`;
+          try {
+            const url = new URL(urlStr);
+            url.searchParams.set('background', 'true');
+            // Background fetch, deliberately not awaited
+            fetch(url.toString()).catch(e => console.error("[Stats API] Background fetch error", e));
+          } catch (e) {
+             console.error("[Stats API] Error parsing loopback URL", e);
+          }
+        }
+
+        return res.json(dataToReturn);
       }
     }
 
@@ -441,7 +470,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           a.month_date.localeCompare(b.month_date),
         );
 
-        cache.set(cacheKey, result);
+        cache.set(cacheKey, { timestamp: Date.now(), data: result, fetching: false });
         res.setHeader(
           "Cache-Control",
           "s-maxage=300, stale-while-revalidate=59",

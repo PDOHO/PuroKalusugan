@@ -235,6 +235,7 @@ export default function Dashboard({ currentUser }: DashboardProps) {
   const [selectedQuarter, setSelectedQuarter] = useState<string>(() => localStorage.getItem('dashboard_quarter') || '');
   const [selectedMonth, setSelectedMonth] = useState<string>(() => localStorage.getItem('dashboard_month') || '');
   const [selectedWeek, setSelectedWeek] = useState<string>(() => localStorage.getItem('dashboard_week') || '');
+  const [activeTab, setActiveTab] = useState<'overview' | 'operational' | 'geographic'>('overview');
 
   useEffect(() => {
     localStorage.setItem('dashboard_municipality', selectedMunicipality);
@@ -676,10 +677,31 @@ export default function Dashboard({ currentUser }: DashboardProps) {
       )}
 
       {!loading && !error && (
-        <div className="space-y-12">
+        <div className="space-y-6">
+          <div className="flex flex-wrap gap-2 bg-gradient-to-br from-white to-honeydew p-2 rounded-2xl border border-charcoal-gray/10 shadow-[0_4px_20px_-4px_rgba(0,0,0,0.05)] w-full">
+            <button 
+              onClick={() => setActiveTab('overview')}
+              className={`flex-1 min-w-[120px] px-6 py-3 text-sm font-black uppercase tracking-wider rounded-xl transition-all duration-300 ${activeTab === 'overview' ? 'bg-deep-navy text-white shadow-md' : 'text-blue-slate hover:bg-mint-cream hover:text-deep-navy'}`}
+            >
+              Overview
+            </button>
+            <button 
+              onClick={() => setActiveTab('operational')}
+              className={`flex-1 min-w-[120px] px-6 py-3 text-sm font-black uppercase tracking-wider rounded-xl transition-all duration-300 ${activeTab === 'operational' ? 'bg-deep-navy text-white shadow-md' : 'text-blue-slate hover:bg-mint-cream hover:text-deep-navy'}`}
+            >
+              Operational Metrics
+            </button>
+            <button 
+              onClick={() => setActiveTab('geographic')}
+              className={`flex-1 min-w-[120px] px-6 py-3 text-sm font-black uppercase tracking-wider rounded-xl transition-all duration-300 ${activeTab === 'geographic' ? 'bg-deep-navy text-white shadow-md' : 'text-blue-slate hover:bg-mint-cream hover:text-deep-navy'}`}
+            >
+              Geographical Data
+            </button>
+          </div>
           
           {/* SLIDE 1: High-Level Impact */}
-          <div className="space-y-6" id="slide-1">
+          {activeTab === 'overview' && (
+            <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500" id="slide-1">
             <GroupCard title="Population & Coverage Overview" icon={Users} id="population-overview" headerAction={exportAction}>
               <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4">
                 <div className="bg-gradient-to-br from-white to-blue-50/30 p-4 rounded-xl border border-blue-100 shadow-[0_2px_10px_-2px_rgba(0,0,0,0.03)] hover:shadow-[0_8px_20px_-8px_rgba(0,0,0,0.08)] transition-all duration-300">
@@ -825,9 +847,11 @@ export default function Dashboard({ currentUser }: DashboardProps) {
               )}
             </GroupCard>
           </div>
+          )}
 
           {/* SLIDE 2: Operational Metrics */}
-          <div className="space-y-6" id="slide-2">
+          {activeTab === 'operational' && (
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500" id="slide-2">
             
             {/* Group 2: PuroKalusugan Primary Health Care */}
             <GroupCard title="PuroKalusugan Primary Health Care" icon={ClipboardCheck} id="primary-health">
@@ -903,9 +927,11 @@ export default function Dashboard({ currentUser }: DashboardProps) {
               </div>
             </GroupCard>
           </div>
+          )}
 
           {/* SLIDE 3: Geographical & Comparative Data */}
-          <div className="space-y-6" id="slide-3">
+          {activeTab === 'geographic' && (
+          <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4 duration-500" id="slide-3">
             <GroupCard title="Provincial Accomplishment Map" icon={Home} id="provincial-map">
               <IlocosSurMap data={stats.municipalityStats} />
             </GroupCard>
@@ -1011,6 +1037,7 @@ export default function Dashboard({ currentUser }: DashboardProps) {
                   </div>
                 </GroupCard>
           </div>
+          )}
 
         </div>
       )}
