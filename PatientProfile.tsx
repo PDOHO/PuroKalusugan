@@ -1352,6 +1352,7 @@ Response: ${errorText}`);
               }}
               className="px-3 py-1.5 border border-charcoal-gray/10 text-sm font-medium text-charcoal-gray rounded-lg outline-none focus:ring-2 focus:ring-health-blue/20 focus:border-health-blue"
             >
+              <option value={20}>20 per page</option>
               <option value={50}>50 per page</option>
               <option value={100}>100 per page</option>
               <option value={500}>500 per page</option>
