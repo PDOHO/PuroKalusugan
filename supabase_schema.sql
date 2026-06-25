@@ -31,23 +31,6 @@ CREATE TABLE IF NOT EXISTS patients (
     barangay TEXT DEFAULT '',
     birthdate DATE NOT NULL,
     sex TEXT NOT NULL,
-    date_of_service DATE NOT NULL,
-    health_promotion BOOLEAN DEFAULT false,
-    fpe BOOLEAN DEFAULT false,
-    philhealth BOOLEAN DEFAULT false,
-    referral BOOLEAN DEFAULT false,
-    nutrition BOOLEAN DEFAULT false,
-    cancer BOOLEAN DEFAULT false,
-    immunization BOOLEAN DEFAULT false,
-    hpn BOOLEAN DEFAULT false,
-    dm BOOLEAN DEFAULT false,
-    maternal_health BOOLEAN DEFAULT false,
-    road_safety BOOLEAN DEFAULT false,
-    mental_health BOOLEAN DEFAULT false,
-    tb BOOLEAN DEFAULT false,
-    hiv BOOLEAN DEFAULT false,
-    wash BOOLEAN DEFAULT false,
-    large_scale_pk_activity BOOLEAN DEFAULT false,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT TIMEZONE('utc'::text, NOW()) NOT NULL
 );
 
@@ -55,7 +38,6 @@ CREATE TABLE IF NOT EXISTS patients (
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE INDEX IF NOT EXISTS idx_patients_municipality ON patients(municipality);
 CREATE INDEX IF NOT EXISTS idx_patients_barangay ON patients(barangay);
-CREATE INDEX IF NOT EXISTS idx_patients_date_of_service ON patients(date_of_service);
 CREATE INDEX IF NOT EXISTS idx_patients_full_name ON patients(full_name);
 CREATE INDEX IF NOT EXISTS idx_patients_birthdate ON patients(birthdate);
 CREATE INDEX IF NOT EXISTS idx_patients_sex ON patients(sex);
