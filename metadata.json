@@ -1,5 +1,6 @@
 {
   "name": "PuroKalusugan Ilocos Sur",
   "description": "Health service tracking application for the Provincial Department of Health Office Ilocos Sur, managing barangay profiles and patient services.",
-  "requestFramePermissions": []
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

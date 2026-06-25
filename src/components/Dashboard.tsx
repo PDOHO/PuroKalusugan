@@ -3,7 +3,6 @@ import { Users, Target, Activity, ClipboardCheck, Share2, ArrowUpRight, Home, Tr
 import { DashboardStats, User } from '../types';
 import { MUNICIPALITIES, MUNICIPALITIES_DATA, formatMunicipality } from '../constants';
 import IlocosSurMap from './IlocosSurMap';
-import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContainer } from 'recharts';
 import { toPng, toBlob } from 'html-to-image';
 
 const GroupCard = ({ title, icon: Icon, children, id, className = "", headerAction }: { title: string, icon: any, children: React.ReactNode, id: string, className?: string, headerAction?: React.ReactNode }) => {
@@ -227,23 +226,41 @@ export default function Dashboard({ currentUser }: DashboardProps) {
     if (currentUser.role === 'MUNICIPALITY') {
       return currentUser.municipality;
     }
-    const saved = localStorage.getItem('dashboard_municipality');
-    return saved || '';
+    try {
+      const saved = window.localStorage.getItem('dashboard_municipality');
+      return saved || '';
+    } catch {
+      return '';
+    }
   });
-  const [selectedBarangay, setSelectedBarangay] = useState<string>(() => localStorage.getItem('dashboard_barangay') || '');
-  const [selectedYear, setSelectedYear] = useState<string>(() => localStorage.getItem('dashboard_year') || new Date().getFullYear().toString());
-  const [selectedQuarter, setSelectedQuarter] = useState<string>(() => localStorage.getItem('dashboard_quarter') || '');
-  const [selectedMonth, setSelectedMonth] = useState<string>(() => localStorage.getItem('dashboard_month') || '');
-  const [selectedWeek, setSelectedWeek] = useState<string>(() => localStorage.getItem('dashboard_week') || '');
+  const [selectedBarangay, setSelectedBarangay] = useState<string>(() => {
+    try { return window.localStorage.getItem('dashboard_barangay') || ''; } catch { return ''; }
+  });
+  const [selectedYear, setSelectedYear] = useState<string>(() => {
+    try { return window.localStorage.getItem('dashboard_year') || new Date().getFullYear().toString(); } catch { return new Date().getFullYear().toString(); }
+  });
+  const [selectedQuarter, setSelectedQuarter] = useState<string>(() => {
+    try { return window.localStorage.getItem('dashboard_quarter') || ''; } catch { return ''; }
+  });
+  const [selectedMonth, setSelectedMonth] = useState<string>(() => {
+    try { return window.localStorage.getItem('dashboard_month') || ''; } catch { return ''; }
+  });
+  const [selectedWeek, setSelectedWeek] = useState<string>(() => {
+    try { return window.localStorage.getItem('dashboard_week') || ''; } catch { return ''; }
+  });
   const [activeTab, setActiveTab] = useState<'overview' | 'operational' | 'geographic'>('overview');
 
   useEffect(() => {
-    localStorage.setItem('dashboard_municipality', selectedMunicipality);
-    localStorage.setItem('dashboard_barangay', selectedBarangay);
-    localStorage.setItem('dashboard_year', selectedYear);
-    localStorage.setItem('dashboard_quarter', selectedQuarter);
-    localStorage.setItem('dashboard_month', selectedMonth);
-    localStorage.setItem('dashboard_week', selectedWeek);
+    try {
+      window.localStorage.setItem('dashboard_municipality', selectedMunicipality);
+      window.localStorage.setItem('dashboard_barangay', selectedBarangay);
+      window.localStorage.setItem('dashboard_year', selectedYear);
+      window.localStorage.setItem('dashboard_quarter', selectedQuarter);
+      window.localStorage.setItem('dashboard_month', selectedMonth);
+      window.localStorage.setItem('dashboard_week', selectedWeek);
+    } catch {
+      // Ignore
+    }
   }, [selectedMunicipality, selectedBarangay, selectedYear, selectedQuarter, selectedMonth, selectedWeek]);
 
   const getAccomplishmentColor = (percentage: number, hasTarget: boolean) => {
@@ -269,7 +286,8 @@ export default function Dashboard({ currentUser }: DashboardProps) {
       params.append('refresh', 'true');
     }
     
-    const url = `/api/stats?${params.toString()}`;
+    const url = `/api/stats?${params.toString()}&t=${Date.now()}`;
+    console.log("Fetching URL:", url);
     
     try {
       const res = await fetch(url);

@@ -40,6 +40,8 @@ function handleDatabaseError(
   });
 }
 
+let lastMvRefreshTime = 0;
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   console.log(`[Stats API] Request received: ${req.method} ${req.url}`);
   try {
@@ -61,10 +63,27 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     const isBackground = req.query.background === "true";
 
     if (refresh === "true" && !isBackground) {
-      cache.del(cacheKey);
+      flushCache();
       console.log(
-        `[Stats API] Cache key deleted for: ${cacheKey} (forced refresh)`,
+        `[Stats API] Cache flushed (forced refresh) for: ${JSON.stringify(normalizedQueryObj)}`,
       );
+      
+      const now = Date.now();
+      // Debounce MV refresh to at most once every 5 minutes to prevent CPU exhaustion
+      if (now - lastMvRefreshTime > 5 * 60 * 1000) {
+        lastMvRefreshTime = now;
+        console.log(`[Stats API] Triggering Materialized View refresh (Background)...`);
+        // Fire and forget so we don't block the request, and DB handles it concurrently
+        Promise.allSettled([
+          supabaseLong.rpc('refresh_mv_patient_first_services'),
+          supabaseLong.rpc('refresh_mv_activity_services')
+        ]).then(results => {
+          console.log(`[Stats API] Materialized Views background refresh results:`, JSON.stringify(results));
+        });
+      } else {
+        console.log(`[Stats API] Skipped MV refresh (Debounced). Last refresh was less than 5 mins ago.`);
+      }
+
     } else if (!isBackground) {
       const cached = cache.get(cacheKey) as any;
       if (cached) {
@@ -196,8 +215,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
     // 2. Try RPC for fast stats
     try {
-      const { data: rpcData, error: rpcError } = await supabaseLong.rpc(
-        "get_dashboard_service_stats",
+      let rpcData: any = null;
+      let rpcError: any = null;
+
+      // FIRST: Attempt to use the blazing fast Materialized View RPC endpoint
+      const { data: mvData, error: mvError } = await supabaseLong.rpc(
+        "get_dashboard_service_stats_mv",
         {
           p_municipality: (municipality as string) || null,
           p_barangay: (barangay as string) || null,
@@ -205,6 +228,25 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           p_end_date: filterEnd || null,
         },
       );
+
+      // If the MV RPC doesn't exist yet (e.g. migration not run), fallback to the old active one
+      if (mvError && mvError.message?.includes('could not find function')) {
+        console.warn("[Stats API] MV function not found, falling back to legacy RPC...");
+        const fallback = await supabaseLong.rpc(
+          "get_dashboard_service_stats",
+          {
+            p_municipality: (municipality as string) || null,
+            p_barangay: (barangay as string) || null,
+            p_start_date: filterStart || null,
+            p_end_date: filterEnd || null,
+          },
+        );
+        rpcData = fallback.data;
+        rpcError = fallback.error;
+      } else {
+        rpcData = mvData;
+        rpcError = mvError;
+      }
 
       if (!rpcError && rpcData) {
         console.log(`[Stats API] RPC successful. Building response...`);
@@ -475,6 +517,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           "Cache-Control",
           "s-maxage=300, stale-while-revalidate=59",
         );
+        console.log(`[Stats API] Successfully sending response for key: ${cacheKey}`);
         return res.json(result);
       } else {
         const errorMsg = rpcError?.message || JSON.stringify(rpcError) || "";

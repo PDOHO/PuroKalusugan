@@ -28,7 +28,14 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       return res.status(409).json({ error: "A patient with the same name and birthdate already exists in this municipality." });
     }
 
-    const { id: _, created_at, _action, _user: __user, ...updateData } = req.body;
+    const patientFields = ['full_name', 'municipality', 'barangay', 'birthdate', 'sex'];
+    const updateData: any = {};
+    Object.keys(req.body).forEach(key => {
+      if (patientFields.includes(key)) {
+        updateData[key] = req.body[key];
+      }
+    });
+    
     const { error } = await supabase.from('patients').update(updateData).eq('id', id);
     if (error) return res.status(500).json({ error: error.message });
     

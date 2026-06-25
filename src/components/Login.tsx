@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { HeartPulse, Lock, User, AlertCircle } from 'lucide-react';
-import { motion } from 'framer-motion';
+import { motion } from 'motion/react';
 import { MUNICIPALITIES, USER_CREDENTIALS } from '../constants';
 import { User as UserType } from '../types';
 

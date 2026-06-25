@@ -424,17 +424,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           if (large_scale) subfields.push('large_scale_pk_activity');
           q = supabase.from('patients').select(`
             id, full_name, municipality, barangay, birthdate, sex,
-            date_of_service, health_promotion, fpe, philhealth, referral, wash,
-            nutrition, cancer, immunization, hpn, dm, maternal_health, road_safety,
-            mental_health, tb, hiv, large_scale_pk_activity,
             patient_services!inner(${subfields.join(',')})
           `);
         } else {
           q = supabase.from('patients').select(`
-            id, full_name, municipality, barangay, birthdate, sex,
-            date_of_service, health_promotion, fpe, philhealth, referral, wash,
-            nutrition, cancer, immunization, hpn, dm, maternal_health, road_safety,
-            mental_health, tb, hiv, large_scale_pk_activity
+            id, full_name, municipality, barangay, birthdate, sex
           `);
         }
         return buildFilters(q).order('id', { ascending: false }).range(offset, offset + Number(limit) - 1);
@@ -570,11 +564,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             });
           });
         } else {
-          // Fallback to patient's root values if no matching range service was loaded
-          compatService.date_of_service = p.date_of_service;
-          Object.keys(compatService).forEach(key => {
-            if (key !== 'date_of_service') compatService[key] = p[key] ?? false;
-          });
+          // Fallback if no matching range service was loaded
+          // We can't rely on p anymore as we removed the columns. Leave compatService to false/null
         }
 
         return {
@@ -595,10 +586,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       // Separate patient profile from service data
       const patientFields = [
-        'full_name', 'municipality', 'barangay', 'birthdate', 'sex',
-        'date_of_service', 'health_promotion', 'fpe', 'philhealth', 'referral',
-        'nutrition', 'cancer', 'immunization', 'hpn', 'dm', 'maternal_health',
-        'road_safety', 'mental_health', 'tb', 'hiv', 'wash', 'large_scale_pk_activity'
+        'full_name', 'municipality', 'barangay', 'birthdate', 'sex'
       ];
       const serviceFields = [
         'date_of_service', 'health_promotion', 'fpe', 'philhealth', 'referral',

@@ -22,7 +22,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     while (hasMore) {
       const { data: chunk, error: chunkError } = await supabase
         .from('patients')
-        .select('id, full_name, birthdate, municipality, barangay, sex, date_of_service')
+        .select('id, full_name, birthdate, municipality, barangay, sex')
         .range(from, from + step - 1);
 
       if (chunkError) {
@@ -75,30 +75,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (servicesError) {
         console.error("Error fetching services for group", servicesError);
         continue;
-      }
-
-      // Merge boolean flags and date_of_service into primary patient
-      let primaryUpdated = false;
-      const primaryUpdateData: any = {};
-      
-      for (const s of secondaries) {
-        if (s.date_of_service && (!primary.date_of_service || new Date(s.date_of_service) > new Date(primary.date_of_service))) {
-          primary.date_of_service = s.date_of_service;
-          primaryUpdateData.date_of_service = s.date_of_service;
-          primaryUpdated = true;
-        }
-        
-        Object.keys(s).forEach(key => {
-          if (typeof s[key] === 'boolean' && s[key] === true && !primary[key]) {
-            primary[key] = true;
-            primaryUpdateData[key] = true;
-            primaryUpdated = true;
-          }
-        });
-      }
-
-      if (primaryUpdated) {
-        await supabase.from('patients').update(primaryUpdateData).eq('id', primary.id);
       }
 
       // Reassign all services to primary patient_id

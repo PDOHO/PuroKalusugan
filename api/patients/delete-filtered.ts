@@ -12,15 +12,15 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
   try {
     // 1. Build query to identify patients to delete
-    const hasServiceFilter = !!year;
+    const hasServiceFilter = !!year || !!program || !!large_scale;
     let query;
 
     if (hasServiceFilter) {
-      const subfields: string[] = ['date_of_service'];
+      const subfields: string[] = [];
       if (program) subfields.push(program as string);
       if (large_scale) subfields.push('large_scale_pk_activity');
 
-      query = supabase.from('patients').select('id, patient_services!inner(date_of_service)');
+      query = supabase.from('patients').select('id, patient_services!inner(id)');
     } else {
       query = supabase.from('patients').select('id');
     }
@@ -42,25 +42,18 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         query = query.eq('patient_services.large_scale_pk_activity', false);
       }
 
-      const y = Number(year);
-      if (month) {
-        const m = Number(month);
-        const filterStart = `${y}-${String(m).padStart(2, '0')}-01`;
-        const filterEnd = new Date(y, m, 0).toISOString().split('T')[0];
-        query = query.gte('patient_services.date_of_service', filterStart).lte('patient_services.date_of_service', filterEnd);
-      } else {
-        const filterStart = `${y}-01-01`;
-        const filterEnd = `${y}-12-31`;
-        query = query.gte('patient_services.date_of_service', filterStart).lte('patient_services.date_of_service', filterEnd);
-      }
-    } else {
-      if (program) {
-        query = query.eq(program as string, true);
-      }
-      if (large_scale === 'yes') {
-        query = query.eq('large_scale_pk_activity', true);
-      } else if (large_scale === 'no') {
-        query = query.eq('large_scale_pk_activity', false);
+      if (year) {
+        const y = Number(year);
+        if (month) {
+          const m = Number(month);
+          const filterStart = `${y}-${String(m).padStart(2, '0')}-01`;
+          const filterEnd = new Date(y, m, 0).toISOString().split('T')[0];
+          query = query.gte('patient_services.date_of_service', filterStart).lte('patient_services.date_of_service', filterEnd);
+        } else {
+          const filterStart = `${y}-01-01`;
+          const filterEnd = `${y}-12-31`;
+          query = query.gte('patient_services.date_of_service', filterStart).lte('patient_services.date_of_service', filterEnd);
+        }
       }
     }
 

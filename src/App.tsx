@@ -5,7 +5,7 @@
 
 import React, { useState, useEffect } from 'react';
 import { LayoutDashboard, MapPin, Users, Plus, Upload, Menu, X, ChevronRight, Activity, ClipboardList, HeartPulse, UserPlus, LogOut } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import Dashboard from './components/Dashboard';
 import BarangayProfile from './components/BarangayProfile';
 import PatientProfile from './components/PatientProfile';
@@ -25,11 +25,11 @@ export default function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true); // Desktop state
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false); // Mobile state
   const [user, setUser] = useState<UserType | null>(() => {
-    const saved = localStorage.getItem('purokalusugan_user');
     try {
+      const saved = localStorage.getItem('purokalusugan_user');
       return saved ? JSON.parse(saved) : null;
     } catch (e) {
-      console.error("Failed to parse user from localStorage:", e);
+      console.error("Failed to read user from localStorage:", e);
       return null;
     }
   });
@@ -53,7 +53,11 @@ export default function App() {
 
   const handleLogin = (userData: UserType) => {
     setUser(userData);
-    localStorage.setItem('purokalusugan_user', JSON.stringify(userData));
+    try {
+      localStorage.setItem('purokalusugan_user', JSON.stringify(userData));
+    } catch {
+      // Ignore
+    }
   };
 
   const handleLogout = async () => {
@@ -75,12 +79,16 @@ export default function App() {
       }
     }
     setUser(null);
-    localStorage.removeItem('purokalusugan_user');
-    localStorage.removeItem('dashboard_municipality');
-    localStorage.removeItem('dashboard_barangay');
-    localStorage.removeItem('dashboard_year');
-    localStorage.removeItem('dashboard_quarter');
-    localStorage.removeItem('dashboard_month');
+    try {
+      localStorage.removeItem('purokalusugan_user');
+      localStorage.removeItem('dashboard_municipality');
+      localStorage.removeItem('dashboard_barangay');
+      localStorage.removeItem('dashboard_year');
+      localStorage.removeItem('dashboard_quarter');
+      localStorage.removeItem('dashboard_month');
+    } catch {
+      // Ignore
+    }
   };
 
   if (!user) {
@@ -120,7 +128,7 @@ export default function App() {
       >
         <div className="p-4 flex items-center gap-3 border-b border-white/10">
           <div className="w-14 h-14 bg-white rounded-xl flex items-center justify-center text-deep-navy shrink-0 overflow-hidden">
-            <img src="/purokalusugan-logo.png" alt="PuroKalusugan Logo" className="w-full h-full object-contain scale-110" referrerPolicy="no-referrer" />
+            <img src="/purokalusugan-logo.png" alt="PuroKalusugan Logo" className="w-full h-full object-contain scale-110" />
           </div>
           <div className="font-bold text-lg tracking-tight leading-tight transition-opacity duration-300">
             <span className="text-[#FDB913]">Puro</span><span className="text-[#ED1C24]">Kalusugan</span>
@@ -199,14 +207,14 @@ export default function App() {
 
           <div className="flex items-center gap-4">
             <div className="text-right">
-              <div className="text-sm font-bold text-charcoal-gray">{user.username}</div>
+              <div className="text-sm font-bold text-charcoal-gray">{user?.username || 'User'}</div>
               <div className="text-[10px] text-blue-slate font-medium uppercase tracking-wider">
-                {user.role === 'ADMIN' ? 'Provincial Administrator' : user.role === 'VIEWER' ? 'Provincial Viewer' : 'Municipality Officer'}
+                {user?.role === 'ADMIN' ? 'Provincial Administrator' : user?.role === 'VIEWER' ? 'Provincial Viewer' : 'Municipality Officer'}
               </div>
             </div>
             <div className="w-10 h-10 rounded-xl bg-mint-cream border border-charcoal-gray/10 flex items-center justify-center overflow-hidden">
               <span className="text-lg font-bold text-health-blue">
-                {user.username.charAt(0).toUpperCase()}
+                {user?.username ? user.username.charAt(0).toUpperCase() : 'U'}
               </span>
             </div>
           </div>

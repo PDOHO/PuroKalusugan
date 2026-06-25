@@ -16,7 +16,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   if (!patients || patients.length === 0) return res.json({ status: "ok", count: 0, skipped: 0 });
 
   const patientFields = [
-    'full_name', 'municipality', 'barangay', 'birthdate', 'sex',
+    'full_name', 'municipality', 'barangay', 'birthdate', 'sex'
+  ];
+
+  const serviceFields = [
     'date_of_service', 'health_promotion', 'fpe', 'philhealth', 'referral',
     'nutrition', 'cancer', 'immunization', 'hpn', 'dm', 'maternal_health',
     'road_safety', 'mental_health', 'tb', 'hiv', 'wash', 'large_scale_pk_activity'
@@ -33,7 +36,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     
     // Store service data
     const sData: any = {};
-    patientFields.forEach(f => {
+    serviceFields.forEach(f => {
       if (p[f] !== undefined) {
         sData[f] = p[f];
       }
@@ -51,21 +54,11 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       });
       uniquePatientsMap.set(key, pData);
     } else {
-      // If we already have this patient, update their latest service info in the patients map
+      // If we already have this patient, we might update their barangay based on the latest date
       const existingPData = uniquePatientsMap.get(key);
-      
-      // Merge boolean flags
-      patientFields.forEach(f => {
-        if (f !== 'date_of_service' && f !== 'full_name' && f !== 'birthdate' && f !== 'municipality' && f !== 'barangay' && f !== 'sex') {
-          if (p[f] === true && !existingPData[f]) {
-            existingPData[f] = true;
-          }
-        }
-      });
-
       if (p.date_of_service) {
-        if (!existingPData.date_of_service || new Date(p.date_of_service) >= new Date(existingPData.date_of_service)) {
-          existingPData.date_of_service = p.date_of_service;
+        if (!existingPData._latestDate || new Date(p.date_of_service) >= new Date(existingPData._latestDate)) {
+          existingPData._latestDate = p.date_of_service;
           if (p.barangay) {
             existingPData.barangay = p.barangay;
           }
@@ -113,40 +106,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   const newPatientsToInsert = [];
   const existingPatientsToUpdate = [];
   
-  for (const [key, pData] of uniquePatientsMapLowercase.entries()) {
+  for (const [key, pDataRaw] of uniquePatientsMapLowercase.entries()) {
+    const { _latestDate, ...pData } = pDataRaw; // Strip out temporary fields
+    
     if (!existingPatientMap.has(key)) {
       newPatientsToInsert.push(pData);
     } else {
-      // Patient exists, check if we need to update their latest service info
+      // Patient exists, only update basic info if something important changed like barangay
       const existing = existingPatientFullDataMap.get(key);
       let needsUpdate = false;
       const mergedData: any = { ...existing };
       
-      // Always merge boolean flags to keep a cumulative record
-      patientFields.forEach(f => {
-        if (f !== 'date_of_service' && f !== 'full_name' && f !== 'birthdate' && f !== 'municipality' && f !== 'barangay' && f !== 'sex') {
-          if (pData[f] === true && !existing[f]) {
-            needsUpdate = true;
-            mergedData[f] = true;
-          }
-        }
-      });
-
-      if (pData.date_of_service) {
-        if (!existing.date_of_service || new Date(pData.date_of_service) >= new Date(existing.date_of_service)) {
-          // Only mark as needsUpdate if something actually changed to avoid unnecessary DB writes
-          if (mergedData.date_of_service !== pData.date_of_service || (pData.barangay && mergedData.barangay !== pData.barangay)) {
-            needsUpdate = true;
-            mergedData.date_of_service = pData.date_of_service;
-            if (pData.barangay) {
-              mergedData.barangay = pData.barangay;
-            }
-          }
-        }
+      if (pData.barangay && mergedData.barangay !== pData.barangay) {
+        needsUpdate = true;
+        mergedData.barangay = pData.barangay;
       }
       
       if (needsUpdate) {
-        existingPatientsToUpdate.push(mergedData);
+        existingPatientsToUpdate.push({ id: existing.id, barangay: mergedData.barangay });
       }
     }
   }
@@ -171,7 +148,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       if (!p.full_name) return res.status(400).json({ error: "Missing required field: full_name" });
       if (!p.birthdate) return res.status(400).json({ error: `Missing birthdate for patient: ${p.full_name}` });
       if (!p.sex) return res.status(400).json({ error: `Missing sex for patient: ${p.full_name}` });
-      if (!p.date_of_service) return res.status(400).json({ error: `Missing date_of_service for patient: ${p.full_name}. Please ensure all rows have a valid Date of Service.` });
     }
 
     const chunkSize = 500;
@@ -193,12 +169,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   }
   
   // 4. Prepare service records
-  const serviceFields = [
-    'date_of_service', 'health_promotion', 'fpe', 'philhealth', 'referral',
-    'nutrition', 'cancer', 'immunization', 'hpn', 'dm', 'maternal_health',
-    'road_safety', 'mental_health', 'tb', 'hiv', 'wash', 'large_scale_pk_activity'
-  ];
-
   const servicesToProcess = allServicesFromBatch.map((sData: any) => {
     const key = sData._patientKey;
     const parts = key.split('|');

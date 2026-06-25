@@ -3,6 +3,7 @@ import path from "path";
 import fs from "fs";
 import { fileURLToPath } from "url";
 import { createServer as createViteServer } from "vite";
+import { createClient } from "@supabase/supabase-js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -96,6 +97,27 @@ async function startServer() {
 
   // API routes
   app.get("/api/health", (req, res) => res.json({ status: "ok" }));
+  
+  // TEST ROUTE
+  app.get("/api/check-dates", async (req, res) => {
+    const supabase = createClient(process.env.SUPABASE_URL!, process.env.SUPABASE_ANON_KEY!);
+    const { data, error } = await supabase
+      .from('patient_services')
+      .select('date_of_service')
+      .or('date_of_service.lt.2026-01-01,date_of_service.gt.2026-12-31');
+    if (error) return res.status(500).json({ error });
+    res.json({ count: data.length, samples: data.slice(0, 5) });
+  });
+
+  app.post("/api/log-client-error", (req, res) => {
+    console.log("[Client Error Logged]", JSON.stringify(req.body));
+    try {
+      fs.appendFileSync(path.join(process.cwd(), "client-errors.log"), JSON.stringify(req.body, null, 2) + "\n");
+    } catch (e) {
+      // Ignored
+    }
+    res.json({ ok: true });
+  });
   app.get("/api/download-fuzzy-bantay", (req, res) => {
     const file = path.join(process.cwd(), 'public', 'fuzzy_bantay_duplicates.csv');
     res.download(file, 'fuzzy_bantay_duplicates.csv');

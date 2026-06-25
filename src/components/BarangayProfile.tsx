@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Plus, Search, MapPin, Users, Package, Info, Edit2, Trash2 } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion, AnimatePresence } from 'motion/react';
 import { Barangay, User } from '../types';
 import { MUNICIPALITIES, PRIORITY_PROGRAMS, MUNICIPALITIES_DATA, PROGRAM_DESCRIPTIONS, PROGRAM_TARGET_DEFINITIONS, ALLOWED_CUSTOM_PROGRAM2_BARANGAYS, formatMunicipality, formatBarangay } from '../constants';
 

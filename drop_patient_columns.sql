@@ -1,0 +1,18 @@
+ALTER TABLE patients 
+  DROP COLUMN IF EXISTS date_of_service,
+  DROP COLUMN IF EXISTS health_promotion,
+  DROP COLUMN IF EXISTS fpe,
+  DROP COLUMN IF EXISTS philhealth,
+  DROP COLUMN IF EXISTS referral,
+  DROP COLUMN IF EXISTS nutrition,
+  DROP COLUMN IF EXISTS cancer,
+  DROP COLUMN IF EXISTS immunization,
+  DROP COLUMN IF EXISTS hpn,
+  DROP COLUMN IF EXISTS dm,
+  DROP COLUMN IF EXISTS maternal_health,
+  DROP COLUMN IF EXISTS road_safety,
+  DROP COLUMN IF EXISTS mental_health,
+  DROP COLUMN IF EXISTS tb,
+  DROP COLUMN IF EXISTS hiv,
+  DROP COLUMN IF EXISTS wash,
+  DROP COLUMN IF EXISTS large_scale_pk_activity;
