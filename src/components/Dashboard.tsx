@@ -481,7 +481,7 @@ export default function Dashboard({ currentUser }: DashboardProps) {
     { label: 'Total PK Teams', value: stats.totalPKTeams || 0, icon: Users, color: 'bg-pink-50 text-pink-600', border: 'border-pink-100' },
     { label: 'Total PK Team Members', value: stats.totalPKTeamMembers || 0, icon: Users, color: 'bg-teal-50 text-teal-600', border: 'border-teal-100' },
     { label: 'Total PK Kits Received', value: stats.totalPKKitsReceived || 0, icon: ClipboardCheck, color: 'bg-lime-50 text-lime-600', border: 'border-lime-100' },
-    { label: 'Total PK Teams Oriented', value: stats.totalPKMembersOriented || 0, icon: Users, color: 'bg-sky-50 text-sky-600', border: 'border-sky-100' },
+    { label: 'Total PK TEAM MEMBERS ORIENTED', value: stats.totalPKMembersOriented || 0, icon: Users, color: 'bg-sky-50 text-sky-600', border: 'border-sky-100' },
     { label: 'Total PK Large Scale Patients', value: stats.totalPKLargeScalePatients || 0, icon: Users, color: 'bg-amber-50 text-amber-600', border: 'border-amber-100' },
     { label: 'Total Priority Large Scale Patients', value: stats.totalPriorityLargeScalePatients || 0, icon: Users, color: 'bg-orange-50 text-orange-600', border: 'border-orange-100' },
   ];
@@ -791,7 +791,7 @@ export default function Dashboard({ currentUser }: DashboardProps) {
                   </div>
                   <div>
                     <div className="text-xl font-black text-[#111827] mb-0.5 tracking-tight">{stats.totalPKMembersOriented?.toLocaleString() || 0}</div>
-                    <div className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider leading-tight">PK Teams Oriented</div>
+                    <div className="text-[10px] font-bold text-[#6B7280] uppercase tracking-wider leading-tight">PK TEAM MEMBERS ORIENTED</div>
                   </div>
                 </div>
               </div>
