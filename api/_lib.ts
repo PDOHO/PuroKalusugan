@@ -21,11 +21,11 @@ export const supabaseLong = createClient(supabaseUrl, supabaseKey, {
   auth: { persistSession: false },
   global: {
     fetch: (url, options) => {
-      // 60 seconds timeout for heavy RPCs
-      return fetch(url, { ...options, signal: AbortSignal.timeout(60000) });
+      // 120 seconds timeout for heavy RPCs
+      return fetch(url, { ...options, signal: AbortSignal.timeout(120000) });
     },
     headers: {
-      'Statement-Timeout': '59000' // Tell postgres to safely abort slightly before Node fetches aborts
+      'Statement-Timeout': '119000' // Tell postgres to safely abort slightly before Node fetches aborts
     }
   }
 });

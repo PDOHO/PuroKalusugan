@@ -1691,15 +1691,27 @@ Response: ${errorText}`);
                     </div>
                     
                     <div className="space-y-4">
-                      {patientHistory.map((service, idx) => (
-                        <div key={service.id || idx} className="bg-white p-5 rounded-2xl border border-charcoal-gray/5 shadow-sm hover:shadow-md transition-shadow">
+                      {patientHistory.map((service, idx) => {
+                        const brgyKey = `${formData.municipality}|${formData.barangay}`.toLowerCase();
+                        const priorities = barangayPriorities[brgyKey] || ['nutrition'];
+                        const isDiscrepancy = ALL_PROGRAMS.some(prog => {
+                          const key = prog.toLowerCase().replace(/ /g, '_') as keyof PatientService;
+                          return service[key] && !priorities.includes(key as string);
+                        });
+                        return (
+                        <div key={service.id || idx} className={`p-5 rounded-2xl border shadow-sm hover:shadow-md transition-shadow relative ${isDiscrepancy ? 'bg-alert-red/5 border-alert-red/20' : 'bg-white border-charcoal-gray/5'}`}>
+                          {isDiscrepancy && (
+                            <div className="absolute top-0 right-0 -mt-2 -mr-2 bg-alert-red text-white text-[10px] font-bold px-2 py-1 rounded-full shadow-sm">
+                              Discrepancy
+                            </div>
+                          )}
                           <div className="flex justify-between items-start mb-4">
                             <div className="flex items-center gap-3">
-                              <div className="p-2 bg-mint-cream text-health-blue rounded-lg">
+                              <div className={`p-2 rounded-lg ${isDiscrepancy ? 'bg-alert-red/10 text-alert-red' : 'bg-mint-cream text-health-blue'}`}>
                                 <Calendar size={18} />
                               </div>
                               <div>
-                                <div className="text-sm font-bold text-charcoal-gray">{formatLocalDate(service.date_of_service)}</div>
+                                <div className={`text-sm font-bold ${isDiscrepancy ? 'text-alert-red' : 'text-charcoal-gray'}`}>{formatLocalDate(service.date_of_service)}</div>
                                 <div className="text-[10px] text-blue-slate uppercase tracking-widest font-bold">Recorded on {new Date(service.created_at!).toLocaleDateString()}</div>
                               </div>
                             </div>
@@ -1760,7 +1772,7 @@ Response: ${errorText}`);
                             </div>
                           </div>
                         </div>
-                      ))}
+                      );})}
                       {patientHistory.length === 0 && (
                         <div className="text-center py-12 bg-mint-cream/30 rounded-2xl border border-dashed border-charcoal-gray/10">
                           <p className="text-sm text-blue-slate">No service history found for this patient.</p>

@@ -1,5 +1,5 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import { supabase, flushCache, logAudit } from './_lib.js';
+import { supabase, supabaseLong, flushCache, logAudit } from './_lib.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
@@ -46,7 +46,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           }
         }
 
-        const { data: rpcData, error: rpcError } = await supabase.rpc('get_new_patients', {
+        const { data: rpcData, error: rpcError } = await supabaseLong.rpc('get_new_patients', {
           p_municipality: (municipality as string) || null,
           p_barangay: (barangay as string) || null,
           p_search: (search as string) || null,
@@ -128,32 +128,72 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           }
         }
 
-        const { data: rpcData, error: rpcError } = await supabase.rpc('get_patients_with_discrepancies', {
-          p_municipality: (municipality as string) || null,
-          p_barangay: (barangay as string) || null,
-          p_search: (search as string) || null,
-          p_program: (program as string) || null,
-          p_start_date: filterStart,
-          p_end_date: filterEnd,
-          p_limit: Number(limit),
-          p_offset: offset
+        let totalCount = 0;
+        let pageIds: number[] = [];
+
+        const { data: barangaysData } = await supabase.from('barangays').select('municipality, barangay_name, program2_name, program3_name, program4_name');
+        const barangayMap: Record<string, string[]> = {};
+        if (barangaysData) {
+          barangaysData.forEach((b: any) => {
+             const key = `${b.municipality}|${b.barangay_name}`.toLowerCase();
+             const priorities = ['nutrition'];
+             if (b.program2_name) priorities.push(b.program2_name.toLowerCase().replace(/ /g, '_'));
+             if (b.program3_name) priorities.push(b.program3_name.toLowerCase().replace(/ /g, '_'));
+             if (b.program4_name) priorities.push(b.program4_name.toLowerCase().replace(/ /g, '_'));
+             barangayMap[key] = priorities;
+          });
+        }
+
+        let query = supabase.from('patients').select(`
+          id, municipality, barangay, full_name,
+          patient_services!inner(date_of_service, wash, cancer, immunization, hpn, dm, maternal_health, road_safety, mental_health, tb, hiv)
+        `);
+        if (municipality) query = query.ilike('municipality', municipality as string);
+        if (barangay) query = query.ilike('barangay', barangay as string);
+        if (search) query = query.ilike('full_name', `%${search}%`);
+        if (filterStart) query = query.gte('patient_services.date_of_service', filterStart);
+        if (filterEnd) query = query.lte('patient_services.date_of_service', filterEnd);
+
+        let allData: any[] = [];
+        let from = 0;
+        let step = 1000;
+        let hasMore = true;
+        while(hasMore) {
+           const { data, error } = await query.range(from, from + step - 1);
+           if (error) {
+               console.error("Fallback query error:", error);
+               break;
+           }
+           if (data && data.length > 0) {
+              allData = allData.concat(data);
+              from += step;
+           } else {
+              hasMore = false;
+           }
+        }
+
+        const ALL_PROGS = ['wash', 'cancer', 'immunization', 'hpn', 'dm', 'maternal_health', 'road_safety', 'mental_health', 'tb', 'hiv'];
+        
+        const discrepantPatients = allData.filter((p: any) => {
+           const key = `${p.municipality}|${p.barangay}`.toLowerCase();
+           const priorities = barangayMap[key] || ['nutrition'];
+           return p.patient_services.some((s: any) => {
+               for (const prog of ALL_PROGS) {
+                   if (s[prog] === true && !priorities.includes(prog)) {
+                       return true;
+                   }
+               }
+               return false;
+           });
         });
 
-        if (rpcError) {
-          console.error("RPC Error:", rpcError);
-          const errorMsg = rpcError.message || '';
-          if (errorMsg.includes('<html>') || errorMsg.includes('502 Bad Gateway')) {
-            return res.status(400).json({ error: "Upstream database error (502 Bad Gateway). Please try again later." });
-          }
-          return res.status(500).json({ error: rpcError.message });
-        }
+        discrepantPatients.sort((a, b) => b.id - a.id);
+        totalCount = discrepantPatients.length;
+        pageIds = discrepantPatients.slice(offset, offset + Number(limit)).map(p => p.id);
 
-        if (!rpcData || rpcData.length === 0) {
+        if (pageIds.length === 0) {
           return res.json({ data: [], total: 0, page: Number(page), limit: Number(limit) });
         }
-
-        const totalCount = rpcData[0].total_count;
-        const pageIds = rpcData.map((p: any) => p.id);
 
         const { data: finalData, error: fError } = await supabase
           .from('patients')
@@ -192,7 +232,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
       if (duplicates_only === 'true') {
         // Try the optimized RPC first to save egress
-        const { data: rpcData, error: rpcError } = await supabase.rpc('get_duplicate_patient_ids');
+        const { data: rpcData, error: rpcError } = await supabaseLong.rpc('get_duplicate_patient_ids');
         
         let duplicatePatients: any[] = [];
         let duplicateIdsArray: number[] = [];
@@ -400,9 +440,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const subfields: string[] = ['date_of_service'];
           if (program) subfields.push(program as string);
           if (large_scale) subfields.push('large_scale_pk_activity');
-          q = supabase.from('patients').select(`id, patient_services!inner(${subfields.join(',')})`, { count: 'estimated', head: true });
+          q = supabaseLong.from('patients').select(`id, patient_services!inner(${subfields.join(',')})`, { count: 'estimated', head: true });
         } else {
-          q = supabase.from('patients').select('id', { count: 'estimated', head: true });
+          q = supabaseLong.from('patients').select('id', { count: 'estimated', head: true });
         }
         return buildFilters(q);
       };
@@ -413,12 +453,12 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const subfields: string[] = ['date_of_service'];
           if (program) subfields.push(program as string);
           if (large_scale) subfields.push('large_scale_pk_activity');
-          q = supabase.from('patients').select(`
+          q = supabaseLong.from('patients').select(`
             id, full_name, municipality, barangay, birthdate, sex,
             patient_services!inner(${subfields.join(',')})
           `);
         } else {
-          q = supabase.from('patients').select(`
+          q = supabaseLong.from('patients').select(`
             id, full_name, municipality, barangay, birthdate, sex
           `);
         }
