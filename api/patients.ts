@@ -131,65 +131,86 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         let totalCount = 0;
         let pageIds: number[] = [];
 
-        const { data: barangaysData } = await supabase.from('barangays').select('municipality, barangay_name, program2_name, program3_name, program4_name');
-        const barangayMap: Record<string, string[]> = {};
-        if (barangaysData) {
-          barangaysData.forEach((b: any) => {
-             const key = `${b.municipality}|${b.barangay_name}`.toLowerCase();
-             const priorities = ['nutrition'];
-             if (b.program2_name) priorities.push(b.program2_name.toLowerCase().replace(/ /g, '_'));
-             if (b.program3_name) priorities.push(b.program3_name.toLowerCase().replace(/ /g, '_'));
-             if (b.program4_name) priorities.push(b.program4_name.toLowerCase().replace(/ /g, '_'));
-             barangayMap[key] = priorities;
-          });
-        }
-
-        let query = supabase.from('patients').select(`
-          id, municipality, barangay, full_name,
-          patient_services!inner(date_of_service, wash, cancer, immunization, hpn, dm, maternal_health, road_safety, mental_health, tb, hiv)
-        `);
-        if (municipality) query = query.ilike('municipality', municipality as string);
-        if (barangay) query = query.ilike('barangay', barangay as string);
-        if (search) query = query.ilike('full_name', `%${search}%`);
-        if (filterStart) query = query.gte('patient_services.date_of_service', filterStart);
-        if (filterEnd) query = query.lte('patient_services.date_of_service', filterEnd);
-
-        let allData: any[] = [];
-        let from = 0;
-        let step = 1000;
-        let hasMore = true;
-        while(hasMore) {
-           const { data, error } = await query.range(from, from + step - 1);
-           if (error) {
-               console.error("Fallback query error:", error);
-               break;
-           }
-           if (data && data.length > 0) {
-              allData = allData.concat(data);
-              from += step;
-           } else {
-              hasMore = false;
-           }
-        }
-
-        const ALL_PROGS = ['wash', 'cancer', 'immunization', 'hpn', 'dm', 'maternal_health', 'road_safety', 'mental_health', 'tb', 'hiv'];
-        
-        const discrepantPatients = allData.filter((p: any) => {
-           const key = `${p.municipality}|${p.barangay}`.toLowerCase();
-           const priorities = barangayMap[key] || ['nutrition'];
-           return p.patient_services.some((s: any) => {
-               for (const prog of ALL_PROGS) {
-                   if (s[prog] === true && !priorities.includes(prog)) {
-                       return true;
-                   }
-               }
-               return false;
-           });
+        // 1. Try using the optimized server-side RPC first
+        const { data: rpcData, error: rpcError } = await supabaseLong.rpc('get_patients_with_discrepancies', {
+          p_municipality: (municipality as string) || null,
+          p_barangay: (barangay as string) || null,
+          p_search: (search as string) || null,
+          p_program: (program as string) || null,
+          p_start_date: filterStart,
+          p_end_date: filterEnd,
+          p_limit: Number(limit),
+          p_offset: offset
         });
 
-        discrepantPatients.sort((a, b) => b.id - a.id);
-        totalCount = discrepantPatients.length;
-        pageIds = discrepantPatients.slice(offset, offset + Number(limit)).map(p => p.id);
+        if (!rpcError && rpcData) {
+          if (rpcData.length === 0) {
+            return res.json({ data: [], total: 0, page: Number(page), limit: Number(limit) });
+          }
+          totalCount = rpcData[0].total_count;
+          pageIds = rpcData.map((p: any) => p.id);
+        } else {
+          // Fallback only if RPC does not exist
+          const { data: barangaysData } = await supabase.from('barangays').select('municipality, barangay_name, program2_name, program3_name, program4_name');
+          const barangayMap: Record<string, string[]> = {};
+          if (barangaysData) {
+            barangaysData.forEach((b: any) => {
+               const key = `${b.municipality}|${b.barangay_name}`.toLowerCase();
+               const priorities = ['nutrition'];
+               if (b.program2_name) priorities.push(b.program2_name.toLowerCase().replace(/ /g, '_'));
+               if (b.program3_name) priorities.push(b.program3_name.toLowerCase().replace(/ /g, '_'));
+               if (b.program4_name) priorities.push(b.program4_name.toLowerCase().replace(/ /g, '_'));
+               barangayMap[key] = priorities;
+            });
+          }
+
+          let query = supabase.from('patients').select(`
+            id, municipality, barangay, full_name,
+            patient_services!inner(date_of_service, wash, cancer, immunization, hpn, dm, maternal_health, road_safety, mental_health, tb, hiv)
+          `);
+          if (municipality) query = query.ilike('municipality', municipality as string);
+          if (barangay) query = query.ilike('barangay', barangay as string);
+          if (search) query = query.ilike('full_name', `%${search}%`);
+          if (filterStart) query = query.gte('patient_services.date_of_service', filterStart);
+          if (filterEnd) query = query.lte('patient_services.date_of_service', filterEnd);
+
+          let allData: any[] = [];
+          let from = 0;
+          let step = 1000;
+          let hasMore = true;
+          while(hasMore && from < 5000) { // Limit scan to protect disk IOPS
+             const { data, error } = await query.range(from, from + step - 1);
+             if (error) {
+                 console.error("Fallback query error:", error);
+                 break;
+             }
+             if (data && data.length > 0) {
+                allData = allData.concat(data);
+                from += step;
+             } else {
+                hasMore = false;
+             }
+          }
+
+          const ALL_PROGS = ['wash', 'cancer', 'immunization', 'hpn', 'dm', 'maternal_health', 'road_safety', 'mental_health', 'tb', 'hiv'];
+          
+          const discrepantPatients = allData.filter((p: any) => {
+             const key = `${p.municipality}|${p.barangay}`.toLowerCase();
+             const priorities = barangayMap[key] || ['nutrition'];
+             return p.patient_services.some((s: any) => {
+                 for (const prog of ALL_PROGS) {
+                     if (s[prog] === true && !priorities.includes(prog)) {
+                         return true;
+                     }
+                 }
+                 return false;
+             });
+          });
+
+          discrepantPatients.sort((a, b) => b.id - a.id);
+          totalCount = discrepantPatients.length;
+          pageIds = discrepantPatients.slice(offset, offset + Number(limit)).map(p => p.id);
+        }
 
         if (pageIds.length === 0) {
           return res.json({ data: [], total: 0, page: Number(page), limit: Number(limit) });
@@ -392,19 +413,21 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
 
       const offset = (Number(page) - 1) * Number(limit);
+      const isSearchActive = !!(search && (search as string).trim().length >= 2);
 
       const hasServiceFilter = !!year || !!program || !!large_scale;
 
       const buildFilters = (q: any) => {
-        if (search) {
-          const safeSearch = (search as string).replace(/"/g, '""');
-          q = q.or(`full_name.ilike."%${safeSearch}%",barangay.ilike."%${safeSearch}%"`);
-        }
+        // Apply municipality and barangay first to leverage indexes
         if (municipality) {
           q = q.eq('municipality', municipality as string);
         }
         if (barangay) {
           q = q.eq('barangay', barangay as string);
+        }
+        if (isSearchActive) {
+          const safeSearch = (search as string).trim().replace(/"/g, '""');
+          q = q.ilike('full_name', `%${safeSearch}%`);
         }
 
         if (hasServiceFilter) {
@@ -447,7 +470,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return buildFilters(q);
       };
 
-      const getDataQuery = () => {
+      const getDataQuery = (fetchExtra: boolean = false) => {
         let q;
         if (hasServiceFilter) {
           const subfields: string[] = ['date_of_service'];
@@ -462,7 +485,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             id, full_name, municipality, barangay, birthdate, sex
           `);
         }
-        return buildFilters(q).order('id', { ascending: false }).range(offset, offset + Number(limit) - 1);
+        const fetchLimit = Number(limit) + (fetchExtra ? 1 : 0);
+        return buildFilters(q).order('id', { ascending: false }).range(offset, offset + fetchLimit - 1);
       };
 
       let patientsList: any[] | null = null;
@@ -470,16 +494,31 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       let count: number | null = null;
 
       try {
-        const [countRes, dataRes] = await Promise.all([
-          getCountQuery(),
-          getDataQuery()
-        ]);
-        
-        patientsList = dataRes.data;
-        count = countRes.count;
-        
-        if (dataRes.error) patientsError = dataRes.error;
-        if (countRes.error && !patientsError) patientsError = countRes.error;
+        if (isSearchActive) {
+          // Optimization: Skip heavy full-table count query on text searches to avoid disk IO exhaustion
+          const dataRes = await getDataQuery(true);
+          if (dataRes.error) {
+            patientsError = dataRes.error;
+          } else {
+            const rawData = dataRes.data || [];
+            const hasMore = rawData.length > Number(limit);
+            patientsList = hasMore ? rawData.slice(0, Number(limit)) : rawData;
+            // Provide a fast dynamic count for pagination without full-table disk scan
+            count = offset + patientsList.length + (hasMore ? 50 : 0);
+          }
+        } else {
+          // Standard browsing by municipality/barangay: use estimated count
+          const [countRes, dataRes] = await Promise.all([
+            getCountQuery(),
+            getDataQuery(false)
+          ]);
+          
+          patientsList = dataRes.data;
+          count = countRes.count;
+          
+          if (dataRes.error) patientsError = dataRes.error;
+          if (countRes.error && !patientsError) patientsError = countRes.error;
+        }
       } catch (err: any) {
         patientsError = err;
       }
@@ -754,11 +793,17 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         // Create (Default) - Check if patient exists first
         let patientId = id;
         
-        const { data: existing } = await supabase.from('patients')
-          .select('id')
-          .ilike('full_name', patientData.full_name)
-          .eq('birthdate', patientData.birthdate)
-          .ilike('municipality', patientData.municipality)
+        // Use index-friendly exact matching on municipality & birthdate
+        let existingQuery = supabase.from('patients').select('id');
+        if (patientData.municipality) {
+          existingQuery = existingQuery.eq('municipality', patientData.municipality);
+        }
+        if (patientData.birthdate) {
+          existingQuery = existingQuery.eq('birthdate', patientData.birthdate);
+        }
+        const { data: existing } = await existingQuery
+          .ilike('full_name', (patientData.full_name || '').trim())
+          .limit(1)
           .maybeSingle();
 
         if (existing) {

@@ -54,6 +54,7 @@ export const formatBarangay = (muni: string | undefined | null, brgy: string | u
 };
 
 export const ALLOWED_CUSTOM_PROGRAM2_BARANGAYS = [
+  { municipality: "Banayoyo", barangay: "Pila" },
   { municipality: "Galimuyod", barangay: "Kilang" },
   { municipality: "Salcedo", barangay: "Baybayading" },
   { municipality: "San Juan", barangay: "Asilang" },

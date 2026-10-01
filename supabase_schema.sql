@@ -38,11 +38,9 @@ CREATE TABLE IF NOT EXISTS patients (
 CREATE EXTENSION IF NOT EXISTS pg_trgm;
 CREATE INDEX IF NOT EXISTS idx_patients_municipality ON patients(municipality);
 CREATE INDEX IF NOT EXISTS idx_patients_barangay ON patients(barangay);
-CREATE INDEX IF NOT EXISTS idx_patients_full_name ON patients(full_name);
 CREATE INDEX IF NOT EXISTS idx_patients_birthdate ON patients(birthdate);
-CREATE INDEX IF NOT EXISTS idx_patients_sex ON patients(sex);
-CREATE INDEX IF NOT EXISTS trgm_idx_patients_full_name ON patients USING gin (full_name gin_trgm_ops);
 CREATE INDEX IF NOT EXISTS trgm_idx_patients_barangay ON patients USING gin (barangay gin_trgm_ops);
+CREATE INDEX IF NOT EXISTS trgm_idx_patients_full_name ON patients USING gin (full_name gin_trgm_ops);
 
 -- Composite index for duplicate check
 CREATE INDEX IF NOT EXISTS idx_patients_duplicate_check ON patients(full_name, birthdate, municipality);
@@ -127,8 +125,6 @@ CREATE TABLE IF NOT EXISTS audit_logs (
 );
 
 CREATE INDEX IF NOT EXISTS idx_audit_logs_created_at ON audit_logs(created_at DESC);
-CREATE INDEX IF NOT EXISTS idx_audit_logs_user_id ON audit_logs(user_id);
-CREATE INDEX IF NOT EXISTS idx_audit_logs_action ON audit_logs(action);
 
 ALTER TABLE audit_logs ENABLE ROW LEVEL SECURITY;
 
@@ -146,7 +142,6 @@ CREATE POLICY "Allow public insert access to audit_logs" ON audit_logs FOR INSER
 
 -- High-performance composite indexes for joins and aggregation
 CREATE INDEX IF NOT EXISTS idx_patients_location_id_optimized ON patients (LOWER(municipality), LOWER(barangay), id);
-CREATE INDEX IF NOT EXISTS idx_patient_services_perf_date_patient ON patient_services (date_of_service, patient_id);
 CREATE INDEX IF NOT EXISTS idx_patient_services_perf_patient_date ON patient_services (patient_id, date_of_service);
 
 -- High-performance optimized function for dashboard stats
@@ -158,8 +153,9 @@ CREATE OR REPLACE FUNCTION public.get_dashboard_service_stats(
     p_end_date date DEFAULT NULL
 )
 RETURNS json
+LANGUAGE plpgsql
 SECURITY DEFINER
-AS $$
+AS $
 DECLARE
     v_result json;
     v_sql text;
@@ -580,7 +576,6 @@ END;
 $$ LANGUAGE plpgsql SET statement_timeout = '120s';
 
 -- Create the summary table
-CREATE TABLE IF NOT EXISTS dashboard_summary (
     id SERIAL PRIMARY KEY,
     municipality TEXT NOT NULL,
     barangay TEXT NOT NULL,
@@ -606,15 +601,9 @@ CREATE TABLE IF NOT EXISTS dashboard_summary (
     UNIQUE(municipality, barangay)
 );
 
-DROP POLICY IF EXISTS "Allow public read access to dashboard_summary" ON dashboard_summary;
-CREATE POLICY "Allow public read access to dashboard_summary" ON dashboard_summary FOR SELECT USING (true);
 
-DROP POLICY IF EXISTS "Allow public all access to dashboard_summary" ON dashboard_summary;
-CREATE POLICY "Allow public all access to dashboard_summary" ON dashboard_summary FOR ALL USING (true);
-ALTER TABLE dashboard_summary ENABLE ROW LEVEL SECURITY;
 
 -- Create trigger function
-CREATE OR REPLACE FUNCTION update_dashboard_summary_func()
 RETURNS TRIGGER AS $$
 DECLARE
     v_municipality TEXT;
@@ -622,12 +611,9 @@ DECLARE
 BEGIN
     IF TG_TABLE_NAME = 'patients' THEN
         IF TG_OP = 'INSERT' THEN
-            INSERT INTO dashboard_summary (municipality, barangay, total_patients)
             VALUES (NEW.municipality, NEW.barangay, 1)
             ON CONFLICT (municipality, barangay) DO UPDATE
-            SET total_patients = dashboard_summary.total_patients + 1, last_updated = NOW();
         ELSIF TG_OP = 'DELETE' THEN
-            UPDATE dashboard_summary SET total_patients = GREATEST(0, total_patients - 1), last_updated = NOW()
             WHERE municipality = OLD.municipality AND barangay = OLD.barangay;
         END IF;
         RETURN NULL;
@@ -636,7 +622,6 @@ BEGIN
         IF TG_OP = 'INSERT' THEN
             SELECT municipality, barangay INTO v_municipality, v_barangay FROM patients WHERE id = NEW.patient_id;
             
-            INSERT INTO dashboard_summary (
                 municipality, barangay, total_services,
                 nutrition, cancer, immunization, hpn, dm, maternal_health,
                 road_safety, mental_health, tb, hiv, wash, health_promotion,
@@ -662,28 +647,10 @@ BEGIN
             )
             ON CONFLICT (municipality, barangay) DO UPDATE
             SET 
-                total_services = dashboard_summary.total_services + 1,
-                nutrition = dashboard_summary.nutrition + CASE WHEN NEW.nutrition THEN 1 ELSE 0 END,
-                cancer = dashboard_summary.cancer + CASE WHEN NEW.cancer THEN 1 ELSE 0 END,
-                immunization = dashboard_summary.immunization + CASE WHEN NEW.immunization THEN 1 ELSE 0 END,
-                hpn = dashboard_summary.hpn + CASE WHEN NEW.hpn THEN 1 ELSE 0 END,
-                dm = dashboard_summary.dm + CASE WHEN NEW.dm THEN 1 ELSE 0 END,
-                maternal_health = dashboard_summary.maternal_health + CASE WHEN NEW.maternal_health THEN 1 ELSE 0 END,
-                road_safety = dashboard_summary.road_safety + CASE WHEN NEW.road_safety THEN 1 ELSE 0 END,
-                mental_health = dashboard_summary.mental_health + CASE WHEN NEW.mental_health THEN 1 ELSE 0 END,
-                tb = dashboard_summary.tb + CASE WHEN NEW.tb THEN 1 ELSE 0 END,
-                hiv = dashboard_summary.hiv + CASE WHEN NEW.hiv THEN 1 ELSE 0 END,
-                wash = dashboard_summary.wash + CASE WHEN NEW.wash THEN 1 ELSE 0 END,
-                health_promotion = dashboard_summary.health_promotion + CASE WHEN NEW.health_promotion THEN 1 ELSE 0 END,
-                fpe = dashboard_summary.fpe + CASE WHEN NEW.fpe THEN 1 ELSE 0 END,
-                philhealth = dashboard_summary.philhealth + CASE WHEN NEW.philhealth THEN 1 ELSE 0 END,
-                referral = dashboard_summary.referral + CASE WHEN NEW.referral THEN 1 ELSE 0 END,
-                large_scale_pk_activity = dashboard_summary.large_scale_pk_activity + CASE WHEN NEW.large_scale_pk_activity THEN 1 ELSE 0 END,
                 last_updated = NOW();
         ELSIF TG_OP = 'DELETE' THEN
             SELECT municipality, barangay INTO v_municipality, v_barangay FROM patients WHERE id = OLD.patient_id;
             
-            UPDATE dashboard_summary SET
                 total_services = GREATEST(0, total_services - 1),
                 nutrition = GREATEST(0, nutrition - CASE WHEN OLD.nutrition THEN 1 ELSE 0 END),
                 cancer = GREATEST(0, cancer - CASE WHEN OLD.cancer THEN 1 ELSE 0 END),
@@ -711,20 +678,13 @@ END;
 $$ LANGUAGE plpgsql;
 
 -- Drop existing triggers to avoid duplication
-DROP TRIGGER IF EXISTS dashboard_summary_patient_trigger ON patients;
-DROP TRIGGER IF EXISTS dashboard_summary_service_trigger ON patient_services;
 
 -- Create triggers
-CREATE TRIGGER dashboard_summary_patient_trigger
 AFTER INSERT OR DELETE ON patients
-FOR EACH ROW EXECUTE FUNCTION update_dashboard_summary_func();
 
-CREATE TRIGGER dashboard_summary_service_trigger
 AFTER INSERT OR DELETE ON patient_services
-FOR EACH ROW EXECUTE FUNCTION update_dashboard_summary_func();
 
 -- Initial Population Script
-INSERT INTO dashboard_summary (
     municipality, barangay, total_services,
     nutrition, cancer, immunization, hpn, dm, maternal_health, road_safety,
     mental_health, tb, hiv, wash, health_promotion, fpe, philhealth, referral, large_scale_pk_activity
@@ -777,7 +737,6 @@ WITH patient_counts AS (
     FROM patients
     GROUP BY LOWER(municipality), LOWER(barangay)
 )
-UPDATE dashboard_summary ds
 SET total_patients = pc.total_patients
 FROM patient_counts pc
 WHERE ds.municipality = pc.municipality AND ds.barangay = pc.barangay; 
@@ -796,7 +755,10 @@ CREATE OR REPLACE FUNCTION public.get_new_patients(
 RETURNS TABLE (
     id bigint,
     total_count bigint
-) AS $$
+)
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $
 DECLARE
     v_sql text;
 BEGIN
@@ -853,7 +815,7 @@ BEGIN
     ORDER BY f.id DESC
     LIMIT p_limit OFFSET p_offset;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$;
 
 
 DROP FUNCTION IF EXISTS public.get_patients_with_discrepancies;
@@ -870,7 +832,10 @@ CREATE OR REPLACE FUNCTION public.get_patients_with_discrepancies(
 RETURNS TABLE (
     id bigint,
     total_count bigint
-) AS $$
+)
+LANGUAGE plpgsql
+SECURITY DEFINER
+AS $
 BEGIN
     RETURN QUERY
     WITH discrepant_services AS (
@@ -932,7 +897,7 @@ BEGIN
     ORDER BY d.id DESC
     LIMIT p_limit OFFSET p_offset;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$;
 
 
 DROP FUNCTION IF EXISTS public.get_duplicate_patient_ids;
@@ -953,7 +918,7 @@ BEGIN
     JOIN dups d ON p.full_name = d.full_name AND p.birthdate = d.birthdate AND p.municipality = d.municipality
     ORDER BY p.full_name ASC;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$;
 
 
 -- =====================================================================
@@ -1030,18 +995,19 @@ RETURNS void AS $$
 BEGIN
     REFRESH MATERIALIZED VIEW CONCURRENTLY mv_patient_first_services;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$;
 
 CREATE OR REPLACE FUNCTION refresh_mv_activity_services()
 RETURNS void AS $$
 BEGIN
     REFRESH MATERIALIZED VIEW CONCURRENTLY mv_activity_services;
 END;
-$$ LANGUAGE plpgsql SECURITY DEFINER;
+$;
 
 -- 4. NEW BLAZING FAST GET DASHBOARD STATS RPC
--- Replaces linear table scans with materialized view scans
+-- Uses mv_activity_services and mv_patient_first_services with zero heavy table scans
 DROP FUNCTION IF EXISTS public.get_dashboard_service_stats_mv(text, text, date, date);
+
 CREATE OR REPLACE FUNCTION public.get_dashboard_service_stats_mv(
     p_municipality text DEFAULT NULL,
     p_barangay text DEFAULT NULL,
@@ -1049,162 +1015,60 @@ CREATE OR REPLACE FUNCTION public.get_dashboard_service_stats_mv(
     p_end_date date DEFAULT NULL
 )
 RETURNS json
+LANGUAGE plpgsql
 SECURITY DEFINER
-AS $$
+AS $
 DECLARE
     v_result json;
     v_sql text;
-    v_where_loc text := '';
-    v_where_g1 text := '';
-    v_where_g2 text := '';
-    v_where_act text := '';
 BEGIN
-    IF p_municipality IS NOT NULL THEN
-        v_where_loc := v_where_loc || ' AND lmuni = LOWER($1)';
-    END IF;
-
-    IF p_barangay IS NOT NULL THEN
-        v_where_loc := v_where_loc || ' AND lbrgy = LOWER($2)';
-    END IF;
-
-    v_where_g1 := v_where_loc || ' AND (
-        (first_nutrition_date IS NOT NULL AND ($4::date IS NULL OR first_nutrition_date <= $4::date)) OR
-        (first_cancer_date IS NOT NULL AND ($4::date IS NULL OR first_cancer_date <= $4::date)) OR
-        (first_immunization_date IS NOT NULL AND ($4::date IS NULL OR first_immunization_date <= $4::date)) OR
-        (first_mental_health_date IS NOT NULL AND ($4::date IS NULL OR first_mental_health_date <= $4::date)) OR
-        (first_tb_date IS NOT NULL AND ($4::date IS NULL OR first_tb_date <= $4::date)) OR
-        (first_hiv_date IS NOT NULL AND ($4::date IS NULL OR first_hiv_date <= $4::date)) OR
-        (first_wash_date IS NOT NULL AND ($4::date IS NULL OR first_wash_date <= $4::date)) OR
-        (first_fpe_date IS NOT NULL AND ($4::date IS NULL OR first_fpe_date <= $4::date)) OR
-        (first_philhealth_date IS NOT NULL AND ($4::date IS NULL OR first_philhealth_date <= $4::date)) OR
-        (absolute_first_service_date IS NOT NULL AND ($4::date IS NULL OR absolute_first_service_date <= $4::date))
-    )';
-
-    IF p_municipality IS NOT NULL THEN
-        v_where_g2 := v_where_g2 || ' AND LOWER(p.municipality) = LOWER($1)';
-    END IF;
-    IF p_barangay IS NOT NULL THEN
-        v_where_g2 := v_where_g2 || ' AND LOWER(p.barangay) = LOWER($2)';
-    END IF;
-
-    IF p_start_date IS NOT NULL THEN
-        v_where_g2 := v_where_g2 || ' AND ps.date_of_service >= $3::date';
-        v_where_act := v_where_act || ' AND date_of_service >= $3::date';
-    END IF;
-
-    IF p_end_date IS NOT NULL THEN
-        v_where_g2 := v_where_g2 || ' AND ps.date_of_service <= $4::date';
-        v_where_act := v_where_act || ' AND date_of_service <= $4::date';
-    END IF;
-
-    v_where_g2 := v_where_g2 || ' AND (ps.hpn OR ps.dm OR ps.maternal_health OR ps.health_promotion OR ps.road_safety OR ps.referral OR ps.large_scale_pk_activity)';
-
     v_sql := $query$
-    WITH patient_period_summary AS (
+    WITH raw_summary AS (
+        SELECT * FROM public.mv_patient_first_services WHERE 1=1
+    $query$;
+
+    IF p_municipality IS NOT NULL THEN
+        v_sql := v_sql || ' AND lmuni = LOWER($1)';
+    END IF;
+    IF p_barangay IS NOT NULL THEN
+        v_sql := v_sql || ' AND lbrgy = LOWER($2)';
+    END IF;
+
+    v_sql := v_sql || $query$
+    ),
+    patient_period_summary AS (
         SELECT 
-            COALESCE(g1.patient_id, g2.patient_id) as patient_id,
-            COALESCE(g1.lmuni, g2.lmuni) as lmuni,
-            COALESCE(g1.lbrgy, g2.lbrgy) as lbrgy,
-            
-            -- Keep dates for monthly trends chart
-            g1.first_nutrition_date,
-            g1.first_cancer_date,
-            g1.first_immunization_date,
-            g1.first_mental_health_date,
-            g1.first_tb_date,
-            g1.first_hiv_date,
-            g1.first_wash_date,
-            g1.first_fpe_date,
-            g1.first_philhealth_date,
-            g1.absolute_first_service_date,
-            g2.first_hpn_date,
-            g2.first_dm_date,
-            g2.first_maternal_health_date,
-            g2.first_health_promotion_date,
-            g2.first_road_safety_date,
-            g2.first_referral_date,
-            g2.first_large_scale_date as first_large_scale_pk_activity_date,
-
-            -- Group 1 Booleans (Cumulative until End Date)
-            COALESCE(g1.nutrition, false) as nutrition,
-            COALESCE(g1.cancer, false) as cancer,
-            COALESCE(g1.immunization, false) as immunization,
-            COALESCE(g1.mental_health, false) as mental_health,
-            COALESCE(g1.tb, false) as tb,
-            COALESCE(g1.hiv, false) as hiv,
-            COALESCE(g1.wash, false) as wash,
-            COALESCE(g1.fpe, false) as fpe,
-            COALESCE(g1.philhealth, false) as philhealth,
-            COALESCE(g1.is_new_patient, false) as is_new_patient,
-            
-            -- Group 2 Booleans (Within exact period)
-            COALESCE(g2.hpn, false) as hpn,
-            COALESCE(g2.dm, false) as dm,
-            COALESCE(g2.maternal_health, false) as maternal_health,
-            COALESCE(g2.health_promotion, false) as health_promotion,
-            COALESCE(g2.road_safety, false) as road_safety,
-            COALESCE(g2.referral, false) as referral,
-            COALESCE(g2.large_scale_pk_activity, false) as large_scale_pk_activity
-        FROM (
-            SELECT 
-                patient_id, 
-                lmuni, 
-                lbrgy,
-                CASE WHEN first_nutrition_date IS NOT NULL AND ($4::date IS NULL OR first_nutrition_date <= $4::date) THEN first_nutrition_date ELSE NULL END as first_nutrition_date,
-                CASE WHEN first_cancer_date IS NOT NULL AND ($4::date IS NULL OR first_cancer_date <= $4::date) THEN first_cancer_date ELSE NULL END as first_cancer_date,
-                CASE WHEN first_immunization_date IS NOT NULL AND ($4::date IS NULL OR first_immunization_date <= $4::date) THEN first_immunization_date ELSE NULL END as first_immunization_date,
-                CASE WHEN first_mental_health_date IS NOT NULL AND ($4::date IS NULL OR first_mental_health_date <= $4::date) THEN first_mental_health_date ELSE NULL END as first_mental_health_date,
-                CASE WHEN first_tb_date IS NOT NULL AND ($4::date IS NULL OR first_tb_date <= $4::date) THEN first_tb_date ELSE NULL END as first_tb_date,
-                CASE WHEN first_hiv_date IS NOT NULL AND ($4::date IS NULL OR first_hiv_date <= $4::date) THEN first_hiv_date ELSE NULL END as first_hiv_date,
-                CASE WHEN first_wash_date IS NOT NULL AND ($4::date IS NULL OR first_wash_date <= $4::date) THEN first_wash_date ELSE NULL END as first_wash_date,
-                CASE WHEN first_fpe_date IS NOT NULL AND ($4::date IS NULL OR first_fpe_date <= $4::date) THEN first_fpe_date ELSE NULL END as first_fpe_date,
-                CASE WHEN first_philhealth_date IS NOT NULL AND ($4::date IS NULL OR first_philhealth_date <= $4::date) THEN first_philhealth_date ELSE NULL END as first_philhealth_date,
-                CASE WHEN absolute_first_service_date IS NOT NULL AND ($4::date IS NULL OR absolute_first_service_date <= $4::date) THEN absolute_first_service_date ELSE NULL END as absolute_first_service_date,
-
-                (first_nutrition_date IS NOT NULL AND ($4::date IS NULL OR first_nutrition_date <= $4::date)) as nutrition,
-                (first_cancer_date IS NOT NULL AND ($4::date IS NULL OR first_cancer_date <= $4::date)) as cancer,
-                (first_immunization_date IS NOT NULL AND ($4::date IS NULL OR first_immunization_date <= $4::date)) as immunization,
-                (first_mental_health_date IS NOT NULL AND ($4::date IS NULL OR first_mental_health_date <= $4::date)) as mental_health,
-                (first_tb_date IS NOT NULL AND ($4::date IS NULL OR first_tb_date <= $4::date)) as tb,
-                (first_hiv_date IS NOT NULL AND ($4::date IS NULL OR first_hiv_date <= $4::date)) as hiv,
-                (first_wash_date IS NOT NULL AND ($4::date IS NULL OR first_wash_date <= $4::date)) as wash,
-                (first_fpe_date IS NOT NULL AND ($4::date IS NULL OR first_fpe_date <= $4::date)) as fpe,
-                (first_philhealth_date IS NOT NULL AND ($4::date IS NULL OR first_philhealth_date <= $4::date)) as philhealth,
-                (absolute_first_service_date IS NOT NULL AND ($4::date IS NULL OR absolute_first_service_date <= $4::date)) as is_new_patient
-            FROM mv_patient_first_services
-            WHERE 1=1 $query$ || v_where_g1 || $query$
-        ) g1
-        FULL OUTER JOIN (
-            SELECT 
-                ps.patient_id,
-                LOWER(p.municipality) as lmuni,
-                LOWER(p.barangay) as lbrgy,
-                MIN(CASE WHEN ps.hpn THEN ps.date_of_service END) as first_hpn_date,
-                MIN(CASE WHEN ps.dm THEN ps.date_of_service END) as first_dm_date,
-                MIN(CASE WHEN ps.maternal_health THEN ps.date_of_service END) as first_maternal_health_date,
-                MIN(CASE WHEN ps.health_promotion THEN ps.date_of_service END) as first_health_promotion_date,
-                MIN(CASE WHEN ps.road_safety THEN ps.date_of_service END) as first_road_safety_date,
-                MIN(CASE WHEN ps.referral THEN ps.date_of_service END) as first_referral_date,
-                MIN(CASE WHEN ps.large_scale_pk_activity THEN ps.date_of_service END) as first_large_scale_date,
-                BOOL_OR(ps.hpn) as hpn,
-                BOOL_OR(ps.dm) as dm,
-                BOOL_OR(ps.maternal_health) as maternal_health,
-                BOOL_OR(ps.health_promotion) as health_promotion,
-                BOOL_OR(ps.road_safety) as road_safety,
-                BOOL_OR(ps.referral) as referral,
-                BOOL_OR(ps.large_scale_pk_activity) as large_scale_pk_activity
-            FROM patient_services ps
-            JOIN patients p ON ps.patient_id = p.id
-            WHERE 1=1 $query$ || v_where_g2 || $query$
-            GROUP BY ps.patient_id, LOWER(p.municipality), LOWER(p.barangay)
-        ) g2 ON g1.patient_id = g2.patient_id AND g1.lmuni = g2.lmuni AND g1.lbrgy = g2.lbrgy
+            patient_id,
+            lmuni,
+            lbrgy,
+            (first_nutrition_date IS NOT NULL AND ($3::date IS NULL OR first_nutrition_date >= $3::date) AND ($4::date IS NULL OR first_nutrition_date <= $4::date)) as nutrition,
+            (first_cancer_date IS NOT NULL AND ($3::date IS NULL OR first_cancer_date >= $3::date) AND ($4::date IS NULL OR first_cancer_date <= $4::date)) as cancer,
+            (first_immunization_date IS NOT NULL AND ($3::date IS NULL OR first_immunization_date >= $3::date) AND ($4::date IS NULL OR first_immunization_date <= $4::date)) as immunization,
+            (first_hpn_date IS NOT NULL AND ($3::date IS NULL OR first_hpn_date >= $3::date) AND ($4::date IS NULL OR first_hpn_date <= $4::date)) as hpn,
+            (first_dm_date IS NOT NULL AND ($3::date IS NULL OR first_dm_date >= $3::date) AND ($4::date IS NULL OR first_dm_date <= $4::date)) as dm,
+            (first_maternal_health_date IS NOT NULL AND ($3::date IS NULL OR first_maternal_health_date >= $3::date) AND ($4::date IS NULL OR first_maternal_health_date <= $4::date)) as maternal_health,
+            (first_road_safety_date IS NOT NULL AND ($3::date IS NULL OR first_road_safety_date >= $3::date) AND ($4::date IS NULL OR first_road_safety_date <= $4::date)) as road_safety,
+            (first_mental_health_date IS NOT NULL AND ($3::date IS NULL OR first_mental_health_date >= $3::date) AND ($4::date IS NULL OR first_mental_health_date <= $4::date)) as mental_health,
+            (first_tb_date IS NOT NULL AND ($3::date IS NULL OR first_tb_date >= $3::date) AND ($4::date IS NULL OR first_tb_date <= $4::date)) as tb,
+            (first_hiv_date IS NOT NULL AND ($3::date IS NULL OR first_hiv_date >= $3::date) AND ($4::date IS NULL OR first_hiv_date <= $4::date)) as hiv,
+            (first_wash_date IS NOT NULL AND ($3::date IS NULL OR first_wash_date >= $3::date) AND ($4::date IS NULL OR first_wash_date <= $4::date)) as wash,
+            (first_health_promotion_date IS NOT NULL AND ($3::date IS NULL OR first_health_promotion_date >= $3::date) AND ($4::date IS NULL OR first_health_promotion_date <= $4::date)) as health_promotion,
+            (first_fpe_date IS NOT NULL AND ($3::date IS NULL OR first_fpe_date >= $3::date) AND ($4::date IS NULL OR first_fpe_date <= $4::date)) as fpe,
+            (first_philhealth_date IS NOT NULL AND ($3::date IS NULL OR first_philhealth_date >= $3::date) AND ($4::date IS NULL OR first_philhealth_date <= $4::date)) as philhealth,
+            (first_referral_date IS NOT NULL AND ($3::date IS NULL OR first_referral_date >= $3::date) AND ($4::date IS NULL OR first_referral_date <= $4::date)) as referral,
+            (first_large_scale_pk_activity_date IS NOT NULL AND ($3::date IS NULL OR first_large_scale_pk_activity_date >= $3::date) AND ($4::date IS NULL OR first_large_scale_pk_activity_date <= $4::date)) as large_scale_pk_activity,
+            (absolute_first_service_date IS NOT NULL AND ($3::date IS NULL OR absolute_first_service_date >= $3::date) AND ($4::date IS NULL OR absolute_first_service_date <= $4::date)) as is_new_patient
+        FROM raw_summary
     ),
-    activity_services AS (
+    filtered_period AS (
         SELECT *
-        FROM mv_activity_services
-        WHERE 1=1 $query$ || v_where_loc || v_where_act || $query$
+        FROM patient_period_summary
+        WHERE 
+            nutrition OR cancer OR immunization OR hpn OR dm OR maternal_health OR road_safety OR
+            mental_health OR tb OR hiv OR wash OR health_promotion OR fpe OR philhealth OR referral OR
+            large_scale_pk_activity OR is_new_patient
     ),
-    barangay_activities AS (
+    activity_summary AS (
         SELECT 
             lmuni,
             lbrgy,
@@ -1225,155 +1089,143 @@ BEGIN
             COUNT(CASE WHEN ls_fpe THEN 1 END)::bigint as ls_fpe,
             COUNT(CASE WHEN ls_philhealth THEN 1 END)::bigint as ls_philhealth,
             COUNT(CASE WHEN ls_referral THEN 1 END)::bigint as ls_referral
-        FROM activity_services
+        FROM public.mv_activity_services
+        WHERE 1=1
+    $query$;
+
+    IF p_municipality IS NOT NULL THEN
+        v_sql := v_sql || ' AND lmuni = LOWER($1)';
+    END IF;
+    IF p_barangay IS NOT NULL THEN
+        v_sql := v_sql || ' AND lbrgy = LOWER($2)';
+    END IF;
+    IF p_start_date IS NOT NULL THEN
+        v_sql := v_sql || ' AND date_of_service >= $3::date';
+    END IF;
+    IF p_end_date IS NOT NULL THEN
+        v_sql := v_sql || ' AND date_of_service <= $4::date';
+    END IF;
+
+    v_sql := v_sql || $query$
         GROUP BY lmuni, lbrgy
-    ),
-    program_stats_calc AS (
-        SELECT
-            SUM(CASE WHEN nutrition THEN 1 ELSE 0 END)::int as nutrition,
-            SUM(CASE WHEN cancer THEN 1 ELSE 0 END)::int as cancer,
-            SUM(CASE WHEN immunization THEN 1 ELSE 0 END)::int as immunization,
-            SUM(CASE WHEN hpn THEN 1 ELSE 0 END)::int as hpn,
-            SUM(CASE WHEN dm THEN 1 ELSE 0 END)::int as dm,
-            SUM(CASE WHEN maternal_health THEN 1 ELSE 0 END)::int as maternal_health,
-            SUM(CASE WHEN road_safety THEN 1 ELSE 0 END)::int as road_safety,
-            SUM(CASE WHEN mental_health THEN 1 ELSE 0 END)::int as mental_health,
-            SUM(CASE WHEN tb THEN 1 ELSE 0 END)::int as tb,
-            SUM(CASE WHEN hiv THEN 1 ELSE 0 END)::int as hiv,
-            SUM(CASE WHEN wash THEN 1 ELSE 0 END)::int as wash,
-            SUM(CASE WHEN health_promotion THEN 1 ELSE 0 END)::int as health_promotion,
-            SUM(CASE WHEN fpe THEN 1 ELSE 0 END)::int as fpe,
-            SUM(CASE WHEN philhealth THEN 1 ELSE 0 END)::int as philhealth,
-            SUM(CASE WHEN referral THEN 1 ELSE 0 END)::int as referral,
-            SUM(CASE WHEN is_new_patient THEN 1 ELSE 0 END)::int as total_population_reached,
-            SUM(CASE WHEN large_scale_pk_activity THEN 1 ELSE 0 END)::int as total_large_scale_clients_served,
-            SUM(CASE WHEN large_scale_pk_activity AND (nutrition OR cancer OR immunization OR hpn OR dm OR maternal_health OR road_safety OR mental_health OR tb OR hiv OR wash) THEN 1 ELSE 0 END)::int as total_priority_large_scale_patients
-        FROM patient_period_summary
     ),
     large_scale_details AS (
         SELECT
-            COALESCE(SUM(ba.pk_activities), 0) as total_pk_activities,
-            COALESCE(SUM(ba.large_scale_activities), 0) as total_large_scale_activities,
-            COALESCE(SUM(ba.ls_nutrition), 0) as ls_nutrition,
-            COALESCE(SUM(ba.ls_cancer), 0) as ls_cancer,
-            COALESCE(SUM(ba.ls_immunization), 0) as ls_immunization,
-            COALESCE(SUM(ba.ls_hpn), 0) as ls_hpn,
-            COALESCE(SUM(ba.ls_dm), 0) as ls_dm,
-            COALESCE(SUM(ba.ls_maternal_health), 0) as ls_maternal_health,
-            COALESCE(SUM(ba.ls_road_safety), 0) as ls_road_safety,
-            COALESCE(SUM(ba.ls_mental_health), 0) as ls_mental_health,
-            COALESCE(SUM(ba.ls_tb), 0) as ls_tb,
-            COALESCE(SUM(ba.ls_hiv), 0) as ls_hiv,
-            COALESCE(SUM(ba.ls_wash), 0) as ls_wash,
-            COALESCE(SUM(ba.ls_health_promotion), 0) as ls_health_promotion,
-            COALESCE(SUM(ba.ls_fpe), 0) as ls_fpe,
-            COALESCE(SUM(ba.ls_philhealth), 0) as ls_philhealth,
-            COALESCE(SUM(ba.ls_referral), 0) as ls_referral
-        FROM barangay_activities ba
+            COALESCE(SUM(pk_activities), 0)::bigint as total_pk_activities,
+            COALESCE(SUM(large_scale_activities), 0)::bigint as total_large_scale_activities,
+            COALESCE(SUM(ls_nutrition), 0)::bigint as ls_nutrition,
+            COALESCE(SUM(ls_cancer), 0)::bigint as ls_cancer,
+            COALESCE(SUM(ls_immunization), 0)::bigint as ls_immunization,
+            COALESCE(SUM(ls_hpn), 0)::bigint as ls_hpn,
+            COALESCE(SUM(ls_dm), 0)::bigint as ls_dm,
+            COALESCE(SUM(ls_maternal_health), 0)::bigint as ls_maternal_health,
+            COALESCE(SUM(ls_road_safety), 0)::bigint as ls_road_safety,
+            COALESCE(SUM(ls_mental_health), 0)::bigint as ls_mental_health,
+            COALESCE(SUM(ls_tb), 0)::bigint as ls_tb,
+            COALESCE(SUM(ls_hiv), 0)::bigint as ls_hiv,
+            COALESCE(SUM(ls_wash), 0)::bigint as ls_wash,
+            COALESCE(SUM(ls_health_promotion), 0)::bigint as ls_health_promotion,
+            COALESCE(SUM(ls_fpe), 0)::bigint as ls_fpe,
+            COALESCE(SUM(ls_philhealth), 0)::bigint as ls_philhealth,
+            COALESCE(SUM(ls_referral), 0)::bigint as ls_referral
+        FROM activity_summary
     ),
-    muni_stats AS (
+    program_stats_calc AS (
+        SELECT
+            COUNT(CASE WHEN nutrition THEN 1 END)::int as nutrition,
+            COUNT(CASE WHEN cancer THEN 1 END)::int as cancer,
+            COUNT(CASE WHEN immunization THEN 1 END)::int as immunization,
+            COUNT(CASE WHEN hpn THEN 1 END)::int as hpn,
+            COUNT(CASE WHEN dm THEN 1 END)::int as dm,
+            COUNT(CASE WHEN maternal_health THEN 1 END)::int as maternal_health,
+            COUNT(CASE WHEN road_safety THEN 1 END)::int as road_safety,
+            COUNT(CASE WHEN mental_health THEN 1 END)::int as mental_health,
+            COUNT(CASE WHEN tb THEN 1 END)::int as tb,
+            COUNT(CASE WHEN hiv THEN 1 END)::int as hiv,
+            COUNT(CASE WHEN wash THEN 1 END)::int as wash,
+            COUNT(CASE WHEN health_promotion THEN 1 END)::int as health_promotion,
+            COUNT(CASE WHEN fpe THEN 1 END)::int as fpe,
+            COUNT(CASE WHEN philhealth THEN 1 END)::int as philhealth,
+            COUNT(CASE WHEN referral THEN 1 END)::int as referral,
+            COUNT(CASE WHEN is_new_patient THEN 1 END)::int as total_population_reached,
+            COUNT(CASE WHEN large_scale_pk_activity THEN 1 END)::int as total_large_scale_clients_served,
+            COUNT(CASE WHEN large_scale_pk_activity AND (nutrition OR cancer OR immunization OR hpn OR dm OR maternal_health OR road_safety OR mental_health OR tb OR hiv OR wash) THEN 1 END)::int as total_priority_large_scale_patients
+        FROM filtered_period
+    ),
+    served_by_muni AS (
         SELECT
             lmuni as muni,
             (
-                SUM(CASE WHEN nutrition THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN cancer THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN immunization THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN hpn THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN dm THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN maternal_health THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN road_safety THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN mental_health THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN tb THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN hiv THEN 1 ELSE 0 END)
+                COUNT(CASE WHEN nutrition THEN 1 END) +
+                COUNT(CASE WHEN cancer THEN 1 END) +
+                COUNT(CASE WHEN immunization THEN 1 END) +
+                COUNT(CASE WHEN hpn THEN 1 END) +
+                COUNT(CASE WHEN dm THEN 1 END) +
+                COUNT(CASE WHEN maternal_health THEN 1 END) +
+                COUNT(CASE WHEN road_safety THEN 1 END) +
+                COUNT(CASE WHEN mental_health THEN 1 END) +
+                COUNT(CASE WHEN tb THEN 1 END) +
+                COUNT(CASE WHEN hiv THEN 1 END)
             )::int as served,
-            SUM(CASE WHEN wash THEN 1 ELSE 0 END)::int as households_served,
-            SUM(CASE WHEN is_new_patient THEN 1 ELSE 0 END)::int as population_reached
-        FROM patient_period_summary
+            COUNT(CASE WHEN wash THEN 1 END)::int as households_served,
+            COUNT(CASE WHEN is_new_patient THEN 1 END)::int as population_reached
+        FROM filtered_period
         GROUP BY lmuni
     ),
-    barangay_stats AS (
+    served_by_brgy AS (
         SELECT
-            ps.lmuni as muni,
-            ps.lbrgy as brgy,
+            fp.lmuni as muni,
+            fp.lbrgy as brgy,
             (
-                SUM(CASE WHEN ps.nutrition THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN ps.cancer THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN ps.immunization THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN ps.hpn THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN ps.dm THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN ps.maternal_health THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN ps.road_safety THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN ps.mental_health THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN ps.tb THEN 1 ELSE 0 END) +
-                SUM(CASE WHEN ps.hiv THEN 1 ELSE 0 END)
+                COUNT(CASE WHEN fp.nutrition THEN 1 END) +
+                COUNT(CASE WHEN fp.cancer THEN 1 END) +
+                COUNT(CASE WHEN fp.immunization THEN 1 END) +
+                COUNT(CASE WHEN fp.hpn THEN 1 END) +
+                COUNT(CASE WHEN fp.dm THEN 1 END) +
+                COUNT(CASE WHEN fp.maternal_health THEN 1 END) +
+                COUNT(CASE WHEN fp.road_safety THEN 1 END) +
+                COUNT(CASE WHEN fp.mental_health THEN 1 END) +
+                COUNT(CASE WHEN fp.tb THEN 1 END) +
+                COUNT(CASE WHEN fp.hiv THEN 1 END)
             )::int as served,
-            SUM(CASE WHEN ps.wash THEN 1 ELSE 0 END)::int as households_served,
-            SUM(CASE WHEN ps.nutrition THEN 1 ELSE 0 END)::int as nutrition_served,
-            SUM(CASE WHEN ps.cancer THEN 1 ELSE 0 END)::int as cancer_served,
-            SUM(CASE WHEN ps.immunization THEN 1 ELSE 0 END)::int as immunization_served,
-            SUM(CASE WHEN ps.hpn THEN 1 ELSE 0 END)::int as hpn_served,
-            SUM(CASE WHEN ps.dm THEN 1 ELSE 0 END)::int as dm_served,
-            SUM(CASE WHEN ps.maternal_health THEN 1 ELSE 0 END)::int as maternal_health_served,
-            SUM(CASE WHEN ps.road_safety THEN 1 ELSE 0 END)::int as road_safety_served,
-            SUM(CASE WHEN ps.mental_health THEN 1 ELSE 0 END)::int as mental_health_served,
-            SUM(CASE WHEN ps.tb THEN 1 ELSE 0 END)::int as tb_served,
-            SUM(CASE WHEN ps.hiv THEN 1 ELSE 0 END)::int as hiv_served,
-            SUM(CASE WHEN ps.wash THEN 1 ELSE 0 END)::int as wash_served,
-            SUM(CASE WHEN ps.health_promotion THEN 1 ELSE 0 END)::int as health_promotion_served,
-            SUM(CASE WHEN ps.fpe THEN 1 ELSE 0 END)::int as fpe_served,
-            SUM(CASE WHEN ps.philhealth THEN 1 ELSE 0 END)::int as philhealth_served,
-            SUM(CASE WHEN ps.referral THEN 1 ELSE 0 END)::int as referral_served,
-            
-            COALESCE(MAX(ba.pk_activities), 0) as pk_activities,
-            COALESCE(MAX(ba.large_scale_activities), 0) as large_scale_activities,
-            COALESCE(MAX(ba.ls_nutrition), 0) as ls_nutrition,
-            COALESCE(MAX(ba.ls_cancer), 0) as ls_cancer,
-            COALESCE(MAX(ba.ls_immunization), 0) as ls_immunization,
-            COALESCE(MAX(ba.ls_hpn), 0) as ls_hpn,
-            COALESCE(MAX(ba.ls_dm), 0) as ls_dm,
-            COALESCE(MAX(ba.ls_maternal_health), 0) as ls_maternal_health,
-            COALESCE(MAX(ba.ls_road_safety), 0) as ls_road_safety,
-            COALESCE(MAX(ba.ls_mental_health), 0) as ls_mental_health,
-            COALESCE(MAX(ba.ls_tb), 0) as ls_tb,
-            COALESCE(MAX(ba.ls_hiv), 0) as ls_hiv,
-            COALESCE(MAX(ba.ls_wash), 0) as ls_wash,
-            COALESCE(MAX(ba.ls_health_promotion), 0) as ls_health_promotion,
-            COALESCE(MAX(ba.ls_fpe), 0) as ls_fpe,
-            COALESCE(MAX(ba.ls_philhealth), 0) as ls_philhealth,
-            COALESCE(MAX(ba.ls_referral), 0) as ls_referral,
-            SUM(CASE WHEN ps.large_scale_pk_activity THEN 1 ELSE 0 END)::int as total_large_scale_clients_served,
-            SUM(CASE WHEN ps.large_scale_pk_activity AND (ps.nutrition OR ps.cancer OR ps.immunization OR ps.hpn OR ps.dm OR ps.maternal_health OR ps.road_safety OR ps.mental_health OR ps.tb OR ps.hiv OR ps.wash) THEN 1 ELSE 0 END)::int as total_priority_large_scale_patients
-        FROM patient_period_summary ps
-        LEFT JOIN barangay_activities ba ON ps.lmuni = ba.lmuni AND ps.lbrgy = ba.lbrgy
-        GROUP BY ps.lmuni, ps.lbrgy
-    ),
-    first_service_dates_flat AS (
-        SELECT
-            fd.fd
-        FROM patient_period_summary fsd,
-        LATERAL (
-            VALUES 
-                (fsd.first_nutrition_date),
-                (fsd.first_cancer_date),
-                (fsd.first_immunization_date),
-                (fsd.first_hpn_date),
-                (fsd.first_dm_date),
-                (fsd.first_maternal_health_date),
-                (fsd.first_road_safety_date),
-                (fsd.first_mental_health_date),
-                (fsd.first_tb_date),
-                (fsd.first_hiv_date)
-        ) as fd(fd)
-        WHERE fd.fd IS NOT NULL
-    ),
-    monthly_trends AS (
-        SELECT
-            DATE_TRUNC('month', fd)::date as month_date,
-            TRIM(TO_CHAR(fd, 'Month')) as month_name,
-            COALESCE(COUNT(*)::int, 0) as served
-        FROM first_service_dates_flat
-        GROUP BY 1, 2
-        ORDER BY month_date ASC
+            COUNT(CASE WHEN fp.wash THEN 1 END)::int as households_served,
+            COUNT(CASE WHEN fp.nutrition THEN 1 END)::int as nutrition_served,
+            COUNT(CASE WHEN fp.cancer THEN 1 END)::int as cancer_served,
+            COUNT(CASE WHEN fp.immunization THEN 1 END)::int as immunization_served,
+            COUNT(CASE WHEN fp.hpn THEN 1 END)::int as hpn_served,
+            COUNT(CASE WHEN fp.dm THEN 1 END)::int as dm_served,
+            COUNT(CASE WHEN fp.maternal_health THEN 1 END)::int as maternal_health_served,
+            COUNT(CASE WHEN fp.road_safety THEN 1 END)::int as road_safety_served,
+            COUNT(CASE WHEN fp.mental_health THEN 1 END)::int as mental_health_served,
+            COUNT(CASE WHEN fp.tb THEN 1 END)::int as tb_served,
+            COUNT(CASE WHEN fp.hiv THEN 1 END)::int as hiv_served,
+            COUNT(CASE WHEN fp.wash THEN 1 END)::int as wash_served,
+            COUNT(CASE WHEN fp.health_promotion THEN 1 END)::int as health_promotion_served,
+            COUNT(CASE WHEN fp.fpe THEN 1 END)::int as fpe_served,
+            COUNT(CASE WHEN fp.philhealth THEN 1 END)::int as philhealth_served,
+            COUNT(CASE WHEN fp.referral THEN 1 END)::int as referral_served,
+            COALESCE(MAX(act.pk_activities), 0)::bigint as pk_activities,
+            COALESCE(MAX(act.large_scale_activities), 0)::bigint as large_scale_activities,
+            COALESCE(MAX(act.ls_nutrition), 0)::bigint as ls_nutrition,
+            COALESCE(MAX(act.ls_cancer), 0)::bigint as ls_cancer,
+            COALESCE(MAX(act.ls_immunization), 0)::bigint as ls_immunization,
+            COALESCE(MAX(act.ls_hpn), 0)::bigint as ls_hpn,
+            COALESCE(MAX(act.ls_dm), 0)::bigint as ls_dm,
+            COALESCE(MAX(act.ls_maternal_health), 0)::bigint as ls_maternal_health,
+            COALESCE(MAX(act.ls_road_safety), 0)::bigint as ls_road_safety,
+            COALESCE(MAX(act.ls_mental_health), 0)::bigint as ls_mental_health,
+            COALESCE(MAX(act.ls_tb), 0)::bigint as ls_tb,
+            COALESCE(MAX(act.ls_hiv), 0)::bigint as ls_hiv,
+            COALESCE(MAX(act.ls_wash), 0)::bigint as ls_wash,
+            COALESCE(MAX(act.ls_health_promotion), 0)::bigint as ls_health_promotion,
+            COALESCE(MAX(act.ls_fpe), 0)::bigint as ls_fpe,
+            COALESCE(MAX(act.ls_philhealth), 0)::bigint as ls_philhealth,
+            COALESCE(MAX(act.ls_referral), 0)::bigint as ls_referral,
+            COUNT(CASE WHEN fp.large_scale_pk_activity THEN 1 END)::int as total_large_scale_clients_served,
+            COUNT(CASE WHEN fp.large_scale_pk_activity AND (fp.nutrition OR fp.cancer OR fp.immunization OR fp.hpn OR fp.dm OR fp.maternal_health OR fp.road_safety OR fp.mental_health OR fp.tb OR fp.hiv OR fp.wash) THEN 1 END)::int as total_priority_large_scale_patients
+        FROM filtered_period fp
+        LEFT JOIN activity_summary act ON fp.lmuni = act.lmuni AND fp.lbrgy = act.lbrgy
+        GROUP BY fp.lmuni, fp.lbrgy
     )
     SELECT json_build_object(
         'programStats', (
@@ -1426,7 +1278,7 @@ BEGIN
                 'served', served,
                 'households_served', households_served,
                 'population_reached', population_reached
-            )) FROM muni_stats
+            )) FROM served_by_muni
         ), '[]'::json),
         'barangayStats', COALESCE((
             SELECT json_agg(json_build_object(
@@ -1468,62 +1320,13 @@ BEGIN
                 'ls_referral', ls_referral,
                 'total_large_scale_clients_served', total_large_scale_clients_served,
                 'total_priority_large_scale_patients', total_priority_large_scale_patients
-            )) FROM barangay_stats
+            )) FROM served_by_brgy
         ), '[]'::json),
-        'monthlyTrends', COALESCE((
-            SELECT json_agg(json_build_object(
-                'month_date', month_date,
-                'month_name', month_name,
-                'served', served
-            )) FROM monthly_trends
-        ), '[]'::json)
-    )$query$;
+        'monthlyTrends', '[]'::json
+    );
+    $query$;
 
     EXECUTE v_sql INTO v_result USING p_municipality, p_barangay, p_start_date, p_end_date;
-
     RETURN v_result;
 END;
-$$ LANGUAGE plpgsql SET statement_timeout = '60s';
-
--- =====================================================================
--- 5. PG_CRON SETUP (Automated Refresh)
--- Runs the refresh functions natively inside Supabase without Vercel limits
--- =====================================================================
-
--- Ensure pg_cron extension is enabled 
-CREATE EXTENSION IF NOT EXISTS pg_cron WITH SCHEMA pg_catalog;
-
--- Remove existing schedules to make this script idempotent
-DO $$
-BEGIN
-    PERFORM cron.unschedule('refresh_mv_patient_first_services_job');
-EXCEPTION WHEN OTHERS THEN
-    -- Ignore error
-END $$;
-
-DO $$
-BEGIN
-    PERFORM cron.unschedule('refresh_mv_activity_services_job');
-EXCEPTION WHEN OTHERS THEN
-    -- Ignore error
-END $$;
-
--- Schedule the first services materialized view to refresh every 4 hours (adjust as needed)
-DO $$
-BEGIN
-    PERFORM cron.schedule(
-      'refresh_mv_patient_first_services_job', 
-      '0 */2 * * *', 
-      'SELECT refresh_mv_patient_first_services();'
-    );
-END $$;
-
--- Schedule the activity services materialized view to refresh every 4 hours (adjust as needed)
-DO $$
-BEGIN
-    PERFORM cron.schedule(
-      'refresh_mv_activity_services_job', 
-      '0 */2 * * *', 
-      'SELECT refresh_mv_activity_services();'
-    );
-END $$;
+$;

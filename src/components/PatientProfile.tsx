@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Plus, Search, UserPlus, Calendar, Activity, Upload, Download, Filter, MapPin, Edit2, Trash2, Users, Info } from 'lucide-react';
+import { Plus, Search, UserPlus, Calendar, Activity, Upload, Download, Filter, MapPin, Edit2, Trash2, Users, Info, FileSpreadsheet, Check, Loader2, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Patient, PatientService, User } from '../types';
 import { ALL_PROGRAMS, MUNICIPALITIES, MUNICIPALITIES_DATA, PROGRAM_DESCRIPTIONS, formatMunicipality, formatBarangay } from '../constants';
@@ -116,9 +116,15 @@ export default function PatientProfile({ currentUser }: PatientProfileProps) {
   }, []);
 
   useEffect(() => {
+    const trimmed = searchTerm.trim();
+    // Do not trigger heavy database scans for 1 or 2 characters
+    if (trimmed.length > 0 && trimmed.length < 3) {
+      return;
+    }
+
     const delayDebounceFn = setTimeout(() => {
       fetchPatients();
-    }, 800);
+    }, trimmed.length >= 3 ? 900 : 300);
 
     return () => clearTimeout(delayDebounceFn);
   }, [searchTerm, page, limit, filterMunicipality, filterBarangay, filterProgram, filterYear, filterMonth, filterLargeScale, showDuplicatesOnly, showDiscrepanciesOnly, showNewOnly]);
@@ -925,15 +931,38 @@ Response: ${errorText}`);
       <div className="flex flex-col gap-4">
         {/* Top Row: Search and Actions */}
         <div className="flex flex-col xl:flex-row justify-between items-start xl:items-center gap-4">
-          <div className="relative w-full xl:w-96">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-slate" size={18} />
-            <input 
-              type="text" 
-              placeholder="Search patient name..." 
-              className="w-full pl-10 pr-4 py-2.5 bg-white border border-charcoal-gray/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-health-blue/20 focus:border-health-blue transition-all"
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-            />
+          <div className="flex flex-col w-full xl:w-96 gap-1">
+            <div className="relative w-full">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-blue-slate" size={18} />
+              <input 
+                type="text" 
+                placeholder="Search patient name (min 3 chars)..." 
+                className="w-full pl-10 pr-9 py-2.5 bg-white border border-charcoal-gray/10 rounded-xl focus:outline-none focus:ring-2 focus:ring-health-blue/20 focus:border-health-blue transition-all"
+                value={searchTerm}
+                onChange={(e) => {
+                  setSearchTerm(e.target.value);
+                  if (page !== 1) setPage(1);
+                }}
+              />
+              {searchTerm && (
+                <button
+                  type="button"
+                  onClick={() => {
+                    setSearchTerm('');
+                    setPage(1);
+                  }}
+                  className="absolute right-3 top-1/2 -translate-y-1/2 text-charcoal-gray/40 hover:text-charcoal-gray p-0.5 rounded-full"
+                  title="Clear search"
+                >
+                  <X size={16} />
+                </button>
+              )}
+            </div>
+            {searchTerm.trim().length > 0 && searchTerm.trim().length < 3 && (
+              <span className="text-[11px] text-amber-600 font-medium pl-2">
+                Type at least 3 characters to search...
+              </span>
+            )}
           </div>
           <div className="flex flex-wrap items-center gap-3 w-full xl:w-auto">
             <button 
@@ -1425,6 +1454,14 @@ Response: ${errorText}`);
               <div className="max-h-[80vh] overflow-y-auto">
                 {activeTab === 'profile' ? (
                   <form onSubmit={handleSubmit} className="p-8 space-y-8">
+                    {!editingId && (
+                      <div className="bg-emerald-50 border border-emerald-200/80 rounded-2xl p-4 flex items-start gap-3">
+                        <Info className="text-emerald-600 shrink-0 mt-0.5" size={18} />
+                        <div className="text-xs text-emerald-950 leading-relaxed">
+                          <span className="font-bold">Duplicate-Safe Smart Matching:</span> If this patient is already recorded in the database, entering their Full Name, Municipality, and Birthdate will automatically attach this new consultation to their existing record without creating a duplicate.
+                        </div>
+                      </div>
+                    )}
                     {/* Basic Info */}
                     <div className="space-y-4">
                       <div className="flex items-center justify-between">

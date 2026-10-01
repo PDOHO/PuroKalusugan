@@ -127,7 +127,7 @@ export default function BarangayProfile({ currentUser }: BarangayProfileProps) {
     const submissionData = {
       ...formData
     };
-    if (!isProgram2Customizable(submissionData.municipality, submissionData.barangay_name)) {
+    if (!isProgram2Customizable(submissionData.municipality, submissionData.barangay_name) && currentUser.role !== 'ADMIN') {
       submissionData.program2_name = 'Immunization';
     }
     
@@ -285,7 +285,12 @@ Error: ${errorData.error || "Failed to delete barangay."}`);
   };
 
   const isProgram2Customizable = (municipality: string, barangay: string) => {
-    return ALLOWED_CUSTOM_PROGRAM2_BARANGAYS.some(b => b.municipality === municipality && b.barangay === barangay);
+    if (!municipality || !barangay) return false;
+    const cleanM = municipality.trim().toLowerCase();
+    const cleanB = barangay.trim().toLowerCase();
+    return ALLOWED_CUSTOM_PROGRAM2_BARANGAYS.some(
+      b => b.municipality.trim().toLowerCase() === cleanM && b.barangay.trim().toLowerCase() === cleanB
+    );
   };
 
   const getAvailablePrograms = (currentProgramName: string) => {
@@ -560,7 +565,7 @@ Error: ${errorData.error || "Failed to delete barangay."}`);
                       onChange={e => {
                         const barangayName = e.target.value;
                         const newFormData = {...formData, barangay_name: barangayName};
-                        if (!isProgram2Customizable(newFormData.municipality, barangayName)) {
+                        if (!isProgram2Customizable(newFormData.municipality, barangayName) && currentUser.role !== 'ADMIN') {
                           newFormData.program2_name = 'Immunization';
                         }
                         setFormData(newFormData);
@@ -691,7 +696,7 @@ Error: ${errorData.error || "Failed to delete barangay."}`);
                       <div className="flex flex-col gap-1">
                         <div className="flex gap-2">
                           <select 
-                            className={`flex-1 px-4 py-2.5 bg-white border border-charcoal-gray/10 rounded-xl focus:ring-2 focus:ring-health-blue/20 focus:border-health-blue outline-none ${!isProgram2Customizable(formData.municipality, formData.barangay_name) ? 'bg-honeydew text-blue-slate cursor-not-allowed' : ''}`}
+                            className={`flex-1 px-4 py-2.5 bg-white border border-charcoal-gray/10 rounded-xl focus:ring-2 focus:ring-health-blue/20 focus:border-health-blue outline-none ${(!isProgram2Customizable(formData.municipality, formData.barangay_name) && currentUser.role !== 'ADMIN') ? 'bg-honeydew text-blue-slate cursor-not-allowed' : ''}`}
                             value={formData.program2_name}
                             onChange={e => {
                               const newProgram = e.target.value;
@@ -701,7 +706,7 @@ Error: ${errorData.error || "Failed to delete barangay."}`);
                                 program2_target: isNoTargetProgram(newProgram) ? 0 : formData.program2_target
                               });
                             }}
-                            disabled={!isProgram2Customizable(formData.municipality, formData.barangay_name)}
+                            disabled={!isProgram2Customizable(formData.municipality, formData.barangay_name) && currentUser.role !== 'ADMIN'}
                           >
                             <option value="">Select Program</option>
                             {getAvailablePrograms(formData.program2_name).map(p => <option key={p} value={p}>{p}</option>)}

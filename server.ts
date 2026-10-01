@@ -1,12 +1,8 @@
 import express from "express";
 import path from "path";
 import fs from "fs";
-import { fileURLToPath } from "url";
 import { createServer as createViteServer } from "vite";
 import { createClient } from "@supabase/supabase-js";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 import { handler as statsHandler } from "./api/stats.js";
 import barangaysHandler from "./api/barangays.js";
@@ -122,6 +118,10 @@ async function startServer() {
     const file = path.join(process.cwd(), 'public', 'fuzzy_bantay_duplicates.csv');
     res.download(file, 'fuzzy_bantay_duplicates.csv');
   });
+  app.get("/api/download-fuzzy-santiago", (req, res) => {
+    const file = path.join(process.cwd(), 'public', 'fuzzy_santiago_duplicates.csv');
+    res.download(file, 'fuzzy_santiago_duplicates.csv');
+  });
   app.get("/api/download-fuzzy-narvacan", (req, res) => {
     const file = path.join(process.cwd(), 'public', 'fuzzy_narvacan_duplicates.csv');
     res.download(file, 'fuzzy_narvacan_duplicates.csv');
@@ -194,7 +194,7 @@ async function startServer() {
       if (req.headers.accept?.includes("text/html")) {
         const url = req.originalUrl;
         try {
-          let template = fs.readFileSync(path.resolve(__dirname, "index.html"), "utf-8");
+          let template = fs.readFileSync(path.resolve(process.cwd(), "index.html"), "utf-8");
           template = await vite.transformIndexHtml(url, template);
           res.status(200).set({ "Content-Type": "text/html" }).end(template);
         } catch (e) {

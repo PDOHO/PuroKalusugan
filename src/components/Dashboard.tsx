@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { Users, Target, Activity, ClipboardCheck, Share2, ArrowUpRight, Home, TrendingUp, Download, Copy, Check } from 'lucide-react';
+import { Users, Target, Activity, ClipboardCheck, Share2, ArrowUpRight, Home, TrendingUp, Download, Copy, Check, FileSpreadsheet, ShieldCheck, Loader2 } from 'lucide-react';
 import { DashboardStats, User } from '../types';
 import { MUNICIPALITIES, MUNICIPALITIES_DATA, formatMunicipality } from '../constants';
 import IlocosSurMap from './IlocosSurMap';
@@ -286,7 +286,7 @@ export default function Dashboard({ currentUser }: DashboardProps) {
       params.append('refresh', 'true');
     }
     
-    const url = `/api/stats?${params.toString()}&t=${Date.now()}`;
+    const url = `/api/stats?${params.toString()}${isRefresh ? `&t=${Date.now()}` : ''}`;
     console.log("Fetching URL:", url);
     
     try {

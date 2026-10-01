@@ -67,23 +67,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       console.log(
         `[Stats API] Cache flushed (forced refresh) for: ${JSON.stringify(normalizedQueryObj)}`,
       );
-      
-      const now = Date.now();
-      // Debounce MV refresh to at most once every 5 minutes to prevent CPU exhaustion
-      if (now - lastMvRefreshTime > 5 * 60 * 1000) {
-        lastMvRefreshTime = now;
-        console.log(`[Stats API] Triggering Materialized View refresh (Background)...`);
-        // Fire and forget so we don't block the request, and DB handles it concurrently
-        Promise.allSettled([
-          supabaseLong.rpc('refresh_mv_patient_first_services'),
-          supabaseLong.rpc('refresh_mv_activity_services')
-        ]).then(results => {
-          console.log(`[Stats API] Materialized Views background refresh results:`, JSON.stringify(results));
-        });
-      } else {
-        console.log(`[Stats API] Skipped MV refresh (Debounced). Last refresh was less than 5 mins ago.`);
-      }
-
+      // We deliberately do NOT trigger REFRESH MATERIALIZED VIEW on client requests.
+      // Doing so causes 100% disk IOPS saturation on Supabase. MVs should be refreshed on scheduled cron jobs.
     } else if (!isBackground) {
       const cached = cache.get(cacheKey) as any;
       if (cached) {
@@ -92,7 +77,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         // Handle migration from old raw data cache to new structured cache
         const dataToReturn = cached.timestamp ? cached.data : cached;
         const timestamp = cached.timestamp || Date.now();
-        const isStale = Date.now() - timestamp > 5 * 60 * 1000; // 5 minutes stale threshold
+        const isStale = Date.now() - timestamp > 30 * 60 * 1000; // 30 minutes stale threshold to preserve disk IO budget
 
         if (isStale && !cached.fetching) {
           console.log(`[Stats API] Cache is stale, triggering background revalidate for ${cacheKey}`);

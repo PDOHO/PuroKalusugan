@@ -205,8 +205,8 @@ export default function App() {
             </div>
           </div>
 
-          <div className="flex items-center gap-4">
-            <div className="text-right">
+          <div className="flex items-center gap-3 md:gap-4">
+            <div className="text-right hidden sm:block">
               <div className="text-sm font-bold text-charcoal-gray">{user?.username || 'User'}</div>
               <div className="text-[10px] text-blue-slate font-medium uppercase tracking-wider">
                 {user?.role === 'ADMIN' ? 'Provincial Administrator' : user?.role === 'VIEWER' ? 'Provincial Viewer' : 'Municipality Officer'}

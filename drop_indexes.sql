@@ -1,0 +1,9 @@
+DROP INDEX IF EXISTS idx_patients_full_name;
+DROP INDEX IF EXISTS idx_patients_sex;
+DROP INDEX IF EXISTS idx_audit_logs_user_id;
+DROP INDEX IF EXISTS idx_patient_services_perf_date_patient;
+DROP INDEX IF EXISTS idx_patients_lower_full_name;
+DROP INDEX IF EXISTS idx_patients_full_name_btree;
+DROP INDEX IF EXISTS idx_patient_services_pk_dash;
+DROP INDEX IF EXISTS idx_patient_services_all;
+DROP INDEX IF EXISTS idx_patient_services_date_pat_id;

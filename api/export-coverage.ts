@@ -73,12 +73,24 @@ export default async function handler(req: Request, res: Response) {
     } else {
       try {
         console.log(`[Export API] Triggering single bulk RPC stats fetch...`);
-        const { data, error } = await supabaseLong.rpc('get_dashboard_service_stats', {
+        let { data, error } = await supabaseLong.rpc('get_dashboard_service_stats_mv', {
           p_municipality: null,
           p_barangay: null,
           p_start_date: filterStart || null,
           p_end_date: filterEnd || null
         });
+
+        if (error && error.message?.includes('could not find function')) {
+           console.warn(`[Export API] MV RPC not found, falling back to legacy...`);
+           const fallback = await supabaseLong.rpc('get_dashboard_service_stats', {
+            p_municipality: null,
+            p_barangay: null,
+            p_start_date: filterStart || null,
+            p_end_date: filterEnd || null
+          });
+          data = fallback.data;
+          error = fallback.error;
+        }
         bulkRpcData = data;
         bulkRpcError = error;
         if (bulkRpcError) {
@@ -127,12 +139,23 @@ export default async function handler(req: Request, res: Response) {
       } else {
         // Fallback: If bulk stats was completely null (e.g. stale proc without muniStats), fall back to sequential calls
         console.warn(`[Export API] Missing bulk stats, falling back to sequential query for: ${realName}`);
-        const { data, error } = await supabaseLong.rpc('get_dashboard_service_stats', {
+        let { data, error } = await supabaseLong.rpc('get_dashboard_service_stats_mv', {
           p_municipality: realName,
           p_barangay: null,
           p_start_date: filterStart || null,
           p_end_date: filterEnd || null
         });
+
+        if (error && error.message?.includes('could not find function')) {
+           const fallback = await supabaseLong.rpc('get_dashboard_service_stats', {
+            p_municipality: realName,
+            p_barangay: null,
+            p_start_date: filterStart || null,
+            p_end_date: filterEnd || null
+          });
+          data = fallback.data;
+          error = fallback.error;
+        }
 
         if (!error && data) {
           reached = data.programStats.total_population_reached || 0;
