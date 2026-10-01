@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Plus, Search, UserPlus, Calendar, Activity, Upload, Download, Filter, MapPin, Edit2, Trash2, Users, Info, FileSpreadsheet, Check, Loader2, X } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 import { Patient, PatientService, User } from '../types';
@@ -45,6 +45,7 @@ export default function PatientProfile({ currentUser }: PatientProfileProps) {
   const [editingService, setEditingService] = useState<PatientService | null>(null);
   const [patientHistory, setPatientHistory] = useState<PatientService[]>([]);
   const [activeTab, setActiveTab] = useState<'profile' | 'history'>('profile');
+  const queryCacheRef = useRef<Map<string, { timestamp: number; data: any; total: number }>>(new Map());
 
   const initialMunicipality = currentUser.role === 'MUNICIPALITY' ? currentUser.municipality! : '';
 
@@ -137,6 +138,23 @@ export default function PatientProfile({ currentUser }: PatientProfileProps) {
   };
 
   const fetchPatients = () => {
+    const cacheKey = JSON.stringify({
+      page, limit, search: searchTerm.trim(), municipality: filterMunicipality,
+      barangay: filterBarangay, program: filterProgram, year: filterYear,
+      month: filterMonth, large_scale: filterLargeScale,
+      duplicates_only: showDuplicatesOnly, discrepancies_only: showDiscrepanciesOnly,
+      new_only: showNewOnly
+    });
+
+    const cached = queryCacheRef.current.get(cacheKey);
+    if (cached && Date.now() - cached.timestamp < 120000) { // 2 minutes local cache
+      setPatients(cached.data);
+      setTotal(cached.total);
+      setLoading(false);
+      setError(null);
+      return;
+    }
+
     setLoading(true);
     setError(null);
     const query = new URLSearchParams({
@@ -151,8 +169,7 @@ export default function PatientProfile({ currentUser }: PatientProfileProps) {
       large_scale: filterLargeScale,
       duplicates_only: showDuplicatesOnly.toString(),
       discrepancies_only: showDiscrepanciesOnly.toString(),
-      new_only: showNewOnly.toString(),
-      _t: Date.now().toString()
+      new_only: showNewOnly.toString()
     });
     fetch(`/api/patients?${query}`)
       .then(async res => {
@@ -178,8 +195,11 @@ export default function PatientProfile({ currentUser }: PatientProfileProps) {
       })
       .then(data => {
         if (!data) return;
-        setPatients(data.data || []);
-        setTotal(data.total || 0);
+        const patientData = data.data || [];
+        const totalCount = data.total || 0;
+        queryCacheRef.current.set(cacheKey, { timestamp: Date.now(), data: patientData, total: totalCount });
+        setPatients(patientData);
+        setTotal(totalCount);
         setLoading(false);
       })
       .catch(err => {
@@ -800,13 +820,24 @@ Response: ${errorText}`);
 
   const handleExport = async () => {
     try {
+      if (!filterMunicipality && !filterYear && !searchTerm && total > 5000) {
+        alert("To protect database throughput, please select a Municipality or Year before exporting, or use filters to narrow down the records.");
+        return;
+      }
+
       setLoading(true);
       let allExportData: Patient[] = [];
       let currentPage = 1;
       const exportLimit = 1000;
+      const maxPages = 5; // Max 5,000 records per export to prevent disk IO budget drain
       let hasMore = true;
 
       while (hasMore) {
+        if (currentPage > maxPages) {
+          alert("Export capped at the first 5,000 records to maintain database stability. Please filter by Barangay to download specific records.");
+          break;
+        }
+
         const query = new URLSearchParams({
           page: currentPage.toString(),
           limit: exportLimit.toString(),
@@ -816,8 +847,7 @@ Response: ${errorText}`);
           program: filterProgram,
           year: filterYear,
           month: filterMonth,
-          large_scale: filterLargeScale,
-          _t: Date.now().toString()
+          large_scale: filterLargeScale
         });
         
         const res = await fetch(`/api/patients?${query}`);
