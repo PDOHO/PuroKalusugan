@@ -10,6 +10,13 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(403).json({ error: 'Unauthorized' });
   }
 
+  if (!municipality && !barangay && !search && !program && !year && !large_scale) {
+    return res.status(400).json({ 
+      error: "Filter Required", 
+      message: "At least one active filter (e.g. Municipality, Barangay, or Year) is required to delete filtered patients. Whole-database bulk deletions are disabled for safety." 
+    });
+  }
+
   try {
     // 1. Build query to identify patients to delete
     const hasServiceFilter = !!year || !!program || !!large_scale;

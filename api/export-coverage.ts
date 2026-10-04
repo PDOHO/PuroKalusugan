@@ -124,44 +124,23 @@ export default async function handler(req: Request, res: Response) {
       }
     }
 
+    if (!bulkRpcData || !bulkRpcData.muniStats) {
+      console.warn(`[Export API] Bulk stats unavailable, aborting export to prevent 34 sequential heavy queries.`);
+      return res.status(503).json({ 
+        error: "Database Temporarily Busy", 
+        message: "The coverage statistics are currently taking longer than usual to generate. Please try exporting again in a few moments." 
+      });
+    }
+
     for (const m of munis) {
       const realName = barangaysData?.find(b => b.municipality.toLowerCase() === m)?.municipality || m;
       let reached = 0;
 
-      if (bulkRpcData && bulkRpcData.muniStats) {
-        // We successfully pulled bulk stats. If the muni isn't found, it just means 0 reached, not a database failure!
-        const rpcMuni = bulkRpcData.muniStats.find((rm: any) => rm.muni === m);
-        if (rpcMuni && typeof rpcMuni.population_reached !== 'undefined') {
-          reached = rpcMuni.population_reached || 0;
-        } else {
-          reached = 0; // The municipality has zero records.
-        }
+      const rpcMuni = bulkRpcData.muniStats.find((rm: any) => rm.muni === m);
+      if (rpcMuni && typeof rpcMuni.population_reached !== 'undefined') {
+        reached = rpcMuni.population_reached || 0;
       } else {
-        // Fallback: If bulk stats was completely null (e.g. stale proc without muniStats), fall back to sequential calls
-        console.warn(`[Export API] Missing bulk stats, falling back to sequential query for: ${realName}`);
-        let { data, error } = await supabaseLong.rpc('get_dashboard_service_stats_mv', {
-          p_municipality: realName,
-          p_barangay: null,
-          p_start_date: filterStart || null,
-          p_end_date: filterEnd || null
-        });
-
-        if (error && error.message?.includes('could not find function')) {
-           const fallback = await supabaseLong.rpc('get_dashboard_service_stats', {
-            p_municipality: realName,
-            p_barangay: null,
-            p_start_date: filterStart || null,
-            p_end_date: filterEnd || null
-          });
-          data = fallback.data;
-          error = fallback.error;
-        }
-
-        if (!error && data) {
-          reached = data.programStats.total_population_reached || 0;
-        } else if (error) {
-          console.error(`Error fetching sequentially for ${realName}:`, error);
-        }
+        reached = 0; // The municipality has zero records in this date filter.
       }
 
       const actualPop = actualPops[m] || 0;

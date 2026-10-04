@@ -87,11 +87,10 @@ export default function PatientProfile({ currentUser }: PatientProfileProps) {
   const [filterMunicipality, setFilterMunicipality] = useState(initialMunicipality);
   const [filterBarangay, setFilterBarangay] = useState('');
   const [filterProgram, setFilterProgram] = useState('');
-  const [filterYear, setFilterYear] = useState<string>(new Date().getFullYear().toString());
+  const [filterYear, setFilterYear] = useState<string>('');
   const [filterMonth, setFilterMonth] = useState<string>('');
   const [filterLargeScale, setFilterLargeScale] = useState<string>('');
   const [showDuplicatesOnly, setShowDuplicatesOnly] = useState(false);
-  const [showDiscrepanciesOnly, setShowDiscrepanciesOnly] = useState(false);
   const [showNewOnly, setShowNewOnly] = useState(false);
   const [barangayPriorities, setBarangayPriorities] = useState<Record<string, string[]>>({});
 
@@ -128,7 +127,7 @@ export default function PatientProfile({ currentUser }: PatientProfileProps) {
     }, trimmed.length >= 3 ? 900 : 300);
 
     return () => clearTimeout(delayDebounceFn);
-  }, [searchTerm, page, limit, filterMunicipality, filterBarangay, filterProgram, filterYear, filterMonth, filterLargeScale, showDuplicatesOnly, showDiscrepanciesOnly, showNewOnly]);
+  }, [searchTerm, page, limit, filterMunicipality, filterBarangay, filterProgram, filterYear, filterMonth, filterLargeScale, showDuplicatesOnly, showNewOnly]);
 
   const formatLocalDate = (dateStr: string | null | undefined) => {
     if (!dateStr) return '';
@@ -142,7 +141,7 @@ export default function PatientProfile({ currentUser }: PatientProfileProps) {
       page, limit, search: searchTerm.trim(), municipality: filterMunicipality,
       barangay: filterBarangay, program: filterProgram, year: filterYear,
       month: filterMonth, large_scale: filterLargeScale,
-      duplicates_only: showDuplicatesOnly, discrepancies_only: showDiscrepanciesOnly,
+      duplicates_only: showDuplicatesOnly,
       new_only: showNewOnly
     });
 
@@ -168,7 +167,6 @@ export default function PatientProfile({ currentUser }: PatientProfileProps) {
       month: filterMonth,
       large_scale: filterLargeScale,
       duplicates_only: showDuplicatesOnly.toString(),
-      discrepancies_only: showDiscrepanciesOnly.toString(),
       new_only: showNewOnly.toString()
     });
     fetch(`/api/patients?${query}`)
@@ -754,39 +752,6 @@ Response: ${errorText}`);
     reader.readAsText(file, 'UTF-8');
   };
 
-  const handleMergeDuplicates = async () => {
-    if (!window.confirm('Are you sure you want to merge all detected duplicates? This will combine their service records and keep the latest profile information. This action cannot be undone.')) {
-      return;
-    }
-
-    setLoading(true);
-    try {
-      const response = await fetch('/api/patients/merge-all', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          _user: currentUser
-        })
-      });
-
-      const contentType = response.headers.get("content-type");
-      if (!contentType || contentType.indexOf("application/json") === -1) {
-        const text = await response.text();
-        throw new Error(`Expected JSON but got ${contentType}: ${text.substring(0, 100)}`);
-      }
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || 'Failed to merge duplicates');
-
-      alert(data.message || `Successfully merged ${data.mergedCount} duplicate records.`);
-      fetchPatients();
-    } catch (err: any) {
-      console.error("Merge error:", err);
-      alert(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
-
   const handleDeleteFiltered = async () => {
     if (!window.confirm('Are you sure you want to delete all filtered patients? This action cannot be undone.')) {
       return;
@@ -1023,7 +988,6 @@ Response: ${errorText}`);
                   onClick={() => {
                     setShowNewOnly(!showNewOnly);
                     if (!showNewOnly) {
-                      setShowDiscrepanciesOnly(false);
                       setShowDuplicatesOnly(false);
                     }
                     setPage(1);
@@ -1040,24 +1004,11 @@ Response: ${errorText}`);
                 </button>
                 <button
                   onClick={() => {
-                    setShowDiscrepanciesOnly(!showDiscrepanciesOnly);
-                    if (!showDiscrepanciesOnly) setShowDuplicatesOnly(false);
-                    setPage(1);
-                  }}
-                  className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all flex-1 md:flex-none justify-center ${
-                    showDiscrepanciesOnly 
-                      ? 'bg-alert-red/10 text-alert-red border border-alert-red/20 hover:bg-alert-red/20' 
-                      : 'bg-white border border-charcoal-gray/10 text-blue-slate hover:bg-mint-cream'
-                  }`}
-                >
-                  <Activity size={18} />
-                  <span className="hidden sm:inline">{showDiscrepanciesOnly ? 'Showing Discrepancies' : 'Find Discrepancies'}</span>
-                  <span className="sm:hidden">Disc</span>
-                </button>
-                <button
-                  onClick={() => {
+                    if (!showDuplicatesOnly && !filterMunicipality) {
+                      alert('Please select a Municipality from the filters above before finding duplicates. Province-wide scans across 330,000+ patients are restricted to prevent database compute overload.');
+                      return;
+                    }
                     setShowDuplicatesOnly(!showDuplicatesOnly);
-                    if (!showDuplicatesOnly) setShowDiscrepanciesOnly(false);
                     setPage(1);
                   }}
                   className={`flex items-center gap-2 px-4 py-2.5 rounded-xl font-medium transition-all flex-1 md:flex-none justify-center ${
@@ -1070,16 +1021,6 @@ Response: ${errorText}`);
                   <span className="hidden sm:inline">{showDuplicatesOnly ? 'Showing Duplicates' : 'Find Duplicates'}</span>
                   <span className="sm:hidden">Dupe</span>
                 </button>
-                {showDuplicatesOnly && currentUser.role === 'ADMIN' && (
-                  <button 
-                    onClick={handleMergeDuplicates}
-                    className="flex items-center gap-2 bg-health-blue text-white px-4 py-2.5 rounded-xl font-medium hover:bg-soft-navy-blue transition-all flex-1 md:flex-none justify-center shadow-lg shadow-health-blue/20"
-                  >
-                    <Users size={18} />
-                    <span className="hidden sm:inline">Merge All Duplicates</span>
-                    <span className="sm:hidden">Merge</span>
-                  </button>
-                )}
                   <button 
                     onClick={() => {
                       setEditingId(null);

@@ -5,7 +5,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     res.setHeader('X-Handler', 'List-Handler');
     if (req.method === 'GET') {
-      const { page = 1, limit = 50, search = '', municipality = '', barangay = '', program = '', year = '', month = '', patient_id, duplicates_only, discrepancies_only, large_scale = '', new_only = '' } = req.query;
+      const { page = 1, limit = 50, search = '', municipality = '', barangay = '', program = '', year = '', month = '', patient_id, duplicates_only, large_scale = '', new_only = '' } = req.query;
       
       if (patient_id) {
         // Fetch specific patient with their service history
@@ -110,113 +110,70 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.json({ data: formattedData, total: totalCount, page: Number(page), limit: Number(limit) });
       }
 
-      if (discrepancies_only === 'true') {
-        const offset = (Number(page) - 1) * Number(limit);
-        
-        let filterStart: string | null = null;
-        let filterEnd: string | null = null;
-        
-        if (year) {
-          const y = Number(year);
-          if (month) {
-            const m = Number(month);
-            filterStart = `${y}-${String(m).padStart(2, '0')}-01`;
-            filterEnd = new Date(y, m, 0).toISOString().split('T')[0];
-          } else {
-            filterStart = `${y}-01-01`;
-            filterEnd = `${y}-12-31`;
-          }
+      if (duplicates_only === 'true') {
+        if (!municipality) {
+          return res.status(400).json({
+            error: "Municipality Required",
+            message: "Please select a Municipality in the filters to find duplicates. Province-wide scans across all 330,000+ records are restricted to prevent compute IO overload."
+          });
         }
 
-        let totalCount = 0;
-        let pageIds: number[] = [];
+        // Fetch records scoped strictly to the selected municipality to eliminate full-table disk scans
+        let mQuery = supabase
+          .from('patients')
+          .select('id, full_name, birthdate, barangay, sex')
+          .ilike('municipality', municipality as string);
 
-        // 1. Try using the optimized server-side RPC first
-        const { data: rpcData, error: rpcError } = await supabaseLong.rpc('get_patients_with_discrepancies', {
-          p_municipality: (municipality as string) || null,
-          p_barangay: (barangay as string) || null,
-          p_search: (search as string) || null,
-          p_program: (program as string) || null,
-          p_start_date: filterStart,
-          p_end_date: filterEnd,
-          p_limit: Number(limit),
-          p_offset: offset
+        if (barangay) {
+          mQuery = mQuery.ilike('barangay', barangay as string);
+        }
+        if (search) {
+          mQuery = mQuery.ilike('full_name', `%${search}%`);
+        }
+
+        let townPatients: any[] = [];
+        let from = 0;
+        const step = 1000;
+        while (from < 35000) {
+          const { data: chunk, error: cErr } = await mQuery.range(from, from + step - 1);
+          if (cErr) return res.status(500).json({ error: cErr.message });
+          if (!chunk || chunk.length === 0) break;
+          townPatients = townPatients.concat(chunk);
+          if (chunk.length < step) break;
+          from += step;
+        }
+
+        // Group by normalized name and birthdate in memory
+        const groups = new Map<string, number[]>();
+        townPatients.forEach(p => {
+          const cleanName = (p.full_name || '').trim().toLowerCase().replace(/\s+/g, ' ');
+          const key = `${cleanName}|${p.birthdate}`;
+          if (!groups.has(key)) groups.set(key, []);
+          groups.get(key)!.push(p.id);
         });
 
-        if (!rpcError && rpcData) {
-          if (rpcData.length === 0) {
-            return res.json({ data: [], total: 0, page: Number(page), limit: Number(limit) });
+        const duplicateIds = new Set<number>();
+        groups.forEach(ids => {
+          if (ids.length > 1) {
+            ids.forEach(id => duplicateIds.add(id));
           }
-          totalCount = rpcData[0].total_count;
-          pageIds = rpcData.map((p: any) => p.id);
-        } else {
-          // Fallback only if RPC does not exist
-          const { data: barangaysData } = await supabase.from('barangays').select('municipality, barangay_name, program2_name, program3_name, program4_name');
-          const barangayMap: Record<string, string[]> = {};
-          if (barangaysData) {
-            barangaysData.forEach((b: any) => {
-               const key = `${b.municipality}|${b.barangay_name}`.toLowerCase();
-               const priorities = ['nutrition'];
-               if (b.program2_name) priorities.push(b.program2_name.toLowerCase().replace(/ /g, '_'));
-               if (b.program3_name) priorities.push(b.program3_name.toLowerCase().replace(/ /g, '_'));
-               if (b.program4_name) priorities.push(b.program4_name.toLowerCase().replace(/ /g, '_'));
-               barangayMap[key] = priorities;
-            });
-          }
+        });
 
-          let query = supabase.from('patients').select(`
-            id, municipality, barangay, full_name,
-            patient_services!inner(date_of_service, wash, cancer, immunization, hpn, dm, maternal_health, road_safety, mental_health, tb, hiv)
-          `);
-          if (municipality) query = query.ilike('municipality', municipality as string);
-          if (barangay) query = query.ilike('barangay', barangay as string);
-          if (search) query = query.ilike('full_name', `%${search}%`);
-          if (filterStart) query = query.gte('patient_services.date_of_service', filterStart);
-          if (filterEnd) query = query.lte('patient_services.date_of_service', filterEnd);
+        const duplicatePatients = townPatients
+          .filter(p => duplicateIds.has(p.id))
+          .sort((a, b) => (a.full_name || '').localeCompare(b.full_name || ''));
 
-          let allData: any[] = [];
-          let from = 0;
-          let step = 1000;
-          let hasMore = true;
-          while(hasMore && from < 5000) { // Limit scan to protect disk IOPS
-             const { data, error } = await query.range(from, from + step - 1);
-             if (error) {
-                 console.error("Fallback query error:", error);
-                 break;
-             }
-             if (data && data.length > 0) {
-                allData = allData.concat(data);
-                from += step;
-             } else {
-                hasMore = false;
-             }
-          }
-
-          const ALL_PROGS = ['wash', 'cancer', 'immunization', 'hpn', 'dm', 'maternal_health', 'road_safety', 'mental_health', 'tb', 'hiv'];
-          
-          const discrepantPatients = allData.filter((p: any) => {
-             const key = `${p.municipality}|${p.barangay}`.toLowerCase();
-             const priorities = barangayMap[key] || ['nutrition'];
-             return p.patient_services.some((s: any) => {
-                 for (const prog of ALL_PROGS) {
-                     if (s[prog] === true && !priorities.includes(prog)) {
-                         return true;
-                     }
-                 }
-                 return false;
-             });
-          });
-
-          discrepantPatients.sort((a, b) => b.id - a.id);
-          totalCount = discrepantPatients.length;
-          pageIds = discrepantPatients.slice(offset, offset + Number(limit)).map(p => p.id);
-        }
+        const totalCount = duplicatePatients.length;
+        const offset = (Number(page) - 1) * Number(limit);
+        const pageRecords = duplicatePatients.slice(offset, offset + Number(limit));
+        const pageIds = pageRecords.map(p => p.id);
 
         if (pageIds.length === 0) {
-          return res.json({ data: [], total: 0, page: Number(page), limit: Number(limit) });
+          return res.json({ data: [], total: totalCount, page: Number(page), limit: Number(limit) });
         }
 
-        const { data: finalData, error: fError } = await supabase
+        // Fetch full records and services for just this page's 50 IDs
+        const { data: pageFullData, error: fError } = await supabase
           .from('patients')
           .select(`
             id, full_name, municipality, barangay, birthdate, sex,
@@ -228,9 +185,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
 
         if (fError) return res.status(500).json({ error: fError.message });
 
-        const formattedData = pageIds.map(id => {
-          const p = finalData?.find(d => d.id === id);
-          if (!p) return null;
+        const sortedData = pageIds.map(id => pageFullData?.find(d => d.id === id)).filter(Boolean);
+
+        const formattedData = sortedData.map(p => {
           const services = p.patient_services || [];
           const compatService: any = {
             date_of_service: null, health_promotion: false, fpe: false, philhealth: false, referral: false, wash: false, nutrition: false, cancer: false, immunization: false, hpn: false, dm: false, maternal_health: false, road_safety: false, mental_health: false, tb: false, hiv: false, large_scale_pk_activity: false
@@ -246,170 +203,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           }
           const { patient_services, ...rest } = p;
           return { ...rest, ...compatService, history: patient_services };
-        }).filter(Boolean);
+        });
 
         return res.json({ data: formattedData, total: totalCount, page: Number(page), limit: Number(limit) });
-      }
-
-      if (duplicates_only === 'true') {
-        // Try the optimized RPC first to save egress
-        const { data: rpcData, error: rpcError } = await supabaseLong.rpc('get_duplicate_patient_ids');
-        
-        let duplicatePatients: any[] = [];
-        let duplicateIdsArray: number[] = [];
-
-        if (!rpcError && rpcData) {
-          // RPC succeeded! We have the IDs directly.
-          duplicateIdsArray = rpcData.map((r: any) => r.patient_id);
-          
-          if (duplicateIdsArray.length === 0) {
-            return res.json({ data: [], total: 0, page: 1, limit: Number(limit) });
-          }
-          
-          // The RPC already returned them ordered by full_name ASC.
-          // We just paginate the IDs directly.
-          const offset = (Number(page) - 1) * Number(limit);
-          const pageIds = duplicateIdsArray.slice(offset, offset + Number(limit));
-          
-          if (pageIds.length === 0) {
-            return res.json({ data: [], total: duplicateIdsArray.length, page: Number(page), limit: Number(limit) });
-          }
-          
-          // Fetch the full records for just this page's IDs
-          const { data, error } = await supabase
-            .from('patients')
-            .select(`
-              id, full_name, municipality, barangay, birthdate, sex,
-              patient_services(
-                date_of_service, health_promotion, fpe, philhealth, referral, wash, nutrition, cancer, immunization, hpn, dm, maternal_health, road_safety, mental_health, tb, hiv, large_scale_pk_activity
-              )
-            `)
-            .in('id', pageIds);
-
-          if (error) return res.status(500).json({ error: error.message });
-
-          // Re-sort data to match the pageIds order (which is already sorted by full_name)
-          const sortedData = pageIds.map(id => data?.find(d => d.id === id)).filter(Boolean);
-
-          const formattedData = sortedData.map(p => {
-            const services = p.patient_services || [];
-            const compatService: any = {
-              date_of_service: null, health_promotion: false, fpe: false, philhealth: false, referral: false, wash: false, nutrition: false, cancer: false, immunization: false, hpn: false, dm: false, maternal_health: false, road_safety: false, mental_health: false, tb: false, hiv: false, large_scale_pk_activity: false
-            };
-            if (services.length > 0) {
-              const sortedServices = [...services].sort((a: any, b: any) => new Date(b.date_of_service).getTime() - new Date(a.date_of_service).getTime());
-              compatService.date_of_service = sortedServices[0].date_of_service;
-              services.forEach((s: any) => {
-                Object.keys(compatService).forEach(key => {
-                  if (key !== 'date_of_service' && s[key]) compatService[key] = true;
-                });
-              });
-            }
-            const { patient_services, ...rest } = p;
-            return { ...rest, ...compatService, history: patient_services };
-          });
-
-          return res.json({ data: formattedData, total: duplicateIdsArray.length, page: Number(page), limit: Number(limit) });
-
-        } else {
-          // FALLBACK: The old in-memory method if RPC doesn't exist
-          // 1. Fetch all patients to find duplicates (Safeguard limit of 5,000 to protect server resources)
-          let allPatients: any[] = [];
-          let from = 0;
-          const step = 1000;
-          let hasMore = true;
-
-          while (hasMore) {
-            if (from >= 5000) {
-              console.warn(`[Patients API] Duplicates fallback threshold (5,000 records) reached. Aborting scan loops to protect Supabase DB balance.`);
-              break;
-            }
-            const { data: chunk, error: chunkError } = await supabase
-              .from('patients')
-              .select('id, full_name, birthdate, municipality')
-              .order('id', { ascending: true })
-              .range(from, from + step - 1);
-              
-            if (chunkError) return res.status(500).json({ error: chunkError.message });
-            if (!chunk || chunk.length === 0) {
-              hasMore = false;
-            } else {
-              allPatients = allPatients.concat(chunk);
-              from += step;
-              if (chunk.length < step) hasMore = false;
-            }
-          }
-
-          // 2. Group by name, birthdate, municipality
-          const groups = new Map<string, number[]>();
-          allPatients.forEach(p => {
-            const key = `${p.full_name?.toLowerCase()}|${p.birthdate}|${p.municipality?.toLowerCase()}`;
-            if (!groups.has(key)) groups.set(key, []);
-            groups.get(key)!.push(p.id);
-          });
-
-          // 3. Extract IDs of duplicates
-          let duplicateIds = new Set<number>();
-          groups.forEach(ids => {
-            if (ids.length > 1) {
-              ids.forEach(id => duplicateIds.add(id));
-            }
-          });
-
-          if (duplicateIds.size === 0) {
-            return res.json({ data: [], total: 0, page: 1, limit: Number(limit) });
-          }
-
-          // 4. Filter allPatients to only duplicates and sort them
-          duplicatePatients = allPatients
-            .filter(p => duplicateIds.has(p.id))
-            .sort((a, b) => (a.full_name || '').localeCompare(b.full_name || ''));
-
-          // 5. Paginate the duplicate patients
-          const offset = (Number(page) - 1) * Number(limit);
-          const paginatedDuplicatePatients = duplicatePatients.slice(offset, offset + Number(limit));
-          const pageIds = paginatedDuplicatePatients.map(p => p.id);
-
-          if (pageIds.length === 0) {
-            return res.json({ data: [], total: duplicatePatients.length, page: Number(page), limit: Number(limit) });
-          }
-
-          // 6. Fetch the full records for just this page's IDs
-          const { data, error } = await supabase
-            .from('patients')
-            .select(`
-              id, full_name, municipality, barangay, birthdate, sex,
-              patient_services(
-                date_of_service, health_promotion, fpe, philhealth, referral, wash, nutrition, cancer, immunization, hpn, dm, maternal_health, road_safety, mental_health, tb, hiv, large_scale_pk_activity
-              )
-            `)
-            .in('id', pageIds);
-
-          if (error) return res.status(500).json({ error: error.message });
-
-          // Re-sort data to match the paginatedDuplicatePatients order
-          const sortedData = paginatedDuplicatePatients.map(dp => data?.find(d => d.id === dp.id)).filter(Boolean);
-
-          const formattedData = sortedData.map(p => {
-            const services = p.patient_services || [];
-            const compatService: any = {
-              date_of_service: null, health_promotion: false, fpe: false, philhealth: false, referral: false, wash: false, nutrition: false, cancer: false, immunization: false, hpn: false, dm: false, maternal_health: false, road_safety: false, mental_health: false, tb: false, hiv: false, large_scale_pk_activity: false
-            };
-            if (services.length > 0) {
-              const sortedServices = [...services].sort((a: any, b: any) => new Date(b.date_of_service).getTime() - new Date(a.date_of_service).getTime());
-              compatService.date_of_service = sortedServices[0].date_of_service;
-              services.forEach((s: any) => {
-                Object.keys(compatService).forEach(key => {
-                  if (key !== 'date_of_service' && s[key]) compatService[key] = true;
-                });
-              });
-            }
-            const { patient_services, ...rest } = p;
-            return { ...rest, ...compatService, history: patient_services };
-          });
-
-          return res.json({ data: formattedData, total: duplicatePatients.length, page: Number(page), limit: Number(limit) });
-        }
       }
 
       const offset = (Number(page) - 1) * Number(limit);

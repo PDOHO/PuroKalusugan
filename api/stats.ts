@@ -77,7 +77,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         // Handle migration from old raw data cache to new structured cache
         const dataToReturn = cached.timestamp ? cached.data : cached;
         const timestamp = cached.timestamp || Date.now();
-        const isStale = Date.now() - timestamp > 30 * 60 * 1000; // 30 minutes stale threshold to preserve disk IO budget
+        const isStale = Date.now() - timestamp > 120 * 60 * 1000; // 2 hours stale threshold to preserve compute IO budget
 
         if (isStale && !cached.fetching) {
           console.log(`[Stats API] Cache is stale, triggering background revalidate for ${cacheKey}`);
@@ -148,36 +148,44 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       }
     }
 
-    // 1. Fetch barangays for targets (always needed)
-    let barangays: any[] = [];
-    let bFrom = 0;
+    // 1. Fetch barangays for targets (cached to avoid repeat DB roundtrips)
+    let allBarangays = cache.get("all_barangays_full") as any[];
+    if (!allBarangays || allBarangays.length === 0) {
+      allBarangays = [];
+      let bFrom = 0;
 
-    while (true) {
-      let barangayQuery = supabase.from("barangays").select("*");
-      if (municipality)
-        barangayQuery = barangayQuery.ilike(
-          "municipality",
-          municipality as string,
-        );
-      if (barangay) barangayQuery = barangayQuery.eq("barangay_name", barangay);
+      while (true) {
+        const { data, error: bError } = await supabase
+          .from("barangays")
+          .select("*")
+          .order("id", { ascending: true })
+          .range(bFrom, bFrom + step - 1);
 
-      barangayQuery = barangayQuery.order("id", { ascending: true });
+        if (bError) {
+          return handleDatabaseError(bError, "fetching barangays", res);
+        }
 
-      const { data, error: bError } = await barangayQuery.range(
-        bFrom,
-        bFrom + step - 1,
+        if (data && data.length > 0) {
+          allBarangays.push(...data);
+          if (data.length < step) break;
+        } else {
+          break;
+        }
+        bFrom += step;
+      }
+      cache.set("all_barangays_full", allBarangays, 86400);
+    }
+
+    let barangays = allBarangays;
+    if (municipality) {
+      barangays = barangays.filter(
+        (b) => b.municipality?.toLowerCase() === (municipality as string).toLowerCase()
       );
-      if (bError) {
-        return handleDatabaseError(bError, "fetching barangays", res);
-      }
-
-      if (data && data.length > 0) {
-        barangays.push(...data);
-        if (data.length < step) break;
-      } else {
-        break;
-      }
-      bFrom += step;
+    }
+    if (barangay) {
+      barangays = barangays.filter(
+        (b) => b.barangay_name?.toLowerCase() === (barangay as string).toLowerCase()
+      );
     }
 
     const programs = [

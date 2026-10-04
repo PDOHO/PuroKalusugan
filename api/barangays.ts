@@ -1,10 +1,18 @@
 import { VercelRequest, VercelResponse } from '@vercel/node';
-import { supabase, flushCache, logAudit } from './_lib.js';
+import { supabase, cache, flushCache, logAudit } from './_lib.js';
 
 export default async function handler(req: VercelRequest, res: VercelResponse) {
   try {
     if (req.method === 'GET') {
       const { page = 1, limit = 50, search = '', municipality = '', program = '' } = req.query;
+      const cacheKey = `barangays-${page}-${limit}-${search}-${municipality}-${program}`;
+      
+      const cached = cache.get(cacheKey) as any;
+      if (cached) {
+        res.setHeader('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+        return res.json(cached);
+      }
+
       const offset = (Number(page) - 1) * Number(limit);
 
       let query = supabase.from('barangays').select('*', { count: 'exact' });
@@ -39,7 +47,10 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         return res.status(500).json({ error: error.message });
       }
       
-      return res.json({ data, total: count, page: Number(page), limit: Number(limit) });
+      const result = { data, total: count, page: Number(page), limit: Number(limit) };
+      cache.set(cacheKey, result, 86400); // Cache for 24h
+      res.setHeader('Cache-Control', 'public, max-age=3600, stale-while-revalidate=86400');
+      return res.json(result);
     } else if (req.method === 'POST') {
       console.log("POST /api/barangays body:", req.body);
       const { _action, id, _user, ...barangayData } = req.body;
