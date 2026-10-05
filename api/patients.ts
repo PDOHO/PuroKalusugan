@@ -34,8 +34,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         let filterStart: string | null = null;
         let filterEnd: string | null = null;
         
-        if (year) {
-          const y = Number(year);
+        if (year || month) {
+          const y = year ? Number(year) : new Date().getFullYear();
           if (month) {
             const m = Number(month);
             filterStart = `${y}-${String(m).padStart(2, '0')}-01`;
@@ -211,7 +211,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const offset = (Number(page) - 1) * Number(limit);
       const isSearchActive = !!(search && (search as string).trim().length >= 2);
 
-      const hasServiceFilter = !!year || !!program || !!large_scale;
+      const hasServiceFilter = !!year || !!month || !!program || !!large_scale;
 
       const buildFilters = (q: any) => {
         // Apply municipality and barangay first to leverage indexes
@@ -236,8 +236,8 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             q = q.eq('patient_services.large_scale_pk_activity', false);
           }
 
-          if (year) {
-            const y = Number(year);
+          if (year || month) {
+            const y = year ? Number(year) : new Date().getFullYear();
             if (month) {
               const m = Number(month);
               const filterStart = `${y}-${String(m).padStart(2, '0')}-01`;
@@ -259,7 +259,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
           const subfields: string[] = ['date_of_service'];
           if (program) subfields.push(program as string);
           if (large_scale) subfields.push('large_scale_pk_activity');
-          q = supabaseLong.from('patients').select(`id, patient_services!inner(${subfields.join(',')})`, { count: 'estimated', head: true });
+          q = supabaseLong.from('patients').select(`id, patient_services!inner(${subfields.join(',')})`, { count: 'exact', head: true });
         } else {
           q = supabaseLong.from('patients').select('id', { count: 'estimated', head: true });
         }
@@ -303,17 +303,23 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
             count = offset + patientsList.length + (hasMore ? 50 : 0);
           }
         } else {
-          // Standard browsing by municipality/barangay: use estimated count
+          // Standard browsing by municipality/barangay
           const [countRes, dataRes] = await Promise.all([
             getCountQuery(),
             getDataQuery(false)
           ]);
           
-          patientsList = dataRes.data;
-          count = countRes.count;
-          
-          if (dataRes.error) patientsError = dataRes.error;
-          if (countRes.error && !patientsError) patientsError = countRes.error;
+          if (dataRes.data) {
+            patientsList = dataRes.data;
+            if (countRes.count !== null && countRes.count !== undefined) {
+              count = countRes.count;
+            } else {
+              const hasMore = patientsList.length >= Number(limit);
+              count = offset + patientsList.length + (hasMore ? 50 : 0);
+            }
+          } else if (dataRes.error) {
+            patientsError = dataRes.error;
+          }
         }
       } catch (err: any) {
         patientsError = err;
@@ -327,20 +333,24 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         String(patientsError.message || '').toLowerCase().includes('statement timeout')
       );
 
-      if (isTimeoutError) {
-        console.warn("[Patients API] Statement timeout detected. Retrying without exact count...");
+      if (isTimeoutError || (patientsError && !patientsList)) {
+        console.warn("[Patients API] Timeout or error detected. Retrying direct data query...");
         try {
           const dataRes = await getDataQuery();
-          patientsList = dataRes.data;
-          patientsError = dataRes.error;
-          const receivedCount = patientsList?.length || 0;
-          count = offset + receivedCount + (receivedCount === Number(limit) ? 100 : 0);
+          if (dataRes.data) {
+            patientsList = dataRes.data;
+            patientsError = null;
+            const receivedCount = patientsList?.length || 0;
+            count = offset + receivedCount + (receivedCount >= Number(limit) ? 50 : 0);
+          } else if (dataRes.error) {
+            patientsError = dataRes.error;
+          }
         } catch (err: any) {
           patientsError = err;
         }
       }
 
-      if (patientsError) {
+      if (patientsError && !patientsList) {
         console.error("Supabase error:", patientsError);
         return res.status(500).json({ error: patientsError.message || JSON.stringify(patientsError), details: patientsError });
       }
@@ -350,7 +360,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       const serviceHistoryMap = new Map<number, any[]>();
 
       if (pageIds.length > 0) {
-        const { data: servicesData, error: servicesError } = await supabase
+        const { data: servicesData, error: servicesError } = await supabaseLong
           .from('patient_services')
           .select(`
             id, patient_id, date_of_service, health_promotion, fpe, philhealth, referral, wash,
@@ -375,8 +385,9 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
       // Calculate exact date filter limits if applying any service date filters
       let filterStart = '';
       let filterEnd = '';
-      if (hasServiceFilter) {
-        const y = Number(year);
+      const hasDateFilter = !!year || !!month;
+      if (hasDateFilter) {
+        const y = year ? Number(year) : new Date().getFullYear();
         if (month) {
           const m = Number(month);
           filterStart = `${y}-${String(m).padStart(2, '0')}-01`;
@@ -392,7 +403,7 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
         const services = serviceHistoryMap.get(Number(p.id)) || [];
         
         // Filter history to current month/year range if active to aggregate correct month indicator flags
-        const targetServices = hasServiceFilter
+        const targetServices = hasDateFilter
           ? services.filter(s => s.date_of_service >= filterStart && s.date_of_service <= filterEnd)
           : services;
 

@@ -114,6 +114,10 @@ async function startServer() {
     }
     res.json({ ok: true });
   });
+  app.get("/api/download-vigan-duplicates", (req, res) => {
+    const file = path.join(process.cwd(), 'public', 'vigan_duplicate_audit.csv');
+    res.download(file, 'vigan_duplicate_audit.csv');
+  });
   app.get("/api/download-fuzzy-bantay", (req, res) => {
     const file = path.join(process.cwd(), 'public', 'fuzzy_bantay_duplicates.csv');
     res.download(file, 'fuzzy_bantay_duplicates.csv');
